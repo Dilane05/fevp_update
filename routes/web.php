@@ -27,12 +27,13 @@ Route::any('/logout', [LoginController::class, 'logout']);
 Route::group(['prefix' => 'my', 'middleware' => ['auth', 'role:user']], function () {
     Route::get('/dashboard', App\Livewire\Client\Dashboard\Dashboard::class)->name('client.dashboard');
     Route::get('/profile', App\Livewire\Client\Profile::class)->name('client.profile');
+    Route::get('/profilse', App\Livewire\Client\Profile::class)->name('client.evaluations.index');
+
 
     //AuditLogs
     Route::prefix('auditlogs')->group(function () {
         Route::get('/', App\Livewire\Client\AuditLogs\Index::class)->name('client.auditlogs');
     });
-
 
 
 });
@@ -48,13 +49,11 @@ Route::group(['prefix' => 'portal', 'middleware' => ['auth']], function () {
 
 
     //Clients
-    Route::prefix('test')->group(function () {
+    Route::prefix('evaluation/')->group(function () {
         Route::get('/', App\Livewire\Portal\Scorecard\Index::class)->name('portal.test.index');
-    });
-
-    //Clients
-    Route::prefix('testing')->group(function () {
-        Route::get('/', App\Livewire\Portal\Scorecard\Indicator\Index::class)->name('portal.testing.index');
+        Route::get('/setting/indicator', App\Livewire\Portal\Scorecard\Indicator\Index::class)->name('portal.indicator.index');
+        Route::get('/create', App\Livewire\Portal\Evaluation\Create\Index::class)->name('portal.evaluation.index');
+        Route::get('/create/{evaluation}/participants', App\Livewire\Portal\Evaluation\Cible\Index::class)->name('portal.evaluation.cible');
     });
 
         //Client Feedback

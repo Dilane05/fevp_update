@@ -57,21 +57,21 @@ class User extends Authenticatable
         ];
     }
 
-    public function getInitialsAttribute() : string
+    public function getInitialsAttribute(): string
     {
         return strtoupper(Str::substr($this->first_name, 0, 1)) . "" . strtoupper(Str::substr($this->last_name, 0, 1));
     }
-    public function getNameAttribute() : string
+    public function getNameAttribute(): string
     {
         return ucfirst($this->first_name) . " " . ucfirst($this->last_name);
     }
 
-    public function getRedirectRoute() : string
+    public function getRedirectRoute(): string
     {
-       return $this->getRoleNames()->first() === 'user' ? 'my/dashboard' : 'portal/dashboard';
+        return $this->getRoleNames()->first() === 'user' ? 'my/dashboard' : 'portal/dashboard';
     }
 
-    public function getStatusStyleAttribute() : string
+    public function getStatusStyleAttribute(): string
     {
         return match ($this->status) {
             true => 'success',
@@ -90,7 +90,7 @@ class User extends Authenticatable
     }
 
 
-    public function getGenderStyleAttribute() : string
+    public function getGenderStyleAttribute(): string
     {
         return match ($this->gender) {
             'male' => 'gray-400',
@@ -109,7 +109,7 @@ class User extends Authenticatable
         return $query->where('status', 0);
     }
 
-    public function getRoleStyleAttribute() : string
+    public function getRoleStyleAttribute(): string
     {
         return match ($this->getRoleNames()->first()) {
             'user' => 'info',
@@ -118,9 +118,34 @@ class User extends Authenticatable
         };
     }
 
-    public static function search($query) : Builder
+    // public function enterprise():BelongsTo
+    // {
+    //     return $this->belongsTo(Enterprise::class,'enterprise_id');
+    // }
+
+    public function direction(): BelongsTo
     {
-        return empty($query) ? static::query():
+        return $this->belongsTo(Direction::class);
+    }
+
+    public function enterprise(): BelongsTo
+    {
+        return $this->belongsTo(Enterprise::class);
+    }
+
+    public function site(): BelongsTo
+    {
+        return $this->belongsTo(Site::class);
+    }
+
+    public function evaluations()
+    {
+        return $this->belongsToMany(Evaluation::class, 'evaluation_user');
+    }
+
+    public static function search($query): Builder
+    {
+        return empty($query) ? static::query() :
             static::query()
             ->where(function ($q) use ($query) {
                 $q->where('first_name', 'like', '%' . $query . '%');
@@ -133,5 +158,4 @@ class User extends Authenticatable
                 });
             });
     }
-
 }

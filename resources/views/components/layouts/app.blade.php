@@ -65,6 +65,9 @@
     <script src="{{ asset('js/theme.js')}}"></script>
 
     @livewireScripts
+    <script src="{{ asset('vendor/livewire-alert/livewire-alert.js') }}"></script>
+    <x-livewire-alert::flash />
+
     <script>
         document.addEventListener('livewire:init', () => {
             // Runs after Livewire is loaded but before it's initialized

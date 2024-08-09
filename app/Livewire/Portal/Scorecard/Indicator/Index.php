@@ -5,9 +5,12 @@ namespace App\Livewire\Portal\Scorecard\Indicator;
 use Livewire\Component;
 use App\Models\Indicator;
 use App\Livewire\Traits\WithDataTable;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Index extends Component
 {
+
+    use LivewireAlert;
 
     use WithDataTable;
 
@@ -17,6 +20,7 @@ class Index extends Component
 
     public function mount()
     {
+
         $this->indicators = Indicator::all();
     }
 

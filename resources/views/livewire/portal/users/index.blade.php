@@ -198,6 +198,7 @@
             <table class="table user-table table-hover table-bordered align-items-center " id="">
                 <thead>
                     <tr>
+                        <th class="border-bottom">{{__('Mat.')}}</th>
                         <th class="border-bottom">{{__('Utilisateurs')}}</th>
                         <th class="border-bottom">{{__('Contacts')}}</th>
                         <th class="border-bottom">{{__('Sexe')}}</th>
@@ -213,18 +214,21 @@
                     @forelse($users as $user)
                     <tr>
                         <td>
+                            <span class="fs-normal"> <span class="fw-bolder"> {{ $user->matricule }} </span><br>
+                        </td>
+                        <td>
                             <a href="#" class="d-flex align-items-center">
                                 <div class="avatar avatar-md d-flex align-items-center justify-content-center fw-bold fs-6 rounded bg-success  me-2"><span class="text-dark">{{$user->initials}}</span></div>
                                 <div class="d-block"><span class="fw-bolder fs-6">{{ucwords($user->name)}}</span>
                                     <div class="small text-gray">
                                         <svg class="icon icon-xxs me-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
-                                        </svg> {{$user->email}}
+                                        </svg> <span class="fw-bolder"> {{$user->occupation}} </span>
                                     </div>
                                     <div class="small text-gray d-flex align-items-end">
                                         <svg class="icon icon-xxs me-1 " fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                                        </svg> {{$user->phone_number}} | {{$user->created_at}}
+                                        </svg> {{$user->pemp_temp}} | {{$user->enterprise}}
                                     </div>
                                 </div>
                             </a>
@@ -320,5 +324,6 @@
             });
         });
     </script>
+
     @endpush
 </div>

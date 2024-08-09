@@ -33,6 +33,7 @@ class Index extends Component
     public $auth_role;
     public $user_file = null;
     public $selectedStatus, $selectedSexe;
+    public $countdown;
 
     //Update & Store Rules
     protected array $rules = [
@@ -47,6 +48,7 @@ class Index extends Component
     public function mount()
     {
         $this->roles = Role::select('id', 'name')->whereNotIn('name', ['client'])->get();
+        $this->countdown = 10; // Temps initial du compte à rebours
     }
 
     // public function updatedRoleName($value)
@@ -156,6 +158,10 @@ class Index extends Component
             'user_file' => 'sometimes|nullable|mimes:xlsx,csv|max:500',
         ]);
 
+        // Lancer le compte à rebours avant l'importation
+        $this->countdown = 10;
+        $this->dispatch('startCountdown');
+
         Excel::import(new UsersImport($this->user), $this->user_file);
         auditLog(
             auth()->user(),
@@ -163,8 +169,17 @@ class Index extends Component
             'web',
             __('Imported excel file for users') . auth()->user()->name
         );
+        // Réinitialiser le compte à rebours après l'importation
+        $this->countdown = 0;
         $this->clearFields();
         $this->closeModalAndFlashMessage(__('Users successfully imported!'), 'importusersModal');
+    }
+
+    public function decrementCountdown()
+    {
+        if ($this->countdown > 0) {
+            $this->countdown--;
+        }
     }
 
     public function export()

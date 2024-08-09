@@ -1,5 +1,4 @@
 <div>
-    <x-alert />
     <!-- Wizard Header -->
     <nav class="nav my-2 shadow rounded" aria-label="Tabs">
         <div class="nav-link border-0 mx-2 text-primary d-inline-flex align-items-center py-2 px-1 fw-bold text-sm {{ $step == 1 ? 'text-info fw-bold' : 'text-gray-500' }}" style="font-size: 13px; cursor: pointer;" wire:click="setStep(1)">
@@ -87,9 +86,9 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td><input type="text" class="form-control"
-                                            wire:model="rows.{{ $index }}.objectif"></td>
+                                            wire:model.live="rows.{{ $index }}.objectif"></td>
                                     <td>
-                                        <select class="form-select" wire:model="rows.{{ $index }}.indicateur">
+                                        <select class="form-select" wire:model.live="rows.{{ $index }}.indicateur">
                                             <option value="">Selectionner un  Indicateur</option>
                                             @foreach ($indicators as $indicator)
                                                 <option value="{{ $indicator }}"> {{ __('Indicateur') }} {{ $indicator }}</option>
@@ -97,22 +96,22 @@
                                         </select>
                                     </td>
                                     <td><input type="text" class="form-control"
-                                            wire:model="rows.{{ $index }}.coef">
+                                            wire:model.live="rows.{{ $index }}.coef">
                                     </td>
                                     <td><input type="text" class="form-control"
-                                            wire:model="rows.{{ $index }}.cible_pct"></td>
+                                            wire:model.live="rows.{{ $index }}.cible_pct"></td>
                                     <td><input type="text" class="form-control"
-                                            wire:model="rows.{{ $index }}.cible_nb"></td>
+                                            wire:model.live="rows.{{ $index }}.cible_nb"></td>
                                     <td><input type="text" class="form-control"
-                                            wire:model="rows.{{ $index }}.resultat_pct"></td>
+                                            wire:model.live="rows.{{ $index }}.resultat_pct"></td>
                                     <td><input type="text" class="form-control"
-                                            wire:model="rows.{{ $index }}.resultat_nb"></td>
+                                            wire:model.live="rows.{{ $index }}.resultat_nb"></td>
                                     <td>
                                         <input type="text" class="form-control" disabled
-                                            wire:model="rows.{{ $index }}.note">
+                                            wire:model.live="rows.{{ $index }}.note">
                                     </td>
                                     <td><input type="text" class="form-control"
-                                            wire:model="rows.{{ $index }}.observations"></td>
+                                            wire:model.live="rows.{{ $index }}.observations"></td>
                                     {{-- <td class="text-center">
                                 <a href='#' wire:click.prevent="removeRow({{ $index }})" data-bs-toggle="modal" data-bs-target="#DeleteModal">
                                     <svg class="icon icon-xs text-danger" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -184,15 +183,15 @@
                         @foreach ($keyResults as $index => $result)
                             <tr>
                                 <td>
-                                    <input type="text" wire:model="keyResults.{{ $index }}.domain"
+                                    <input type="text" wire:model.live="keyResults.{{ $index }}.domain"
                                         class="form-control">
                                 </td>
                                 <td>
-                                    <input type="text" wire:model="keyResults.{{ $index }}.note"
+                                    <input type="text" wire:model.live="keyResults.{{ $index }}.note"
                                         class="form-control">
                                 </td>
                                 <td>
-                                    <input type="text" wire:model="keyResults.{{ $index }}.observations"
+                                    <input type="text" wire:model.live="keyResults.{{ $index }}.observations"
                                         class="form-control">
                                 </td>
                             </tr>
@@ -232,19 +231,19 @@
                             @foreach ($qualities as $index => $quality)
                                 <tr>
                                     <td>
-                                        <input type="text" wire:model="qualities.{{ $index }}.quality"
+                                        <input type="text" wire:model.live="qualities.{{ $index }}.quality"
                                             class="form-control">
                                     </td>
                                     <td>
-                                        <input type="text" wire:model="qualities.{{ $index }}.target"
+                                        <input type="text" wire:model.live="qualities.{{ $index }}.target"
                                             class="form-control">
                                     </td>
                                     <td>
-                                        <input type="text" wire:model="qualities.{{ $index }}.realization"
+                                        <input type="text" wire:model.live="qualities.{{ $index }}.realization"
                                             class="form-control">
                                     </td>
                                     <td>
-                                        <input type="text" wire:model="qualities.{{ $index }}.observations"
+                                        <input type="text" wire:model.live="qualities.{{ $index }}.observations"
                                             class="form-control">
                                     </td>
                                 </tr>
@@ -304,7 +303,7 @@
                                     @foreach ($criteria['scores'] as $scoreIndex => $score)
                                         <td>
                                             <input type="text"
-                                                wire:model="performanceCriteria.{{ $index }}.scores.{{ $scoreIndex }}"
+                                                wire:model.live="performanceCriteria.{{ $index }}.scores.{{ $scoreIndex }}"
                                                 class="form-control">
                                         </td>
                                     @endforeach
@@ -339,11 +338,11 @@
                             @foreach ($projects as $index => $project)
                                 <tr>
                                     <td colspan="2">
-                                        <input type="text" wire:model="projects.{{ $index }}.description"
+                                        <input type="text" wire:model.live="projects.{{ $index }}.description"
                                             class="form-control" placeholder="Description ">
                                     </td>
                                     <td>
-                                        <input type="number" wire:model="projects.{{ $index }}.note"
+                                        <input type="number" wire:model.live="projects.{{ $index }}.note"
                                             class="form-control" min="-2.5" max="2.5" step="0.1"
                                             placeholder="">
                                     </td>
@@ -381,11 +380,11 @@
                             <tr>
                                 <td>{{ $sanction['type'] }}</td>
                                 <td>
-                                    <input type="number" wire:model="sanctions.{{ $index }}.number"
+                                    <input type="number" wire:model.live="sanctions.{{ $index }}.number"
                                         class="form-control" min="0">
                                 </td>
                                 <td>
-                                    <input type="text" wire:model="sanctions.{{ $index }}.sanction"
+                                    <input type="text" wire:model.live="sanctions.{{ $index }}.sanction"
                                         class="form-control">
                                 </td>
                             </tr>

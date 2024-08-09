@@ -82,8 +82,8 @@
                                     </a>
                                 </li>
 
-                                <li class="nav-item {{ $request->routeIs('portal.testing.index') ? 'active' : '' }}">
-                                    <a href="{{route('portal.testing.index')}}" wire:navigate class="nav-link d-flex align-items-center justify-content-between">
+                                <li class="nav-item {{ $request->routeIs('portal.indicator.index') ? 'active' : '' }}">
+                                    <a href="{{route('portal.indicator.index')}}" wire:navigate class="nav-link d-flex align-items-center justify-content-between">
                                         <span>
                                             <span class="sidebar-icon text-gray-50">
                                                 <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

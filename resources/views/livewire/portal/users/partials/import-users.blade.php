@@ -11,21 +11,49 @@
                         <h1 class="mb-0 h2 fw-bolder">{{ __('Importez les Utilisateurs') }}</h1>
                         <p class="pt-2">{{ __('Téléchargez un fichier Excel pour importer les utilisateurs.') }}</p>
                     </div>
-                    <x-form-items.form wire:submit="import" class="form-modal">
+                    <x-form-items.form wire:submit.prevent="import" class="form-modal">
                         <div class="mb-3">
                             <label for="file" class="form-label">{{ __('Choisir un fichier Excel') }}</label>
-                            <input type="file" name="file"  wire:model="user_file" id="file" class="form-control  @error('user_file') is-invalid @enderror" required>
+                            <input type="file" name="file" wire:model="user_file" id="file" class="form-control @error('user_file') is-invalid @enderror" required>
                             @error('user_file')
                                 <div class="invalid-feedback">{{$message}}</div>
                             @enderror
                         </div>
                         <div class="d-flex justify-content-center">
-                            <button type="submit" wire:loading.attr="disabled" class="btn btn-primary mx-3" wire:click.prevent="import" {{empty($user_file) ? "disabled" : '' }}>{{ __('Importer') }}</button>
-                            <button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Annuler') }}</button>
+                            <button type="submit" wire:loading.attr="disabled" class="btn btn-primary mx-3" {{empty($user_file) ? "disabled" : '' }}>
+                                {{ __('Importer') }}
+                            </button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Annuler') }}</button>
                         </div>
                     </x-form-items.form>
+                </div>
+                <div wire:loading wire:target="import" class="text-center my-2">
+                    <div class="text-center">
+                        <div class="spinner-grow text-grey-300" style="width: 0.9rem; height: 0.9rem;" role="status"></div>
+                        <div class="spinner-grow text-grey-300" style="width: 0.9rem; height: 0.9rem;" role="status"></div>
+                        <div class="spinner-grow text-grey-300" style="width: 0.9rem; height: 0.9rem;" role="status"></div>
+                        <div class="spinner-grow text-grey-300" style="width: 0.9rem; height: 0.9rem;" role="status"></div>
+                    </div>
+                    <div class="mt-2 text-center">{{ __('Importation en cours, veuillez patienter...') }}</div>
+                    <div class="mt-2">
+                        <span>{{ __('Temps restant : ') }}</span><span wire:poll.1s="countdown">{{ $countdown }}</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('livewire:load', function () {
+        Livewire.on('startCountdown', function () {
+            let countdownInterval = setInterval(() => {
+                Livewire.emit('decrementCountdown');
+            }, 1000);
+
+            Livewire.on('stopCountdown', function () {
+                clearInterval(countdownInterval);
+            });
+        });
+    });
+</script>

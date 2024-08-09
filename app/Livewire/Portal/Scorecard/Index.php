@@ -5,9 +5,12 @@ namespace App\Livewire\Portal\Scorecard;
 use Livewire\Component;
 use App\Models\Indicator;
 use Illuminate\Support\Facades\Validator;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Index extends Component
 {
+
+    use LivewireAlert;
 
     public $totalCoef = 70;
     public $errorMessages = [];
@@ -30,42 +33,45 @@ class Index extends Component
         $this->step = $step;
     }
 
-    public function update()
-    {
-        // Validation en temps réel
-        dd('dd');
-        $this->validateData();
-    }
+    // public function update()
+    // {
+    //     // Validation en temps réel
+    //     dd('dd');
+    //     $this->validateData();
+    // }
+
 
     public function validateData()
     {
         $this->errorMessages = [];
 
         foreach ($this->rows as $index => $row) {
+            $lineNumber = $index + 1;  // Commence l'index à 1
+
             // Validation pour chaque ligne
             $validator = Validator::make(['row' => $row], $this->rules());
 
             if ($validator->fails()) {
                 foreach ($validator->errors()->all() as $error) {
-                    $this->errorMessages[] = "Ligne $index : $error";
+                    $this->errorMessages[] = "Ligne $lineNumber : $error";
                 }
             }
 
             // Validation des cibles et résultats
             if (!empty($row['cible_pct']) && !empty($row['cible_nb'])) {
-                $this->errorMessages[] = "Ligne $index : Vous ne pouvez pas saisir la cible en pourcentage et en nombre en même temps.";
+                $this->errorMessages[] = "Ligne $lineNumber : Vous ne pouvez pas saisir la cible en pourcentage et en nombre en même temps.";
             }
 
             if (!empty($row['resultat_pct']) && !empty($row['resultat_nb'])) {
-                $this->errorMessages[] = "Ligne $index : Vous ne pouvez pas saisir le resultat en pourcentage et en nombre en même temps.";
+                $this->errorMessages[] = "Ligne $lineNumber : Vous ne pouvez pas saisir le resultat en pourcentage et en nombre en même temps.";
             }
 
             if (!empty($row['cible_pct']) && !empty($row['resultat_nb'])) {
-                $this->errorMessages[] = "Ligne $index : Vous ne pouvez pas saisir la cible en pourcentage et le resultat en nombre.";
+                $this->errorMessages[] = "Ligne $lineNumber : Vous ne pouvez pas saisir la cible en pourcentage et le resultat en nombre.";
             }
 
             if (!empty($row['resultat_pct']) && !empty($row['cible_nb'])) {
-                $this->errorMessages[] = "Ligne $index : Vous ne pouvez pas saisir le resultat en pourcentage et la cible en nombre.";
+                $this->errorMessages[] = "Ligne $lineNumber : Vous ne pouvez pas saisir le resultat en pourcentage et la cible en nombre.";
             }
 
             // Correction automatique
@@ -100,8 +106,14 @@ class Index extends Component
         }
 
         if (!empty($this->errorMessages)) {
-            // Emit an event with the error messages
-            $this->dispatch('validation-errors', ['errors' => $this->errorMessages]);
+            // Afficher les erreurs dans une alerte
+            $this->alert('error', implode("\n", $this->errorMessages), [
+                'position' => 'center',
+                'timer' => 5000,
+                'toast' => true,
+                'timerProgressBar' => true,
+                'showConfirmButton' => true
+            ]);
         } else {
             $this->calculateNotes();
         }

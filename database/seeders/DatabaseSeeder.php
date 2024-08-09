@@ -4,9 +4,16 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\User;
+use App\Models\Direction;
+use App\Models\Enterprise;
+use App\Models\Site;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
+use Database\Seeders\DirectionsTableSeeder;
+use Database\Seeders\EnterprisesTableSeeder;
 use Database\Seeders\RolesAndPermissionsSeeder;
+use Database\Seeders\SitesTableSeeder;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,12 +25,16 @@ class DatabaseSeeder extends Seeder
 
         $this->call(RolesAndPermissionsSeeder::class);
 
-        User::factory()
-        ->count(2)
-        ->create()
-        ->each(function ($user) {
-            $user->assignRole('user');
-        });
+        $this->call(DirectionsTableSeeder::class);
+
+        $this->call(EnterprisesTableSeeder::class);
+
+        $this->call(SitesTableSeeder::class);
+
+        // Crée 50 utilisateurs et leur assigne le rôle 'user'
+        // User::factory(50)->create(50)->each(function ($user) {
+        //     $user->assignRole('user'); // Assigne un rôle 'user' aux utilisateurs
+        // });
 
         \App\Models\User::create(['uuid' => Str::uuid(),
             'matricule' => 'super001',
