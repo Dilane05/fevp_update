@@ -7,57 +7,68 @@ use App\Models\AuditLog;
 use App\Models\Evaluation;
 use App\Livewire\Portal\Trix;
 use App\Models\ClientFeedback;
+use App\Models\ResponseEvaluation;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Livewire\Traits\WithDataTable;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 
 class Dashboard extends Component
 {
     use WithDataTable;
 
     public $evaluation;
+    public $evaluations;
 
-    #[Validate('required', message: 'Feedback is required')]
-    public $client_feedback;
 
     public function mount()
     {
         $this->evaluation = Evaluation::orderBy('start_date', 'desc')->first();
+        $this->evaluations = Evaluation::where('is_active', true)->get();
+
+        $this->checkIfUserHasResponded();
+
     }
 
-    protected $listeners = [
-        Trix::EVENT_VALUE_UPDATED,
-    ];
-
-    public function trix_value_updated($value)
+    public function checkIfUserHasResponded()
     {
-        $this->client_feedback = $value;
+        $userId = Auth::id();
+        $evaluationIds = $this->evaluations->pluck('id');
+
+        $response = ResponseEvaluation::whereIn('evaluation_id', $evaluationIds)
+            ->where('user_id', $userId)
+            ->where('status', true)
+            ->exists();
+
+            if (!$response || !$response->status) {
+                $this->dispatch('show-evaluation-reminder');
+            }
+
     }
 
-    public function saveFeedback()
+
+    public function checkEvaluation()
     {
-        if (!Gate::allows('survey-read')) {
-            return abort(401);
+        // Récupérer la dernière évaluation
+        $latestEvaluation = Evaluation::latest()->first();
+
+        if (!$latestEvaluation) {
+            // Aucun évaluation trouvée
+            session()->flash('error', 'Aucune évaluation disponible.');
+            return;
         }
 
-        $this->validate([
-            'client_feedback' => 'required|min:10'
-        ]);
+        // Vérifier si l'utilisateur fait partie des utilisateurs associés à la dernière évaluation
+        $userIsPartOfEvaluation = $latestEvaluation->participants()->where('user_id', Auth::id())->exists();
 
-        ClientFeedback::create([
-            'feedback'=> $this->client_feedback,
-            'client_id' => auth()->user()->id
-        ]);
-
-        $this->closeModalAndFlashMessage(__('Thanks for the feedback!'), 'CreateClientFeedbackModal');
-
-        return $this->redirect(route('client.dashboard'), navigate: true);
-    }
-
-    public function clearFeedbackFields()
-    {
-        $this->reset([
-            'client_feedback'
-        ]);
+        if ($userIsPartOfEvaluation) {
+            // Rediriger l'utilisateur vers la page d'évaluation
+            return Redirect::route('evaluations.show', $latestEvaluation->id);
+        } else {
+            // Afficher un message d'erreur
+            session()->flash('error', 'Désole Vous ne faites pas partie de la population cible de cette évaluation.');
+        }
     }
 
     public function render()
@@ -66,6 +77,6 @@ class Dashboard extends Component
 
         $logs = AuditLog::where('user_id', $user->id)->orderBy('created_at', 'desc')->get()->take(10);
 
-        return view('livewire.client.dashboard.dashboard', compact('user', 'logs'))->layout('components.layouts.client.master');
+        return view('livewire.client.dashboard.dashboard', compact('user', 'logs'))->layout('components.layouts.client.dashboard');
     }
 }

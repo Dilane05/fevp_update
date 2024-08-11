@@ -2,9 +2,13 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
 use Illuminate\Support\Collection;
+use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
+use App\Livewire\Client\Evaluation\CheckoutWizardComponent;
+use App\Livewire\Client\Evaluation\Steps\BilanResultatStep;
+use App\Livewire\Client\Evaluation\Steps\PersonalInformationStep;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -57,7 +61,7 @@ class AppServiceProvider extends ServiceProvider
             }
             return $match;
         });
-        
+
         Builder::macro('approvalStatusStyle', function ($status_owner = '', $type = '') {
             $model = $this->getModel();
             if ($model instanceof Ticking || $model instanceof  Leave) {
@@ -94,5 +98,9 @@ class AppServiceProvider extends ServiceProvider
             }
             return $match;
         });
+
+        Livewire::component('checkout-evaluation-wizard', CheckoutWizardComponent::class);
+        Livewire::component('create-evaluation-personal_info', PersonalInformationStep::class);
+        Livewire::component('create-evaluation-bilan_resultat', BilanResultatStep::class);
     }
 }

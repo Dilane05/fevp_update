@@ -1,157 +1,168 @@
-<div>
-    @include('livewire.client.dashboard.partials.client-feedback-modal')
-    <div class='container pt-3 pt-lg-4 pb-7 pb-lg-9 text-white'>
-        <div class='d-flex flex-wrap-reverse align-items-top  justify-content-md-between '>
-            <div class='d-flex flex-wrap align-items-center gap-3'>
-                <div class='d-none d-md-block d-lg-block'>
-                    <div
-                        class="avatar-xl d-flex align-items-center justify-content-center fw-bold rounded border-warn  mr-5">
-                        <span class="p-2 display-2 text-success">{{ auth()->user()->initials }}</span>
+<div class="container-fluid">
+
+    <nav aria-label="breadcrumb" class="py-3">
+        <ol class="breadcrumb bg-white px-3 py-2 rounded-pill shadow-lg">
+            <li class="breadcrumb-item">
+                <a href="#" class="text-decoration-none text-secondary d-flex align-items-center">
+                    <i class="bi bi-house-door-fill me-2"></i>
+                    <span class="fw-semibold">Accueil</span>
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-primary d-flex align-items-center" aria-current="page">
+                <i class="bi bi-bar-chart-fill me-2"></i>
+                <span class="fw-bold">Tableau de Bord</span>
+            </li>
+        </ol>
+    </nav>
+
+    <!-- Afficher les messages d'erreur -->
+    <x-alert />
+
+    {{-- !-- Bootstrap Modal --> --}}
+        <div class="modal fade" id="evaluationReminderModal" tabindex="-1" aria-labelledby="reminderModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title" id="reminderModalLabel">Reminder</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </div>
-                <div class=''>
-                    <div class='fw-bold display-4 text-gray-600'>{{ __('Hi') }}, {{ auth()->user()->first_name }}
+                    <div class="modal-body text-center">
+                        <div class="p-4">
+                            <i class="bi bi-exclamation-triangle-fill text-warning display-1 mb-3"></i>
+                            <p class="fs-5">Il semble que vous n'avez pas encore commencé votre évaluation en cours. Nous vous invitons à compléter votre évaluation pour nous aider à améliorer nos services.</p>
+                        </div>
                     </div>
-                    <div class='d-flex align-items-center justify-content-start '>
-                        <div class='leading text-gray-400 '>{{ auth()->user()->occupation }} |
-                            {{ auth()->user()->enterprise->name }}</div>
-                    </div>
-                    <div class='mt-4 d-flex flex-wrap align-items-center gap-2'>
-                        @if (auth()->user()->evaluations)
-                            <a href="{{ route('client.evaluations.index') }}" wire:navigate
-                                class="btn btn-success mr-lg-2 ">
-                                <svg class="icon icon-sm me-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" strokelinejoin="round" stroke-width="2"
-                                        d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z">
-                                    </path>
-                                </svg>
-                                {{ __('Evaluations') }}
-                            </a>
-                        @else
-                            <a href="{{ route('client.evaluations.index') }}" wire:navigate
-                                class="btn btn-success mr-lg-2 ">
-                                <svg class="icon icon-sm me-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" strokelinejoin="round" stroke-width="2"
-                                        d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z">
-                                    </path>
-                                </svg>
-                                {{ __('Evaluations') }}
-                            </a>
-                        @endif
+                    <div class="modal-footer border-0 justify-content-center">
+                        <a href="/url-de-votre-evaluation" class="btn btn-primary w-100" data-bs-dismiss="modal">Commencer l'Évaluation</a>
                     </div>
                 </div>
             </div>
-            <div>
-                <x-navigation.client-nav />
+        </div>
+    {{-- @endif --}}
+
+    <div class="row">
+        <!-- Welcome Column -->
+        <div class="col-md-6 mb-4">
+            <div class="d-flex flex-column justify-content-center h-100">
+                <h3 class="text-primary display-6 fw-bold mb-3" data-translate="greeting">
+                    👋 Bienvenue sur FEVP, {{ auth()->user()->name }}!
+                </h3>
+                <p class="lead text-muted mb-4" data-translate="description" style="font-size: 1rem; line-height: 1.6;">
+                    Chers Cadystien(e), nous sommes ravis de vous accueillir sur <strong>FEVP</strong>, notre nouvelle
+                    plateforme dédiée à la gestion des évaluations des employés. Cette solution innovante simplifie le
+                    suivi des évaluations, facilite l'accès aux informations essentielles, et optimise nos processus de
+                    feedback. Explorez ses fonctionnalités pour tirer pleinement parti de cette nouvelle ère
+                    d'évaluation au sein de notre entreprise.
+                </p>
+                <button wire:click="checkEvaluation" class="btn btn-outline-primary btn-lg mt-2"
+                    data-translate="myJourney">
+                    S'évaluer
+                </button>
             </div>
         </div>
 
-        <div class='my-5'>
-            <div class=''>
-                <x-alert />
-                @include('flash::message')
-            </div>
-        </div>
-
-        @if ($evaluation)
-            <div class="row mb-5 border-bottom border-secondary pb-5 shadow py-2">
-                <div class="col-md-5">
-                    <a href="#
-                    {{-- {{ route('client.evaluation.details', $event->id) }} --}}
-                     " class="text-decoration-none">
-                        <img class="img-fluid rounded img-star" src="{{ asset('img/evaluation.jpg') }}"
-                            alt="{{ $evaluation->title }}">
-                    </a>
-                </div>
-                <div class="col-md-7">
-                    <h3 class="mb-2" style="color: black"> {{ $evaluation->title }} </h3>
-                    <p class="card-text my-2"> {!! Str::limit($evaluation->description, 520) !!} </p>
-                    <span class="" style="color: black"> {{ \Carbon\Carbon::parse($evaluation->start_date)->format('d/m/Y') }}
-                    </span>
-
-                    <div id="countdown" class="d-flex justify-content-start mt-3">
-                        <div class="countdown-block me-2">
-                            <span id="days" class="countdown-time"></span>
-                            <div class="countdown-label">Days</div>
-                        </div>
-                        <div class="countdown-block me-2">
-                            <span id="hours" class="countdown-time"></span>
-                            <div class="countdown-label">Hours</div>
-                        </div>
-                        <div class="countdown-block me-2">
-                            <span id="minutes" class="countdown-time"></span>
-                            <div class="countdown-label">Minutes</div>
-                        </div>
-                        <div class="countdown-block me-2">
-                            <span id="seconds" class="countdown-time"></span>
-                            <div class="countdown-label">Seconds</div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        @endif
-
-        <div class='mt-5'>
-            <div class='d-flex justify-content-between align-items-end mx-2'>
-                <h5 class="h5 text-gray-600">{{ __('Lastest Audit logs') }}</h5>
-                <div>
-                    <a href='{{ route('client.auditlogs') }}' wire:navigate
-                        class='btn btn-success'>{{ __('View all') }}</a>
-                </div>
-            </div>
-            <div class="card mt-2">
-                <div class="table-responsive text-gray-700">
-                    <table class="table client-table table-hover align-items-center ">
-                        <thead>
-                            <tr>
-                                <!-- <th class="border-bottom">{{ __('client') }}</th> -->
-                                <th class="border-bottom">{{ __('Action Type') }}</th>
-                                <th class="border-bottom">{{ __('Action Performed') }}</th>
-                                <th class="border-bottom">{{ __('Date') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($logs as $log)
-                                <tr>
-                                    <!-- <td>
-                                    <a href="#" class="d-flex align-items-center">
-                                        <div class="avatar d-flex align-items-center justify-content-center fw-bold rounded bg-success me-3"><span class="text-white">{{ initials($log->user) }}</span></div>
-                                        <div class="d-block"><span class="fw-bold">{{ $log->user }}</span>
-                                            <div class="small text-gray">{{ $log->user }}</div>
-                                        </div>
-                                    </a>
-                                </td> -->
-                                    <td>
-                                        <span
-                                            class="fw-normal badge super-badge badge-lg bg-{{ $log->style }} rounded">{{ $log->action_type }}</span>
-                                    </td>
-                                    <td>
-                                        <span class="fs-normal">{!! $log->action_perform !!}</span>
-                                    </td>
-                                    <td>
-                                        <span class="fw-normal">{{ $log->created_at }}</span>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="7" class="text-center">
-                                        <div class="text-center text-gray-800 mt-2">
-                                            <h4 class="fs-4 fw-bold">{{ __('Opps nothing here') }} &#128540;</h4>
-                                            <p>{{ __('No Record Found..!') }}</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-
+        <!-- User Information Column -->
+        <div class="col-md-6 mb-4">
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-body">
+                    <h5 class="card-title text-primary mb-3">
+                        Informations Personnelles
+                    </h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><span class="fw-bold">Nom complet :</span> {{ auth()->user()->name }}</li>
+                        <li class="mb-2"><span class="fw-bold">Matricule :</span> {{ auth()->user()->matricule }}</li>
+                        <li class="mb-2"><span class="fw-bold">Poste :</span> {{ auth()->user()->occupation }}</li>
+                        <li class="mb-2"><span class="fw-bold">Statut Catégoriel :</span>
+                            {{ auth()->user()->statut_category ? auth()->user()->statut_category : 'Non Attribué' }}
+                        </li>
+                        <li class="mb-2"><span class="fw-bold">Ancienneté au poste (en années) :</span>
+                            {{ auth()->user()->length_of_service ? auth()->user()->length_of_service : 'Non Connu' }}
+                        </li>
+                        <li class="mb-2"><span class="fw-bold">Temporaire/Permanent :</span>
+                            {{ auth()->user()->pemp_temp ? auth()->user()->pemp_temp : '' }}
+                        </li>
+                        <li class="mb-2"><span class="fw-bold">Date d'embauche :</span>
+                            {{ auth()->user()->hiring_date }}</li>
+                        <li class="mb-2"><span class="fw-bold">Responsable N1 :</span>
+                            {{ auth()->user()->responsable_n1 ? auth()->user()->responsableN1->name : 'Non attribué' }}
+                        </li>
+                        <li class="mb-2"><span class="fw-bold">Responsable N2 :</span>
+                            {{ auth()->user()->responsable_n2 ? auth()->user()->responsableN2->name : 'Non attribué' }}
+                        </li>
+                    </ul>
+                    <hr class="my-3">
+                    <p class="text-muted">
+                        <span class="fw-bold">Entreprise :</span> {{ auth()->user()->enterprise->name }} |
+                        <span class="fw-bold">Direction :</span> {{ auth()->user()->direction->name }} |
+                        <span class="fw-bold">Site :</span> {{ auth()->user()->site->name }}
+                    </p>
                 </div>
             </div>
         </div>
     </div>
+
+    @if ($evaluation)
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="border-bottom border-secondary pb-5 shadow py-4 bg-light rounded-3">
+                    <div class="row">
+                        <!-- Image de l'évaluation -->
+                        <div class="col-md-6 mb-4 mb-md-0">
+                            <a href="#" class="text-decoration-none">
+                                <img class="img-fluid rounded img-star" src="{{ asset('img/evaluation.jpg') }}"
+                                    alt="{{ $evaluation->title }}">
+                            </a>
+                        </div>
+
+                        <!-- Détails de l'évaluation -->
+                        <div class="col-md-6">
+                            <h3 class="mb-2 text-dark">{{ $evaluation->title }}</h3>
+                            <p class="card-text my-2 text-secondary">
+                                {{ \Illuminate\Support\Str::limit($evaluation->description, 520) }}
+                            </p>
+                            <p class="text-dark mb-2">
+                                <span>
+                                    Lancement Le:
+                                    <strong>{{ \Carbon\Carbon::parse($evaluation->start_date)->format('d/m/Y') }}</strong>
+                                </span>
+                                <span>
+                                    et Fin Le:
+                                    <strong>{{ \Carbon\Carbon::parse($evaluation->end_date)->format('d/m/Y') }}</strong>
+                                </span>
+                            </p>
+
+                            <!-- Message de lancement et compte à rebours -->
+                            <div id="countdown-message" class="alert alert-info mb-4">
+                                <h4 class="alert-heading">Compte à rebours</h4>
+                                <p id="countdown-message-text">Le lancement officiel de l'évaluation est prévu dans :
+                                </p>
+                            </div>
+
+                            <div id="countdown" class="d-flex justify-content-start mt-3">
+                                <div class="countdown-block me-2">
+                                    <span id="days" class="countdown-time"></span>
+                                    <div class="countdown-label">Jours</div>
+                                </div>
+                                <div class="countdown-block me-2">
+                                    <span id="hours" class="countdown-time"></span>
+                                    <div class="countdown-label">Heures</div>
+                                </div>
+                                <div class="countdown-block me-2">
+                                    <span id="minutes" class="countdown-time"></span>
+                                    <div class="countdown-label">Minutes</div>
+                                </div>
+                                <div class="countdown-block me-2">
+                                    <span id="seconds" class="countdown-time"></span>
+                                    <div class="countdown-label">Secondes</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     @if (request()->is('my/dashboard'))
         <style>
             .event-card {
@@ -235,21 +246,84 @@
             }
         </style>
 
+        <style>
+            .modal-content {
+                border-radius: 15px;
+                background-color: #f8f9fa;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .modal-title {
+                color: #495057;
+                font-weight: bold;
+            }
+
+            .btn-primary {
+                background-color: #7c83fd;
+                border: none;
+                border-radius: 20px;
+                padding: 10px;
+                transition: background-color 0.3s;
+            }
+
+            .btn-primary:hover {
+                background-color: #6a73d4;
+            }
+
+            .bi-exclamation-triangle-fill {
+                color: #ffc107;
+            }
+
+            .modal-footer {
+                border-top: none;
+            }
+
+            .card {
+                border-radius: 10px;
+                transition: transform 0.3s, box-shadow 0.3s;
+            }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .btn-primary {
+                background-color: #7c83fd;
+                border: none;
+                border-radius: 20px;
+                padding: 10px;
+                transition: background-color 0.3s;
+            }
+
+            .btn-primary:hover {
+                background-color: #6a73d4;
+            }
+        </style>
 
         <script>
-            // Set the date we're counting down to
-            var countDownDate = new Date("{{ \Carbon\Carbon::parse($evaluation->end_date)->format('Y-m-d H:i:s') }}").getTime();
+            // Set the start and end dates
+            var startDate = new Date("{{ \Carbon\Carbon::parse($evaluation->start_date)->format('Y-m-d H:i:s') }}").getTime();
+            var endDate = new Date("{{ \Carbon\Carbon::parse($evaluation->end_date)->format('Y-m-d H:i:s') }}").getTime();
 
-            // alert(countDownDate)
-
-            // Update the count down every 1 second
-            var countdownFunction = setInterval(function() {
-
+            function updateCountdown() {
                 // Get today's date and time
                 var now = new Date().getTime();
+                var distance;
 
-                // Find the distance between now and the count down date
-                var distance = countDownDate - now;
+                // Determine which countdown to show
+                if (now < startDate) {
+                    distance = startDate - now;
+                    document.getElementById("countdown-message-text").innerHTML =
+                        "Le lancement officiel de l'évaluation est prévu dans :";
+                } else if (now < endDate) {
+                    distance = endDate - now;
+                    document.getElementById("countdown-message-text").innerHTML =
+                        "Le temps restant avant la fin de l'évaluation est :";
+                } else {
+                    document.getElementById("countdown").innerHTML = "L'évaluation est terminée!";
+                    return; // Stop the countdown
+                }
 
                 // Time calculations for days, hours, minutes and seconds
                 var days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -262,13 +336,20 @@
                 document.getElementById("hours").innerHTML = hours;
                 document.getElementById("minutes").innerHTML = minutes;
                 document.getElementById("seconds").innerHTML = seconds;
+            }
 
-                // If the count down is finished, write some text
-                if (distance < 0) {
-                    clearInterval(countdownFunction);
-                    document.getElementById("countdown").innerHTML = "L'événement a commencé!";
-                }
-            }, 1000);
+            // Update the count down every 1 second
+            var countdownFunction = setInterval(updateCountdown, 1000);
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                window.addEventListener('show-evaluation-reminder', event => {
+                    var evaluationReminderModal = new bootstrap.Modal(document.getElementById(
+                        'evaluationReminderModal'));
+                    evaluationReminderModal.show();
+                });
+            });
         </script>
 
         <script>
@@ -281,6 +362,4 @@
             });
         </script>
     @endif
-
 </div>
-

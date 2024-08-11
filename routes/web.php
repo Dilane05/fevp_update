@@ -27,8 +27,8 @@ Route::any('/logout', [LoginController::class, 'logout']);
 Route::group(['prefix' => 'my', 'middleware' => ['auth', 'role:user']], function () {
     Route::get('/dashboard', App\Livewire\Client\Dashboard\Dashboard::class)->name('client.dashboard');
     Route::get('/profile', App\Livewire\Client\Profile::class)->name('client.profile');
-    Route::get('/profilse', App\Livewire\Client\Profile::class)->name('client.evaluations.index');
-
+    Route::get('/evaluations', App\Livewire\Client\Evaluation\Index::class)->name('client.evaluations.index');
+    Route::get('/evaluation', App\Livewire\Client\Evaluation\Show::class)->name('client.evaluation.index');
 
     //AuditLogs
     Route::prefix('auditlogs')->group(function () {
