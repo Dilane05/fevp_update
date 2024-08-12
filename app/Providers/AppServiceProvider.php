@@ -8,7 +8,12 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
 use App\Livewire\Client\Evaluation\CheckoutWizardComponent;
 use App\Livewire\Client\Evaluation\Steps\BilanResultatStep;
+use App\Livewire\Client\Evaluation\Steps\BonusMalusStep;
+use App\Livewire\Client\Evaluation\Steps\ComplianceCorporateCultureStep;
+use App\Livewire\Client\Evaluation\Steps\ManagerialQualityStep;
+use App\Livewire\Client\Evaluation\Steps\OtherStep;
 use App\Livewire\Client\Evaluation\Steps\PersonalInformationStep;
+use App\Livewire\Client\Evaluation\Steps\SanctionStep;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -102,5 +107,11 @@ class AppServiceProvider extends ServiceProvider
         Livewire::component('checkout-evaluation-wizard', CheckoutWizardComponent::class);
         Livewire::component('create-evaluation-personal_info', PersonalInformationStep::class);
         Livewire::component('create-evaluation-bilan_resultat', BilanResultatStep::class);
+        Livewire::component('create-evaluation-mangerial_quality', ManagerialQualityStep::class);
+        Livewire::component('create-evaluation-compliance_corporate_culture', ComplianceCorporateCultureStep::class);
+        Livewire::component('create-evaluation-bonus_malus', BonusMalusStep::class);
+        Livewire::component('create-evaluation-sanctions', SanctionStep::class);
+        Livewire::component('create-evaluation-others', OtherStep::class);
+
     }
 }

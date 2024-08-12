@@ -38,10 +38,10 @@ class Dashboard extends Component
 
         $response = ResponseEvaluation::whereIn('evaluation_id', $evaluationIds)
             ->where('user_id', $userId)
-            ->where('status', true)
+            // ->where('status', false)
             ->exists();
 
-            if (!$response || !$response->status) {
+            if (!$response) {
                 $this->dispatch('show-evaluation-reminder');
             }
 

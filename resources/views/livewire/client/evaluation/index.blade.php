@@ -57,7 +57,7 @@
                             @if (!$evaluation->is_active)
                                 <div class="d-flex">
                                     <button class="btn btn-secondary mx-1" disabled>Évaluation Clôturée</button>
-                                    <button class="btn btn-primary">Voir les Détails</button>
+                                    <button class="btn btn-primary" wire:click="startEvaluation({{ $evaluation->id }})">Voir les Détails</button>
                                 @else
                                     @if ($evaluation->participants()->where('user_id', Auth::id())->exists())
                                         @php

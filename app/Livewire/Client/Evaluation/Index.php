@@ -29,7 +29,7 @@ class Index extends Component
     public function startEvaluation($evaluationId)
     {
         $evaluation = Evaluation::findOrFail($evaluationId);
-        $userIsPartOfEvaluation = $evaluation->users()->where('user_id', Auth::id())->exists();
+        $userIsPartOfEvaluation = $evaluation->participants()->where('user_id', Auth::id())->exists();
 
         if (!$userIsPartOfEvaluation) {
             session()->flash('error', 'Vous ne faites pas partie de cette évaluation.');
@@ -46,10 +46,10 @@ class Index extends Component
             ->first();
 
         if ($response) {
-            return Redirect::route('evaluations.continue', $evaluation->id);
+            return Redirect::route('client.evaluation.index', $evaluation->code);
         }
 
-        return Redirect::route('evaluations.show', $evaluation->id);
+        return Redirect::route('client.evaluation.index', $evaluation->code);
 
     }
 
