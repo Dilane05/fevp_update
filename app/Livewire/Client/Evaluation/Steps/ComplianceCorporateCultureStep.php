@@ -3,36 +3,89 @@
 namespace App\Livewire\Client\Evaluation\Steps;
 
 use Livewire\Component;
+use App\Models\ResponseEvaluation;
 use Spatie\LivewireWizard\Components\StepComponent;
 
 class ComplianceCorporateCultureStep extends StepComponent
 {
-
-
     public $performanceCriteria = [
         [
             'criteria' => 'Le respect des règles: travaille selon les règles de l\'art du métier (normes, procédures, instructions de travail…)',
-            'scores' => ['', '', '', '', '']
+            'selectedScore' => null
         ],
         [
             'criteria' => 'Le respect des engagements: (Ex: Tâche à faire, Délais convenus…)',
-            'scores' => ['', '', '', '', '']
+            'selectedScore' => null
         ],
         [
             'criteria' => 'Un travail de qualité au 1er coup: (rigueur, exactitude, précision)',
-            'scores' => ['', '', '', '', '']
+            'selectedScore' => null
         ],
         [
             'criteria' => 'Propreté/Hygiène: (Environnement de travail propre, EPI, Vêtements, Véhicules…)',
-            'scores' => ['', '', '', '', '']
+            'selectedScore' => null
         ],
     ];
 
+    public $errorMessages = [];
+    public $globalScore;
+    public $errorsModalVisible = false;
+    public $response;
+
+    public function mount()
+    {
+        $this->response = ResponseEvaluation::findOrFail($this->state()->forStep('create-evaluation-personal_info')['response']);
+
+        if ($this->response->compliance_corporate) {
+            $this->performanceCriteria = $this->response->compliance_corporate;
+        }
+
+        $this->globalScore = $this->response->note_compliance_resultat ?? 0;
+
+    }
+
+    public function updatedPerformanceCriteria()
+    {
+        $this->validateCriteria();
+    }
+
     public function submit()
     {
-        // $this->validate();
+        $validationResult = $this->validateCriteria();
+        if ($validationResult !== true) {
+            $this->errorMessages = $validationResult;
+            $this->errorsModalVisible = true;
+            return;
+        }
 
+        $this->response->compliance_corporate = $this->performanceCriteria;
+        $this->response->note_compliance_resultat = $this->globalScore;
+        $this->response->save();
         $this->nextStep();
+
+    }
+
+    private function validateCriteria()
+    {
+        $errors = [];
+        $allChecked = true;
+
+        foreach ($this->performanceCriteria as $criteria) {
+            if (is_null($criteria['selectedScore'])) {
+                $allChecked = false;
+                $errors[] = "Tous les critères doivent être évalués.";
+                break;
+            }
+        }
+
+        // Calculer la note globale seulement si toutes les cases sont cochées
+        if ($allChecked) {
+            $this->globalScore = array_sum(array_column($this->performanceCriteria, 'selectedScore'));
+        } else {
+            $this->globalScore = 0; // Valeur par défaut si validation échoue
+        }
+
+        return $allChecked ? true : $errors;
     }
 
     public function stepInfo(): array

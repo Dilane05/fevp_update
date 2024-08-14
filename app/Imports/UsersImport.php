@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Direction;
 use App\Models\Enterprise;
 use App\Models\Site;
+use App\Models\TypeFiche;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -29,6 +30,7 @@ class UsersImport implements ToModel, WithHeadingRow
         $second_evaluator = User::where('occupation', $row['second_evaluator'] ?? null)->first();
         $responsable_n1 = User::where('occupation', $row['responsable_n1'] ?? null)->first();
         $responsable_n2 = User::where('occupation', $row['responsable_n2'] ?? null)->first();
+        $type_fiche = TypeFiche::where('slug', $row['type_fiche'] ?? null)->first();
 
         // Créer un nouvel utilisateur avec des valeurs par défaut pour les colonnes obligatoires
         return new User([
@@ -36,6 +38,7 @@ class UsersImport implements ToModel, WithHeadingRow
             'matricule' => $matricule,
             'first_name' => $row['first_name'] ?? 'Unknown',
             'last_name' => $row['last_name'] ?? 'Unknown',
+            'type_fiche_id' => $type_fiche->id ?? null,
             'name' => $row['name'] ?? 'Unknown',
             'occupation' => $row['occupation'] ?? null,
             'pemp_temp' => $row['pemp_temp'] ?? null,

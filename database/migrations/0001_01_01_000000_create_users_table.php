@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('occupation')->nullable();
             $table->string('pemp_temp')->nullable();
+            $table->foreignId('type_fiche_id')->nullable()->constrained('type_fiches')->onDelete('cascade');
             $table->foreignId('main_evaluator')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('second_evaluator')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('direction_id')->nullable()->constrained('directions')->onDelete('cascade');

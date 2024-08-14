@@ -72,7 +72,7 @@
             <tfoot>
                 <tr>
                     <td colspan="3" class="text-center text-muted fw-bold fs-5">
-                        Note globale: {{ number_format($globalScore ?? 0, 2) }}
+                        Note globale: {{ number_format($globalScore ?? 0, 2) }} /5
                 </tr>
             </tfoot>
         </table>

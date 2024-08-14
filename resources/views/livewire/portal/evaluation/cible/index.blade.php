@@ -98,9 +98,8 @@
     </div>
 
     <div class="mb-4 d-flex justify-content-end">
-        {{-- <button class="btn btn-success" wire:click="test">CLICK</button>    --}}
-        <div class=" d-flex">
-            <label for="perPage">{{ __('Element par page') }}: </label>
+        <div class="d-flex align-items-center">
+            <label for="perPage" class="me-2">{{ __('Éléments par page') }}:</label>
             <select wire:model.live="perPage" id="perPage" class="form-select">
                 <option value="5">5</option>
                 <option value="10">10</option>
@@ -119,7 +118,7 @@
         </div>
         <div class="mx-2">
             <button type="button" wire:click="saveParticipants" class="btn btn-primary">
-                Enregistrer les Participants
+                {{ __('Enregistrer les Participants') }}
             </button>
         </div>
     </div>
@@ -128,7 +127,7 @@
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-striped table-bordered">
+                <table class="table table-hover table-borderless align-middle">
                     <x-alert />
                     <thead class="thead-light">
                         <tr>
@@ -158,80 +157,75 @@
                 </table>
             </div>
         </div>
-        <div class="my-4 d-flex justify-content-end">
-            {{-- <button class="btn btn-success" wire:click="test">CLICK</button>    --}}
-            <div class=" d-flex">
-                <label for="perPage">{{ __('Element par page') }}: </label>
-                <select wire:model.live="perPage" id="perPage" class="form-select">
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="15">15</option>
-                    <option value="20">20</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="75">75</option>
-                    <option value="150">150</option>
-                    <option value="250">250</option>
-                    <option value="500">500</option>
-                    <option value="750">750</option>
-                    <option value="900">900</option>
-                    <option value="1000">1000</option>
-                </select>
-            </div>
-            <div class="mx-2">
-                <button type="button" wire:click="saveParticipants" class="btn btn-primary">
-                    Enregistrer les Participants
-                </button>
-            </div>
-        </div>
     </div>
 
     <!-- Pagination -->
-    <div class="mt-4">
+    <div class="mt-4 d-flex justify-content-center">
         {{ $users->links('pagination::bootstrap-4') }}
     </div>
 
     <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f5f7fa;
+        }
+
         .card {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+        }
+
+        .table {
+            background-color: white;
         }
 
         .table thead th {
-            background-color: #f8f9fa;
-            color: #495057;
+            background-color: #edf2f7;
+            color: #4a5568;
+            border-bottom: 2px solid #e2e8f0;
         }
 
-        .table tbody tr:nth-child(odd) {
-            background-color: #f9f9f9;
+        .table tbody tr {
+            transition: background-color 0.3s ease;
         }
 
         .table tbody tr:hover {
-            background-color: #e9ecef;
+            background-color: #f7fafc;
         }
 
         .form-control,
         .form-select {
             border-radius: 8px;
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+            box-shadow: none;
+            border: 1px solid #e2e8f0;
+            transition: border-color 0.3s ease;
         }
 
-        .form-label {
-            font-weight: 600;
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #63b3ed;
+            box-shadow: 0 0 0 0.2rem rgba(99, 179, 237, 0.25);
         }
 
         .btn-primary {
+            background-color: #4299e1;
+            border-color: #4299e1;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
         }
 
         .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #004085;
+            background-color: #3182ce;
         }
 
-        .pagination {
-            justify-content: center;
+        .form-check-input {
+            border-radius: 50%;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-check-input:checked {
+            background-color: #4299e1;
+            box-shadow: 0 0 0 0.2rem rgba(66, 153, 225, 0.25);
         }
     </style>
 </div>

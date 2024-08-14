@@ -28,7 +28,7 @@
                         </td>
                         <td class="align-middle">
                             <input type="text" wire:model.live="sanctions.{{ $index }}.sanction"
-                                class="form-control rounded-pill">
+                                class="form-control rounded-pill" disabled value="{{ number_format($sanction['sanction'], 2) }}">
                         </td>
                     </tr>
                 @endforeach
@@ -36,7 +36,7 @@
             <tfoot>
                 <tr>
                     <td colspan="3" class="text-center text-muted fw-bold fs-5">
-                        Veuillez remplir le tableau
+                        Le Total Sanctions est {{ number_format($totalSanctionScore, 2) }}
                     </td>
                 </tr>
             </tfoot>

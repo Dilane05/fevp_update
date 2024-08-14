@@ -54,10 +54,31 @@
                     feedback. Explorez ses fonctionnalités pour tirer pleinement parti de cette nouvelle ère
                     d'évaluation au sein de notre entreprise.
                 </p>
-                <button wire:click="checkEvaluation" class="btn btn-outline-primary btn-lg mt-2"
-                    data-translate="myJourney">
-                    S'évaluer
-                </button>
+                @if (!$evaluation->is_active)
+                <div class="d-flex">
+                    <button class="btn btn-secondary mx-1" disabled>Évaluation Clôturée</button>
+                    <button class="btn btn-primary" wire:click="startEvaluation({{ $evaluation->id }})">Voir les Détails</button>
+                @else
+                    @if ($evaluation->participants()->where('user_id', Auth::id())->exists())
+                        @php
+                            $response = App\Models\ResponseEvaluation::where(
+                                'evaluation_id',
+                                $evaluation->id,
+                            )
+                                ->where('user_id', Auth::id())
+                                ->first();
+                        @endphp
+                        @if ($response)
+                            <button wire:click="startEvaluation({{ $evaluation->id }})"
+                                class="btn btn-primary w-100">Continuer l'évaluation</button>
+                        @else
+                            <button wire:click="startEvaluation({{ $evaluation->id }})"
+                                class="btn btn-primary w-100">Commencer l'évaluation</button>
+                        @endif
+                    @else
+                        <button class="btn btn-secondary w-100" disabled>Pas autorisé</button>
+                    @endif
+            @endif
             </div>
         </div>
 
@@ -69,29 +90,55 @@
                         Informations Personnelles
                     </h5>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><span class="fw-bold">Nom complet :</span> {{ auth()->user()->name }}</li>
-                        <li class="mb-2"><span class="fw-bold">Matricule :</span> {{ auth()->user()->matricule }}</li>
-                        <li class="mb-2"><span class="fw-bold">Poste :</span> {{ auth()->user()->occupation }}</li>
-                        <li class="mb-2"><span class="fw-bold">Statut Catégoriel :</span>
-                            {{ auth()->user()->statut_category ? auth()->user()->statut_category : 'Non Attribué' }}
+                        <li class="mb-2 d-flex align-items-center">
+                            <i class="bi bi-person-circle text-primary me-2"></i>
+                            <span class="fw-bold">Nom complet :</span>
+                            <span class="ms-2">{{ auth()->user()->name }}</span>
                         </li>
-                        <li class="mb-2"><span class="fw-bold">Ancienneté au poste (en années) :</span>
-                            {{ auth()->user()->length_of_service ? auth()->user()->length_of_service : 'Non Connu' }}
+                        <li class="mb-2 d-flex align-items-center">
+                            <i class="bi bi-card-list text-info me-2"></i>
+                            <span class="fw-bold">Matricule :</span>
+                            <span class="ms-2">{{ auth()->user()->matricule }}</span>
                         </li>
-                        <li class="mb-2"><span class="fw-bold">Temporaire/Permanent :</span>
-                            {{ auth()->user()->pemp_temp ? auth()->user()->pemp_temp : '' }}
+                        <li class="mb-2 d-flex align-items-center">
+                            <i class="bi bi-briefcase text-success me-2"></i>
+                            <span class="fw-bold">Poste :</span>
+                            <span class="ms-2">{{ auth()->user()->occupation }}</span>
                         </li>
-                        <li class="mb-2"><span class="fw-bold">Date d'embauche :</span>
-                            {{ auth()->user()->hiring_date }}</li>
-                        <li class="mb-2"><span class="fw-bold">Responsable N1 :</span>
-                            {{ auth()->user()->responsable_n1 ? auth()->user()->responsableN1->name : 'Non attribué' }}
+                        <li class="mb-2 d-flex align-items-center">
+                            <i class="bi bi-award text-warning me-2"></i>
+                            <span class="fw-bold">Statut Catégoriel :</span>
+                            <span class="ms-2">{{ auth()->user()->statut_category ? auth()->user()->statut_category : 'Non Attribué' }}</span>
                         </li>
-                        <li class="mb-2"><span class="fw-bold">Responsable N2 :</span>
-                            {{ auth()->user()->responsable_n2 ? auth()->user()->responsableN2->name : 'Non attribué' }}
+                        <li class="mb-2 d-flex align-items-center">
+                            <i class="bi bi-clock text-danger me-2"></i>
+                            <span class="fw-bold">Ancienneté au poste :</span>
+                            <span class="ms-2">{{ auth()->user()->length_of_service ? auth()->user()->length_of_service : 'Non Connu' }}</span>
+                        </li>
+                        <li class="mb-2 d-flex align-items-center">
+                            <i class="bi bi-check2-circle text-secondary me-2"></i>
+                            <span class="fw-bold">Temporaire/Permanent :</span>
+                            <span class="ms-2">{{ auth()->user()->pemp_temp ? auth()->user()->pemp_temp : '' }}</span>
+                        </li>
+                        <li class="mb-2 d-flex align-items-center">
+                            <i class="bi bi-calendar-date text-muted me-2"></i>
+                            <span class="fw-bold">Date d'embauche :</span>
+                            <span class="ms-2">{{ auth()->user()->hiring_date }}</span>
+                        </li>
+                        <li class="mb-2 d-flex align-items-center">
+                            <i class="bi bi-person-badge text-dark me-2"></i>
+                            <span class="fw-bold">Responsable N1 :</span>
+                            <span class="ms-2">{{ auth()->user()->responsable_n1 ? auth()->user()->responsableN1->name : 'Non attribué' }}</span>
+                        </li>
+                        <li class="mb-2 d-flex align-items-center">
+                            <i class="bi bi-person-badge-fill text-primary me-2"></i>
+                            <span class="fw-bold">Responsable N2 :</span>
+                            <span class="ms-2">{{ auth()->user()->responsable_n2 ? auth()->user()->responsableN2->name : 'Non attribué' }}</span>
                         </li>
                     </ul>
                     <hr class="my-3">
                     <p class="text-muted">
+                        <i class="bi bi-building text-success me-2"></i>
                         <span class="fw-bold">Entreprise :</span> {{ auth()->user()->enterprise->name }} |
                         <span class="fw-bold">Direction :</span> {{ auth()->user()->direction->name }} |
                         <span class="fw-bold">Site :</span> {{ auth()->user()->site->name }}

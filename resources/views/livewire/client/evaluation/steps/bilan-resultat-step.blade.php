@@ -76,7 +76,7 @@
                             </td>
                             <td><input type="number" class="form-control rounded-pill"
                                     wire:model.live="rows.{{ $index }}.coef"></td>
-                            <td><input type="text" class="form-control rounded-pill"
+                            <td><input type="number" class="form-control rounded-pill"
                                     wire:model.live="rows.{{ $index }}.cible_pct"></td>
                             <td><input type="number" class="form-control rounded-pill"
                                     wire:model.live="rows.{{ $index }}.cible_nb"></td>

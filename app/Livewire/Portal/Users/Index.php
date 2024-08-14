@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Portal\Users;
 
+use Log;
 use App\Models\User;
 use Livewire\Component;
+use App\Models\TypeFiche;
 use Illuminate\Support\Str;
 use App\Exports\UsersExport;
 use App\Imports\UsersImport;
@@ -49,6 +51,7 @@ class Index extends Component
     {
         $this->roles = Role::select('id', 'name')->whereNotIn('name', ['client'])->get();
         $this->countdown = 10; // Temps initial du compte à rebours
+        // dd(TypeFiche::all());
     }
 
     // public function updatedRoleName($value)
@@ -154,26 +157,43 @@ class Index extends Component
 
     public function import()
     {
+        set_time_limit(300);
+
         $this->validate([
             'user_file' => 'sometimes|nullable|mimes:xlsx,csv|max:500',
         ]);
+
+        // Vérifier que le fichier est un UploadedFile valide
+        if (!$this->user_file instanceof \Illuminate\Http\UploadedFile) {
+            $this->addError('user_file', 'Le fichier n\'a pas été correctement uploadé.');
+            return;
+        }
 
         // Lancer le compte à rebours avant l'importation
         $this->countdown = 10;
         $this->dispatch('startCountdown');
 
-        Excel::import(new UsersImport($this->user), $this->user_file);
-        auditLog(
-            auth()->user(),
-            'user_imported',
-            'web',
-            __('Imported excel file for users') . auth()->user()->name
-        );
-        // Réinitialiser le compte à rebours après l'importation
-        $this->countdown = 0;
-        $this->clearFields();
-        $this->closeModalAndFlashMessage(__('Users successfully imported!'), 'importusersModal');
+        try {
+            // Utiliser le chemin réel du fichier pour l'importation
+            Excel::import(new UsersImport($this->user), $this->user_file->getRealPath());
+            auditLog(
+                auth()->user(),
+                'user_imported',
+                'web',
+                __('Imported excel file for users') . auth()->user()->name
+            );
+
+            // Réinitialiser le compte à rebours après l'importation
+            $this->countdown = 0;
+            $this->clearFields();
+            $this->closeModalAndFlashMessage(__('Users successfully imported!'), 'importusersModal');
+        } catch (\Exception $e) {
+            // Capturer et loguer l'erreur
+            Log::error('Erreur lors de l\'importation du fichier Excel:', ['message' => $e->getMessage()]);
+            $this->addError('user_file', 'Erreur lors de l\'importation. Veuillez réessayer.');
+        }
     }
+
 
     public function decrementCountdown()
     {
@@ -218,13 +238,13 @@ class Index extends Component
         }
 
         $users = User::search($this->query)->with('roles')
-        ->when($this->selectedStatus, function ($query, $selectedStatus) {
-            return $query->where('is_active', $selectedStatus);
-        })
-        ->when($this->selectedSexe, function ($query, $selectedSexe) {
-            return $query->where('sexe', $selectedSexe);
-        })
-        ->orderBy($this->orderBy, $this->orderAsc)->paginate($this->perPage);
+            ->when($this->selectedStatus, function ($query, $selectedStatus) {
+                return $query->where('is_active', $selectedStatus);
+            })
+            ->when($this->selectedSexe, function ($query, $selectedSexe) {
+                return $query->where('sexe', $selectedSexe);
+            })
+            ->orderBy($this->orderBy, $this->orderAsc)->paginate($this->perPage);
 
         // Calcul du total des utilisateurs
         $total_users = User::count();

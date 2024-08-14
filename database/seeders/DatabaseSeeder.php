@@ -3,16 +3,18 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Site;
 use App\Models\User;
 use App\Models\Direction;
 use App\Models\Enterprise;
-use App\Models\Site;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
+use Database\Seeders\SitesTableSeeder;
+use Database\Seeders\TypeFichierSeeder;
 use Database\Seeders\DirectionsTableSeeder;
 use Database\Seeders\EnterprisesTableSeeder;
 use Database\Seeders\RolesAndPermissionsSeeder;
-use Database\Seeders\SitesTableSeeder;
+use Database\Seeders\AssignTypeFichierToUsersSeeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 
 class DatabaseSeeder extends Seeder
@@ -28,6 +30,10 @@ class DatabaseSeeder extends Seeder
         $this->call(DirectionsTableSeeder::class);
 
         $this->call(EnterprisesTableSeeder::class);
+
+        $this->call(TypeFichierSeeder::class);
+
+        // $this->call(AssignTypeFichierToUsersSeeder::class);
 
         $this->call(SitesTableSeeder::class);
 

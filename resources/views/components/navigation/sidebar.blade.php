@@ -82,6 +82,19 @@
                                     </a>
                                 </li>
 
+                                <li class="nav-item {{ $request->routeIs('portal.evaluation.*') ? 'active' : '' }}">
+                                    <a href="{{route('portal.evaluation.create')}}" wire:navigate class="nav-link d-flex align-items-center justify-content-between">
+                                        <span>
+                                            <span class="sidebar-icon text-gray-50">
+                                                <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M12 2a10 10 0 1 0 0 20 10 10 0 1 0 0-20zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                                                </svg>
+                                            </span>
+                                            <span class="sidebar-text">{{__('Création Évaluation')}}</span>
+                                        </span>
+                                    </a>
+                                </li>
+
                                 <li class="nav-item {{ $request->routeIs('portal.indicator.index') ? 'active' : '' }}">
                                     <a href="{{route('portal.indicator.index')}}" wire:navigate class="nav-link d-flex align-items-center justify-content-between">
                                         <span>

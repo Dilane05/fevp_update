@@ -17,7 +17,7 @@ return new class extends Migration
             $table->double('note_bilan_resultat')->nullable();
             $table->json('tenue_global')->nullable();
             $table->double('note_tenue_global')->nullable();
-            $table->json('mangerial_quality')->nullable();
+            $table->json('manegerial_quality')->nullable();
             $table->double('note_mangeriale_quality')->nullable();
             $table->json('compliance_corporate')->nullable();
             $table->double('note_compliance_resultat')->nullable();

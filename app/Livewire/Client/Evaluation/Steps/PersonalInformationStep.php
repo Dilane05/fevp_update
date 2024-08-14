@@ -49,7 +49,7 @@ class PersonalInformationStep extends StepComponent
     public function stepInfo(): array
     {
         return [
-            'label' => __('Personnal Information'),
+            'label' => __('Informations Personnelles'),
             'icon' => 'fa-shopping-cart',
         ];
     }

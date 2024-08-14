@@ -138,6 +138,11 @@ class User extends Authenticatable
         return $this->belongsTo(Site::class);
     }
 
+    public function type_fiche(): BelongsTo
+    {
+        return $this->belongsTo(TypeFiche::class);
+    }
+
     public function evaluations()
     {
         return $this->belongsToMany(Evaluation::class, 'evaluation_user');

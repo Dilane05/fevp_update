@@ -14,7 +14,7 @@ class ResponseEvaluation extends Model
     protected $casts = [
         'bilan_resultat' => 'array', // Utiliser array pour les colonnes JSON
         'tenue_global' => 'array',
-        'mangerial_quality' => 'array',
+        'manegerial_quality' => 'array',
         'compliance_corporate' => 'array',
         'bonus_malus' => 'array',
         'sanction' => 'array',

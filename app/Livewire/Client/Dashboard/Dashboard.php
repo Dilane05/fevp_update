@@ -71,6 +71,33 @@ class Dashboard extends Component
         }
     }
 
+    public function startEvaluation($evaluationId)
+    {
+        $evaluation = Evaluation::findOrFail($evaluationId);
+        $userIsPartOfEvaluation = $evaluation->participants()->where('user_id', Auth::id())->exists();
+
+        if (!$userIsPartOfEvaluation) {
+            session()->flash('error', 'Vous ne faites pas partie de cette évaluation.');
+            return;
+        }
+
+        if (!$evaluation->is_active) {
+            session()->flash('error', 'Cette évaluation est soit clôturée, soit inactive.');
+            return;
+        }
+
+        $response = ResponseEvaluation::where('evaluation_id', $evaluationId)
+            ->where('user_id', Auth::id())
+            ->first();
+
+        if ($response) {
+            return Redirect::route('client.evaluation.index', $evaluation->code);
+        }
+
+        return Redirect::route('client.evaluation.index', $evaluation->code);
+
+    }
+
     public function render()
     {
         $user = auth()->user();

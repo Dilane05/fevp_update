@@ -13,7 +13,7 @@ class BilanResultatStep extends StepComponent
 {
     use LivewireAlert;
 
-    public $totalCoef = 70;
+    public $totalCoef = 0;
     public $errorMessages = [];
     public $tfootErrorMessages = [];
     public $hasObservation = false;
@@ -23,6 +23,8 @@ class BilanResultatStep extends StepComponent
 
     public function mount()
     {
+        $this->totalCoef = auth()->user()->type_fiche->value_result;
+        // dd($this->totalCoef);
         $this->response = ResponseEvaluation::findOrFail($this->state()->forStep('create-evaluation-personal_info')['response']);
 
         if ($this->response->bilan_resultat) {
