@@ -21,6 +21,7 @@ class Index extends Component
     {
         $this->users = User::all();
 
+        // $this->user_calibrages
 
     }
 
