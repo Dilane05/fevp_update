@@ -11,6 +11,7 @@ use App\Livewire\Client\Evaluation\Steps\BilanResultatStep;
 use App\Livewire\Client\Evaluation\Steps\BonusMalusStep;
 use App\Livewire\Client\Evaluation\Steps\ComplianceCorporateCultureStep;
 use App\Livewire\Client\Evaluation\Steps\ManagerialQualityStep;
+use App\Livewire\Client\Evaluation\Steps\NoteStep;
 use App\Livewire\Client\Evaluation\Steps\OtherStep;
 use App\Livewire\Client\Evaluation\Steps\PersonalInformationStep;
 use App\Livewire\Client\Evaluation\Steps\SanctionStep;
@@ -112,6 +113,7 @@ class AppServiceProvider extends ServiceProvider
         Livewire::component('create-evaluation-bonus_malus', BonusMalusStep::class);
         Livewire::component('create-evaluation-sanctions', SanctionStep::class);
         Livewire::component('create-evaluation-others', OtherStep::class);
+        Livewire::component('calculate-evaluation-notes', NoteStep::class);
 
     }
 }

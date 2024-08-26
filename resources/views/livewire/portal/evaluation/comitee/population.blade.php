@@ -1,23 +1,4 @@
-<div class="container mt-4">
-    <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-        <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
-            <li class="breadcrumb-item">
-                <a href="#">
-                    <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                    </svg>
-                </a>
-            </li>
-            <li class="breadcrumb-item"><a href="/" wire:navigate>{{ __('Accueil') }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{__('Cibles de L\'évaluation')}}</li>
-        </ol>
-    </nav>
-    <!-- Titre de la page -->
-    <div class="card mb-4 p-4">
-        <h1 class="display-4 font-weight-bold">{{ __('Sélection des Participants à l\'Évaluation') }}</h1>
-    </div>
-
-    <!-- Filtres -->
+<div class="shadow rounded p-2">
     <div class="mb-4">
         <div class="row">
             <!-- Champ de recherche -->
@@ -131,7 +112,7 @@
         </div>
         <div class="mx-2">
             <button type="button" wire:click="saveParticipants" class="btn btn-primary">
-                {{ __('Enregistrer les Participants') }}
+                {{ __('Enregistrer les la popluation') }}
             </button>
         </div>
     </div>
@@ -171,74 +152,4 @@
             </div>
         </div>
     </div>
-
-    <!-- Pagination -->
-    <div class="mt-4 d-flex justify-content-center">
-        {{ $users->links('pagination::bootstrap-4') }}
-    </div>
-
-    <style>
-        body {
-            font-family: 'Nunito', sans-serif;
-            background-color: #f5f7fa;
-        }
-
-        .card {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border-radius: 12px;
-        }
-
-        .table {
-            background-color: white;
-        }
-
-        .table thead th {
-            background-color: #edf2f7;
-            color: #4a5568;
-            border-bottom: 2px solid #e2e8f0;
-        }
-
-        .table tbody tr {
-            transition: background-color 0.3s ease;
-        }
-
-        .table tbody tr:hover {
-            background-color: #f7fafc;
-        }
-
-        .form-control,
-        .form-select {
-            border-radius: 8px;
-            box-shadow: none;
-            border: 1px solid #e2e8f0;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-control:focus,
-        .form-select:focus {
-            border-color: #63b3ed;
-            box-shadow: 0 0 0 0.2rem rgba(99, 179, 237, 0.25);
-        }
-
-        .btn-primary {
-            background-color: #4299e1;
-            border-color: #4299e1;
-            border-radius: 8px;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background-color: #3182ce;
-        }
-
-        .form-check-input {
-            border-radius: 50%;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .form-check-input:checked {
-            background-color: #4299e1;
-            box-shadow: 0 0 0 0.2rem rgba(66, 153, 225, 0.25);
-        }
-    </style>
 </div>

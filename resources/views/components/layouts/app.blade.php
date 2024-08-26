@@ -12,24 +12,26 @@
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+        rel="stylesheet">
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>{{$header ?? 'fevp'}}</title>
+    <title>{{ $header ?? 'fevp' }}</title>
 
 
     <meta name="msapplication-TileColor" content="#1F2937">
 
-    <link type="text/css" href="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.css')}}" rel="stylesheet">
-    <link type="text/css" href="{{ asset('vendor/notyf/notyf.min.css')}}" rel="stylesheet">
-    <link type="text/css" href="{{ asset('vendor/fullcalendar/main.min.css')}}" rel="stylesheet">
-    <link type="text/css" href="{{ asset('vendor/dropzone/dist/min/dropzone.min.css')}}" rel="stylesheet">
-    <link type="text/css" href="{{ asset('vendor/choices.js/public/assets/styles/choices.min.css')}}" rel="stylesheet">
-    <link type="text/css" href="{{ asset('vendor/leaflet/dist/leaflet.css')}}" rel="stylesheet">
-    <link type="text/css" href="{{ asset('vendor/medium-editor/css/medium-editor.css')}}" rel="stylesheet">
-    <link type="text/css" href="{{ asset('vendor/trix/trix.min.css')}}" rel="stylesheet">
-    <link type="text/css" href="{{ asset('vendor/medium-editor/css/themes/default.css')}}" rel="stylesheet">
-    <link type="text/css" href="{{ asset('css/theme.css')}}" rel="stylesheet">
+    <link type="text/css" href="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.css') }}" rel="stylesheet">
+    <link type="text/css" href="{{ asset('vendor/notyf/notyf.min.css') }}" rel="stylesheet">
+    <link type="text/css" href="{{ asset('vendor/fullcalendar/main.min.css') }}" rel="stylesheet">
+    <link type="text/css" href="{{ asset('vendor/dropzone/dist/min/dropzone.min.css') }}" rel="stylesheet">
+    <link type="text/css" href="{{ asset('vendor/choices.js/public/assets/styles/choices.min.css') }}" rel="stylesheet">
+    <link type="text/css" href="{{ asset('vendor/leaflet/dist/leaflet.css') }}" rel="stylesheet">
+    <link type="text/css" href="{{ asset('vendor/medium-editor/css/medium-editor.css') }}" rel="stylesheet">
+    <link type="text/css" href="{{ asset('vendor/trix/trix.min.css') }}" rel="stylesheet">
+    <link type="text/css" href="{{ asset('vendor/medium-editor/css/themes/default.css') }}" rel="stylesheet">
+    <link type="text/css" href="{{ asset('css/theme.css') }}" rel="stylesheet">
 
     @livewireStyles
     <style>
@@ -38,31 +40,33 @@
         }
     </style>
 
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     @stack('scripts_head')
     @stack('css')
 </head>
 
 <body class="bg-pattern">
 
-    {{$slot}}
+    {{ $slot }}
 
-    <script src=" {{ asset('vendor/@popperjs/core/dist/umd/popper.min.js')}}">
-    </script>
-    <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.min.js')}}"></script>
-    <script src="{{ asset('vendor/onscreen/dist/on-screen.umd.min.js')}}"></script>
-    <script src="{{ asset('vendor/nouislider/distribute/nouislider.min.js')}}"></script>
-    <script src="{{ asset('vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js')}}"></script>
-    <script src="{{ asset('vendor/chartist/dist/chartist.min.js')}}"></script>
-    <script src="{{ asset('vendor/fullcalendar/main.min.js')}}"></script>
-    <script src="{{ asset('vendor/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js')}}"></script>
-    <script src="{{ asset('vendor/vanillajs-datepicker/dist/js/datepicker.min.js')}}"></script>
-    <script src="{{ asset('vendor/leaflet/dist/leaflet.js')}}"></script>
-    <script src="{{ asset('vendor/simplebar/dist/simplebar.min.js')}}"></script>
-    <script src="{{ asset('vendor/choices.js/public/assets/scripts/choices.min.js')}}"></script>
-    <script src="{{ asset('vendor/medium-editor/js/medium-editor.js')}}"></script>
-    <script src="{{ asset('vendor/trix/trix.umd.min.js')}}"></script>
+    <script src=" {{ asset('vendor/@popperjs/core/dist/umd/popper.min.js') }}"></script>
+    <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('vendor/onscreen/dist/on-screen.umd.min.js') }}"></script>
+    <script src="{{ asset('vendor/nouislider/distribute/nouislider.min.js') }}"></script>
+    <script src="{{ asset('vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js') }}"></script>
+    <script src="{{ asset('vendor/chartist/dist/chartist.min.js') }}"></script>
+    <script src="{{ asset('vendor/fullcalendar/main.min.js') }}"></script>
+    <script src="{{ asset('vendor/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js') }}"></script>
+    <script src="{{ asset('vendor/vanillajs-datepicker/dist/js/datepicker.min.js') }}"></script>
+    <script src="{{ asset('vendor/leaflet/dist/leaflet.js') }}"></script>
+    <script src="{{ asset('vendor/simplebar/dist/simplebar.min.js') }}"></script>
+    <script src="{{ asset('vendor/choices.js/public/assets/scripts/choices.min.js') }}"></script>
+    <script src="{{ asset('vendor/medium-editor/js/medium-editor.js') }}"></script>
+    <script src="{{ asset('vendor/trix/trix.umd.min.js') }}"></script>
 
-    <script src="{{ asset('js/theme.js')}}"></script>
+    <script src="{{ asset('js/theme.js') }}"></script>
 
     @livewireScripts
     <script src="{{ asset('vendor/livewire-alert/livewire-alert.js') }}"></script>

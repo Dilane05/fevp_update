@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Client\Evaluation\Steps;
 
+use App\Models\User;
 use Livewire\Component;
 use App\Models\Indicator;
 use App\Models\ResponseEvaluation;
@@ -23,9 +24,11 @@ class BilanResultatStep extends StepComponent
 
     public function mount()
     {
-        $this->totalCoef = auth()->user()->type_fiche->value_result;
         // dd($this->totalCoef);
         $this->response = ResponseEvaluation::findOrFail($this->state()->forStep('create-evaluation-personal_info')['response']);
+
+        $user = User::findOrFail($this->response->user_id);
+        $this->totalCoef = $user->type_fiche->value_result;
 
         if ($this->response->bilan_resultat) {
             $this->rows = $this->response->bilan_resultat;

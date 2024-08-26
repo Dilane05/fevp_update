@@ -19,25 +19,28 @@
     <x-alert />
 
     {{-- !-- Bootstrap Modal --> --}}
-        <div class="modal fade" id="evaluationReminderModal" tabindex="-1" aria-labelledby="reminderModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header border-0">
-                        <h5 class="modal-title" id="reminderModalLabel">Reminder</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal fade" id="evaluationReminderModal" tabindex="-1" aria-labelledby="reminderModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="reminderModalLabel">Reminder</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="p-4">
+                        <i class="bi bi-exclamation-triangle-fill text-warning display-1 mb-3"></i>
+                        <p class="fs-5">Il semble que vous n'avez pas encore commencé votre évaluation en cours. Nous
+                            vous invitons à compléter votre évaluation pour nous aider à améliorer nos services.</p>
                     </div>
-                    <div class="modal-body text-center">
-                        <div class="p-4">
-                            <i class="bi bi-exclamation-triangle-fill text-warning display-1 mb-3"></i>
-                            <p class="fs-5">Il semble que vous n'avez pas encore commencé votre évaluation en cours. Nous vous invitons à compléter votre évaluation pour nous aider à améliorer nos services.</p>
-                        </div>
-                    </div>
-                    <div class="modal-footer border-0 justify-content-center">
-                        <a href="/url-de-votre-evaluation" class="btn btn-primary w-100" data-bs-dismiss="modal">Commencer l'Évaluation</a>
-                    </div>
+                </div>
+                <div class="modal-footer border-0 justify-content-center">
+                    <a href="/url-de-votre-evaluation" class="btn btn-primary w-100" data-bs-dismiss="modal">Commencer
+                        l'Évaluation</a>
                 </div>
             </div>
         </div>
+    </div>
     {{-- @endif --}}
 
     <div class="row">
@@ -55,30 +58,32 @@
                     d'évaluation au sein de notre entreprise.
                 </p>
                 @if (!$evaluation->is_active)
-                <div class="d-flex">
-                    <button class="btn btn-secondary mx-1" disabled>Évaluation Clôturée</button>
-                    <button class="btn btn-primary" wire:click="startEvaluation({{ $evaluation->id }})">Voir les Détails</button>
+                    <div class="d-flex">
+                        <button class="btn btn-secondary mx-1" disabled>Évaluation Clôturée</button>
+                        <button class="btn btn-primary" wire:click="startEvaluation({{ $evaluation->id }})">Voir les
+                            Détails
+                        </button>
+                    </div>
                 @else
                     @if ($evaluation->participants()->where('user_id', Auth::id())->exists())
                         @php
-                            $response = App\Models\ResponseEvaluation::where(
-                                'evaluation_id',
-                                $evaluation->id,
-                            )
+                            $response = App\Models\ResponseEvaluation::where('evaluation_id', $evaluation->id)
                                 ->where('user_id', Auth::id())
                                 ->first();
                         @endphp
-                        @if ($response)
+                        @if ($response && !now()->lt($evaluation->start_date))
                             <button wire:click="startEvaluation({{ $evaluation->id }})"
                                 class="btn btn-primary w-100">Continuer l'évaluation</button>
-                        @else
+                        @elseif (!now()->lt($evaluation->start_date))
                             <button wire:click="startEvaluation({{ $evaluation->id }})"
                                 class="btn btn-primary w-100">Commencer l'évaluation</button>
+                        @else
+                            <button class="btn btn-secondary w-100" disabled>Veuillez atendre la date de lancement</button>
                         @endif
                     @else
                         <button class="btn btn-secondary w-100" disabled>Pas autorisé</button>
                     @endif
-            @endif
+                @endif
             </div>
         </div>
 
@@ -108,12 +113,14 @@
                         <li class="mb-2 d-flex align-items-center">
                             <i class="bi bi-award text-warning me-2"></i>
                             <span class="fw-bold">Statut Catégoriel :</span>
-                            <span class="ms-2">{{ auth()->user()->statut_category ? auth()->user()->statut_category : 'Non Attribué' }}</span>
+                            <span
+                                class="ms-2">{{ auth()->user()->statut_category ? auth()->user()->statut_category : 'Non Attribué' }}</span>
                         </li>
                         <li class="mb-2 d-flex align-items-center">
                             <i class="bi bi-clock text-danger me-2"></i>
                             <span class="fw-bold">Ancienneté au poste :</span>
-                            <span class="ms-2">{{ auth()->user()->length_of_service ? auth()->user()->length_of_service : 'Non Connu' }}</span>
+                            <span
+                                class="ms-2">{{ auth()->user()->length_of_service ? auth()->user()->length_of_service : 'Non Connu' }}</span>
                         </li>
                         <li class="mb-2 d-flex align-items-center">
                             <i class="bi bi-check2-circle text-secondary me-2"></i>
@@ -128,12 +135,14 @@
                         <li class="mb-2 d-flex align-items-center">
                             <i class="bi bi-person-badge text-dark me-2"></i>
                             <span class="fw-bold">Responsable N1 :</span>
-                            <span class="ms-2">{{ auth()->user()->responsable_n1 ? auth()->user()->responsableN1->name : 'Non attribué' }}</span>
+                            <span
+                                class="ms-2">{{ auth()->user()->responsable_n1 ? auth()->user()->responsableN1->name : 'Non attribué' }}</span>
                         </li>
                         <li class="mb-2 d-flex align-items-center">
                             <i class="bi bi-person-badge-fill text-primary me-2"></i>
                             <span class="fw-bold">Responsable N2 :</span>
-                            <span class="ms-2">{{ auth()->user()->responsable_n2 ? auth()->user()->responsableN2->name : 'Non attribué' }}</span>
+                            <span
+                                class="ms-2">{{ auth()->user()->responsable_n2 ? auth()->user()->responsableN2->name : 'Non attribué' }}</span>
                         </li>
                     </ul>
                     <hr class="my-3">

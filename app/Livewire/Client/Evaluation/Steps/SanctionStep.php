@@ -3,6 +3,7 @@
 namespace App\Livewire\Client\Evaluation\Steps;
 
 use Livewire\Component;
+use App\Models\ResponseEvaluation;
 use Spatie\LivewireWizard\Components\StepComponent;
 
 class SanctionStep extends StepComponent
@@ -15,7 +16,21 @@ class SanctionStep extends StepComponent
         ['type' => 'Nombre de mise à pied de 6 à 8 jours', 'number' => 0, 'sanction' => 0],
     ];
 
+    public $response;
+
     public $totalSanctionScore = 0;
+
+    public function mount()
+    {
+        $this->response = ResponseEvaluation::findOrFail($this->state()->forStep('create-evaluation-personal_info')['response']);
+
+        if ($this->response->sanction) {
+            $this->sanctions = $this->response->sanction;
+        }
+
+        $this->totalSanctionScore = $this->response->note_sanction ?? 0;
+
+    }
 
     public function updatedSanctions($propertyName, $value)
     {
@@ -24,8 +39,12 @@ class SanctionStep extends StepComponent
 
     public function submit()
     {
-        $this->calculateSanctionScores();
-        // $this->nextStep();
+        $this->response->sanction = $this->sanctions;
+        $this->response->note_sanction = $this->totalSanctionScore;
+        $this->response->save();
+
+        // Proceed to the next step
+        $this->nextStep();
     }
 
     private function calculateSanctionScores()
@@ -43,8 +62,8 @@ class SanctionStep extends StepComponent
 
         foreach ($this->sanctions as $index => $sanction) {
             if (isset($sanctionValues[$sanction['type']])) {
-                $this->sanctions[$index]['sanction'] = $sanctionValues[$sanction['type']] * intval($sanction['number']);
-                $totalSanctionScore += $this->sanctions[$index]['sanction'];
+                // $this->sanctions[$index]['sanction'] = $sanctionValues[$sanction['type']] * intval($sanction['number']);
+                $totalSanctionScore += $sanctionValues[$sanction['type']] * intval($sanction['number']);
             }
         }
 

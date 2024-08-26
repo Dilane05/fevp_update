@@ -85,7 +85,7 @@
             <tfoot>
                 <tr>
                     <td colspan="6" class="text-center text-muted fw-bold fs-5">
-                        Note Globale: <span class="text-primary">{{ number_format($globalScore, 2) }}</span>
+                        Note Globale: <span class="text-primary">{{ number_format($globalScore, 2) }} / {{ $total }}</span>
                     </td>
                 </tr>
             </tfoot>
@@ -93,5 +93,4 @@
     </div>
 
     @include('livewire.client.evaluation.control-navigation')
-
 </div>

@@ -26,4 +26,10 @@ class Evaluation extends Model
     {
         return $this->belongsToMany(User::class, 'evaluation_user');
     }
+
+    public function comitees()
+    {
+        return $this->belongsToMany(User::class, 'membre_comitee_calibrage');
+    }
+
 }

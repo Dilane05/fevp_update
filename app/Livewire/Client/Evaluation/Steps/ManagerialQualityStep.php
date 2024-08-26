@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Client\Evaluation\Steps;
 
+use App\Models\User;
 use Livewire\Component;
 use App\Models\ResponseEvaluation;
 use Spatie\LivewireWizard\Components\StepComponent;
@@ -26,13 +27,14 @@ class ManagerialQualityStep extends StepComponent
     public function mount()
     {
 
-        if (auth()->user()->type_fiche->value_manageriale <= 0) {
+        $this->response = ResponseEvaluation::findOrFail($this->state()->forStep('create-evaluation-personal_info')['response']);
+
+        $user = User::findOrFail($this->response->user_id);
+        if ($user->type_fiche->value_manageriale <= 0) {
             $this->is_manager = "disabled";
         }else{
-            $this->totalNote = auth()->user()->type_fiche->value_manageriale;
+            $this->totalNote = $user->type_fiche->value_manageriale;
         }
-
-        $this->response = ResponseEvaluation::findOrFail($this->state()->forStep('create-evaluation-personal_info')['response']);
 
         if ($this->response->manegerial_quality) {
             // dd('ok');

@@ -8,6 +8,8 @@ use Spatie\LivewireWizard\Components\StepComponent;
 
 class ComplianceCorporateCultureStep extends StepComponent
 {
+    public $total = 15;
+
     public $performanceCriteria = [
         [
             'criteria' => 'Le respect des règles: travaille selon les règles de l\'art du métier (normes, procédures, instructions de travail…)',
@@ -41,7 +43,6 @@ class ComplianceCorporateCultureStep extends StepComponent
         }
 
         $this->globalScore = $this->response->note_compliance_resultat ?? 0;
-
     }
 
     public function updatedPerformanceCriteria()
@@ -62,7 +63,6 @@ class ComplianceCorporateCultureStep extends StepComponent
         $this->response->note_compliance_resultat = $this->globalScore;
         $this->response->save();
         $this->nextStep();
-
     }
 
     private function validateCriteria()
@@ -80,7 +80,8 @@ class ComplianceCorporateCultureStep extends StepComponent
 
         // Calculer la note globale seulement si toutes les cases sont cochées
         if ($allChecked) {
-            $this->globalScore = array_sum(array_column($this->performanceCriteria, 'selectedScore'));
+            $totalPossibleScore = 12; // La somme maximale des valeurs des cases sélectionnées
+            $this->globalScore = (array_sum(array_column($this->performanceCriteria, 'selectedScore')) / $totalPossibleScore) * $this->total;
         } else {
             $this->globalScore = 0; // Valeur par défaut si validation échoue
         }

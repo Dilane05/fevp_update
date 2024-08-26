@@ -6,6 +6,7 @@ use App\Livewire\Client\Evaluation\Steps\BilanResultatStep;
 use App\Livewire\Client\Evaluation\Steps\BonusMalusStep;
 use App\Livewire\Client\Evaluation\Steps\ComplianceCorporateCultureStep;
 use App\Livewire\Client\Evaluation\Steps\ManagerialQualityStep;
+use App\Livewire\Client\Evaluation\Steps\NoteStep;
 use App\Livewire\Client\Evaluation\Steps\OtherStep;
 use Livewire\Component;
 use Spatie\LivewireWizard\Components\WizardComponent;
@@ -52,6 +53,7 @@ class CheckoutWizardComponent extends WizardComponent
             BonusMalusStep::class,
             SanctionStep::class,
             OtherStep::class,
+            NoteStep::class
 
         ];
     }

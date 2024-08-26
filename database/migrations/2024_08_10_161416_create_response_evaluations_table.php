@@ -31,6 +31,9 @@ return new class extends Migration
             $table->boolean('status')->default(0);
             $table->foreignId('evaluation_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->boolean('is_send')->default(0);
+            $table->boolean('is_n1')->default(0);
+            $table->boolean('is_n2')->default(0);
             $table->timestamps();
         });
     }

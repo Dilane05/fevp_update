@@ -19,7 +19,7 @@
                         ->first();
                 @endphp
 
-                @if(!$userResponse)
+                @if (!$userResponse)
                     <span class="badge bg-secondary ms-3 d-flex align-items-center">
                         <i class="bi bi-hourglass-split me-1"></i> Non commencé
                     </span>
@@ -37,15 +37,28 @@
     </nav>
 
 
-    <livewire:checkout-evaluation-wizard show-step="create-evaluation-personal_info" :evaluation_id="$evaluation->id"  />
+    <livewire:checkout-evaluation-wizard show-step="create-evaluation-personal_info" :evaluation_id="$evaluation->id" />
     {{-- Success is as dangerous as failure. --}}
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        window.addEventListener('show-error-modal', event => {
-            var evaluationReminderModal = new bootstrap.Modal(document.getElementById(
-                'errorModal'));
-            evaluationReminderModal.show();
+        document.addEventListener('DOMContentLoaded', function() {
+            window.addEventListener('show-error-modal', event => {
+                var evaluationReminderModal = new bootstrap.Modal(document.getElementById(
+                    'errorModal'));
+                evaluationReminderModal.show();
+            });
         });
-    });
-</script>
+    </script>
+    <!-- Inclure le script Bootstrap pour les tooltips -->
+    <script>
+        // Activer les tooltips
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            tooltips.forEach(function(tooltip) {
+                new bootstrap.Tooltip(tooltip);
+            });
+        });
+    </script>
+
+
+
 </div>
