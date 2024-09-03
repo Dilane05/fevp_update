@@ -21,11 +21,14 @@ class BilanResultatStep extends StepComponent
     public $globalNote = 0;
     public $totalPossibleNote = 0;
     public $response;
+    public $editable;
 
     public function mount()
     {
         // dd($this->totalCoef);
         $this->response = ResponseEvaluation::findOrFail($this->state()->forStep('create-evaluation-personal_info')['response']);
+
+        $this->editable = $this->state()->forStep('create-evaluation-personal_info')['editable_user'];
 
         $user = User::findOrFail($this->response->user_id);
         $this->totalCoef = $user->type_fiche->value_result;
@@ -125,10 +128,14 @@ class BilanResultatStep extends StepComponent
         if (!empty($this->errorMessages)) {
             $this->dispatch('show-error-modal');
         } else {
-            $this->response->bilan_resultat = $this->rows;
-            $this->response->note_bilan_resultat = $this->globalNote;
-            $this->response->save();
-            $this->nextStep();
+            if($this->editable == "disabled"){
+                $this->nextStep();
+            }else{
+                $this->response->bilan_resultat = $this->rows;
+                $this->response->note_bilan_resultat = $this->globalNote;
+                $this->response->save();
+                $this->nextStep();
+            }
         }
     }
 

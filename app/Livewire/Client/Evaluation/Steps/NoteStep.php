@@ -11,13 +11,16 @@ class NoteStep extends StepComponent
 {
     public $averageScore;
 
-    public $average_bilan_resultat ,$average_tenue_global_poste ,$average_quality_managerial ,$average_compliance_corporate ,$global_average;
+    public $average_bilan_resultat, $average_tenue_global_poste, $average_quality_managerial, $average_compliance_corporate, $global_average;
 
     public $note_bonus_malus, $note_sanction;
+
+    public $response;
 
     public function mount()
     {
         $response = ResponseEvaluation::findOrFail($this->state()->forStep('create-evaluation-personal_info')['response']);
+        $this->response = $response;
         $user = User::findOrFail($response->user_id);
 
         // Maximum possible scores (totals)
@@ -49,6 +52,36 @@ class NoteStep extends StepComponent
 
         // Calculate global average score on a scale of 20
         $this->global_average = ($total_possible_scores > 0) ? ($total_actual_scores / $total_possible_scores) * 20 : 0;
+    }
+
+    public function submit()
+    {
+
+        if ($this->response->user_id == auth()->user()->id) {
+            $this->response->is_send = 1;
+            $this->response->status = 1;
+            if (!$this->response->date) {
+                $this->response->date = now();
+            }
+        } else {
+            if ($this->response->user->responsable_n1 == auth()->user()->id) {
+                if (!$this->response->is_n1) {
+                    $this->response->is_n1 = 1;
+                    $this->response->date_n1 = now();
+                    $this->response->is_editable = 0;
+                }
+            } else if ($this->response->user->responsable_n2 == auth()->user()->id) {
+                if (!$this->response->is_n2) {
+                    $this->response->is_n2 = 1;
+                    $this->response->date_n2 = now();
+                    $this->response->is_editable = 0;
+                }
+            }
+        }
+
+        $this->response->save();
+
+        session()->flash('success', 'Evaluation Soumise avec succès.');
     }
 
     public function stepInfo(): array

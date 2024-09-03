@@ -148,6 +148,16 @@ class User extends Authenticatable
         return $this->belongsToMany(Evaluation::class, 'evaluation_user');
     }
 
+    public function responsableN1(): belongsTo
+    {
+        return $this->belongsTo(User::class,"responsable_n1");
+    }
+
+    public function responsableN2(): belongsTo
+    {
+        return $this->belongsTo(User::class,"responsable_n2");
+    }
+
     public static function search($query): Builder
     {
         return empty($query) ? static::query() :

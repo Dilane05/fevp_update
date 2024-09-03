@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('population_cible_comitee', function (Blueprint $table) {
+        Schema::create('occupations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('comitee_calibrage_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('name')->unique();
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('population_cible_comitee');
+        Schema::dropIfExists('occupations');
     }
 };

@@ -20,9 +20,13 @@ class SanctionStep extends StepComponent
 
     public $totalSanctionScore = 0;
 
+    public $editable;
+
     public function mount()
     {
         $this->response = ResponseEvaluation::findOrFail($this->state()->forStep('create-evaluation-personal_info')['response']);
+
+        $this->editable = $this->state()->forStep('create-evaluation-personal_info')['editable_user'];
 
         if ($this->response->sanction) {
             $this->sanctions = $this->response->sanction;
@@ -39,12 +43,16 @@ class SanctionStep extends StepComponent
 
     public function submit()
     {
-        $this->response->sanction = $this->sanctions;
-        $this->response->note_sanction = $this->totalSanctionScore;
-        $this->response->save();
 
-        // Proceed to the next step
-        $this->nextStep();
+        if ($this->editable == "disabled") {
+            $this->nextStep();
+        } else {
+            $this->response->sanction = $this->sanctions;
+            $this->response->note_sanction = $this->totalSanctionScore;
+            $this->response->save();
+            $this->nextStep();
+        }
+
     }
 
     private function calculateSanctionScores()

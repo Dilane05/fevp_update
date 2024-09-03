@@ -23,13 +23,17 @@ class TenueGlobalPosteStep extends StepComponent
     public $error_max;
     public $response;
 
+    public $editable;
+
     public function mount()
     {
         $this->response = ResponseEvaluation::findOrFail($this->state()->forStep('create-evaluation-personal_info')['response']);
 
+        $this->editable = $this->state()->forStep('create-evaluation-personal_info')['editable_user'];
+
         if ($this->response->tenue_global) {
             $this->keyResults = $this->response->tenue_global;
-        }else{
+        } else {
             $this->error_fill = "Veuillez remplir au moins une ligne du tableau.";
             $this->error_note = "La note doit être entre 0 et 1.25.";
             $this->error_max = "La note globale ne peut pas dépasser 5.";
@@ -38,7 +42,6 @@ class TenueGlobalPosteStep extends StepComponent
         $this->globalScore = $this->response->note_tenue_global ?? 0;
 
         $this->calculateGlobalScore();
-
     }
 
     public function updatedKeyResults($propertyName)
@@ -63,11 +66,14 @@ class TenueGlobalPosteStep extends StepComponent
             return;
         }
 
-        $this->response->tenue_global = $this->keyResults;
-        $this->response->note_tenue_global = $this->globalScore;
-        $this->response->save();
-
-        $this->nextStep();
+        if ($this->editable == "disabled") {
+            $this->nextStep();
+        } else {
+            $this->response->tenue_global = $this->keyResults;
+            $this->response->note_tenue_global = $this->globalScore;
+            $this->response->save();
+            $this->nextStep();
+        }
     }
 
     private function validateKeyResults()

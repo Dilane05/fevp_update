@@ -34,6 +34,9 @@ return new class extends Migration
             $table->boolean('is_send')->default(0);
             $table->boolean('is_n1')->default(0);
             $table->boolean('is_n2')->default(0);
+            $table->date('date_n1')->nullable();
+            $table->date('date_n2')->nullable();
+            $table->boolean('is_editable')->default(1);
             $table->timestamps();
         });
     }

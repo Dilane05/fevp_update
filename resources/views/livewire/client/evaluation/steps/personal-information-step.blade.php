@@ -11,7 +11,7 @@
                         <i class="bi bi-person-circle display-6"></i>
                     </div>
                     <h5 class="fw-bold">Nom complet</h5>
-                    <p class="mb-0">{{ auth()->user()->name }}</p>
+                    <p class="mb-0">{{ $user->name }}</p>
                 </div>
             </div>
 
@@ -22,7 +22,7 @@
                         <i class="bi bi-card-list display-6"></i>
                     </div>
                     <h5 class="fw-bold">Matricule</h5>
-                    <p class="mb-0">{{ auth()->user()->matricule }}</p>
+                    <p class="mb-0">{{ $user->matricule }}</p>
                 </div>
             </div>
 
@@ -33,7 +33,7 @@
                         <i class="bi bi-briefcase display-6"></i>
                     </div>
                     <h5 class="fw-bold">Poste</h5>
-                    <p class="mb-0">{{ auth()->user()->occupation }}</p>
+                    <p class="mb-0">{{ $user->occupation }}</p>
                 </div>
             </div>
 
@@ -44,7 +44,7 @@
                         <i class="bi bi-award display-6"></i>
                     </div>
                     <h5 class="fw-bold">Statut Catégoriel</h5>
-                    <p class="mb-0">{{ auth()->user()->statut_category ? auth()->user()->statut_category : 'Non Attribué' }}</p>
+                    <p class="mb-0">{{ $user->statut_category ? $user->statut_category : 'Non Attribué' }}</p>
                 </div>
             </div>
 
@@ -55,7 +55,7 @@
                         <i class="bi bi-clock display-6"></i>
                     </div>
                     <h5 class="fw-bold">Ancienneté au poste (en années)</h5>
-                    <p class="mb-0">{{ auth()->user()->length_of_service ? auth()->user()->length_of_service : 'Non Connu' }}</p>
+                    <p class="mb-0">{{ $user->length_of_service ? $user->length_of_service : 'Non Connu' }}</p>
                 </div>
             </div>
 
@@ -66,7 +66,7 @@
                         <i class="bi bi-check2-circle display-6"></i>
                     </div>
                     <h5 class="fw-bold">Temporaire/Permanent</h5>
-                    <p class="mb-0">{{ auth()->user()->pemp_temp ? auth()->user()->pemp_temp : '' }}</p>
+                    <p class="mb-0">{{ $user->pemp_temp ? $user->pemp_temp : '' }}</p>
                 </div>
             </div>
 
@@ -77,7 +77,7 @@
                         <i class="bi bi-calendar-date display-6"></i>
                     </div>
                     <h5 class="fw-bold">Date d'embauche</h5>
-                    <p class="mb-0">{{ auth()->user()->hiring_date }}</p>
+                    <p class="mb-0">{{ $user->hiring_date }}</p>
                 </div>
             </div>
 
@@ -88,7 +88,7 @@
                         <i class="bi bi-person-badge display-6"></i>
                     </div>
                     <h5 class="fw-bold">Responsable N1</h5>
-                    <p class="mb-0">{{ auth()->user()->responsable_n1 ? auth()->user()->responsableN1->name : 'Non attribué' }}</p>
+                    <p class="mb-0">{{ $user->responsable_n1 ? $user->responsableN1->name : 'Non attribué' }}</p>
                 </div>
             </div>
 
@@ -99,7 +99,7 @@
                         <i class="bi bi-person-badge-fill display-6"></i>
                     </div>
                     <h5 class="fw-bold">Responsable N2</h5>
-                    <p class="mb-0">{{ auth()->user()->responsable_n2 ? auth()->user()->responsableN2->name : 'Non attribué' }}</p>
+                    <p class="mb-0">{{ $user->responsable_n2 ? $user->responsableN2->name : 'Non attribué' }}</p>
                 </div>
             </div>
 
@@ -111,9 +111,9 @@
                     </div>
                     <h5 class="fw-bold">Informations d'Entreprise</h5>
                     <p class="mb-0">
-                        <span class="fw-bold">Entreprise :</span> {{ auth()->user()->enterprise->name }} |
-                        <span class="fw-bold">Direction :</span> {{ auth()->user()->direction->name }} |
-                        <span class="fw-bold">Site :</span> {{ auth()->user()->site->name }}
+                        <span class="fw-bold">Entreprise :</span> {{ $user->enterprise->name }} |
+                        <span class="fw-bold">Direction :</span> {{ $user->direction->name }} |
+                        <span class="fw-bold">Site :</span> {{ $user->site->name }}
                     </p>
                 </div>
             </div>

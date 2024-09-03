@@ -62,6 +62,7 @@ class Index extends Component
             ->orWhere('description', 'like', '%' . $this->search . '%')
             ->orderBy('start_date', 'desc')
             ->paginate($this->perPage);
+
         return view('livewire.client.evaluation.index', compact('evaluations'))->layout('components.layouts.client.dashboard');
     }
 }

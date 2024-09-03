@@ -24,10 +24,14 @@ class ManagerialQualityStep extends StepComponent
     public $is_manager = '';
     public $totalNote = 0;
 
+    public $editable;
+
     public function mount()
     {
 
         $this->response = ResponseEvaluation::findOrFail($this->state()->forStep('create-evaluation-personal_info')['response']);
+
+        $this->editable = $this->state()->forStep('create-evaluation-personal_info')['editable_user'];
 
         $user = User::findOrFail($this->response->user_id);
         if ($user->type_fiche->value_manageriale <= 0) {
@@ -74,11 +78,16 @@ class ManagerialQualityStep extends StepComponent
             // Calculer la note globale avant de passer à l'étape suivante
             $this->calculateGlobalScore();
             // dd($this->qualities);
-            $this->response->manegerial_quality = $this->qualities;
-            $this->response->note_mangeriale_quality = $this->globalScore;
-            $this->response->save();
-            // Passer à l'étape suivante
-            $this->nextStep();
+
+            if ($this->editable == "disabled") {
+                $this->nextStep();
+            } else {
+                $this->response->manegerial_quality = $this->qualities;
+                $this->response->note_mangeriale_quality = $this->globalScore;
+                $this->response->save();
+                $this->nextStep();
+            }
+
         }
     }
 

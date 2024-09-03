@@ -16,11 +16,15 @@ class BonusMalusStep extends StepComponent
     public $errorMessages = [];
     public $totalBonusMalus = 0;
     public $errorsModalVisible = false;
-    public$response;
+    public $response;
+
+    public $editable;
 
     public function mount()
     {
         $this->response = ResponseEvaluation::findOrFail($this->state()->forStep('create-evaluation-personal_info')['response']);
+
+        $this->editable = $this->state()->forStep('create-evaluation-personal_info')['editable_user'];
 
         if ($this->response->bonus_malus) {
             $this->projects = $this->response->bonus_malus;
@@ -45,12 +49,15 @@ class BonusMalusStep extends StepComponent
             return;
         }
 
-        $this->response->bonus_malus = $this->projects;
-        $this->response->note_bonus_malus = $this->totalBonusMalus;
-        $this->response->save();
+        if ($this->editable == "disabled") {
+            $this->nextStep();
+        } else {
+            $this->response->bonus_malus = $this->projects;
+            $this->response->note_bonus_malus = $this->totalBonusMalus;
+            $this->response->save();
+            $this->nextStep();
+        }
 
-        // Proceed to the next step
-        $this->nextStep();
     }
 
     private function validateProjects()

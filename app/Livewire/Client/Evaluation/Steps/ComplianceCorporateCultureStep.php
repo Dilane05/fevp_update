@@ -10,6 +10,8 @@ class ComplianceCorporateCultureStep extends StepComponent
 {
     public $total = 15;
 
+    public $editable;
+
     public $performanceCriteria = [
         [
             'criteria' => 'Le respect des règles: travaille selon les règles de l\'art du métier (normes, procédures, instructions de travail…)',
@@ -38,6 +40,8 @@ class ComplianceCorporateCultureStep extends StepComponent
     {
         $this->response = ResponseEvaluation::findOrFail($this->state()->forStep('create-evaluation-personal_info')['response']);
 
+        $this->editable = $this->state()->forStep('create-evaluation-personal_info')['editable_user'];
+
         if ($this->response->compliance_corporate) {
             $this->performanceCriteria = $this->response->compliance_corporate;
         }
@@ -59,10 +63,15 @@ class ComplianceCorporateCultureStep extends StepComponent
             return;
         }
 
-        $this->response->compliance_corporate = $this->performanceCriteria;
-        $this->response->note_compliance_resultat = $this->globalScore;
-        $this->response->save();
-        $this->nextStep();
+        if ($this->editable == "disabled") {
+            $this->nextStep();
+        } else {
+            $this->response->compliance_corporate = $this->performanceCriteria;
+            $this->response->note_compliance_resultat = $this->globalScore;
+            $this->response->save();
+            $this->nextStep();
+        }
+
     }
 
     private function validateCriteria()

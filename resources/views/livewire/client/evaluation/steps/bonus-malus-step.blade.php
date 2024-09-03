@@ -51,12 +51,12 @@
                         <td colspan="2" class="align-middle">
                             <input type="text" wire:model.live="projects.{{ $index }}.description"
                                 class="form-control rounded-pill"
-                                placeholder="Description">
+                                placeholder="Description" {{ $editable }}>
                         </td>
                         <td class="align-middle">
                             <input type="number" wire:model.live="projects.{{ $index }}.note"
                                 class="form-control rounded-pill"
-                                min="-2.5" max="2.5" step="0.1" placeholder="">
+                                min="-2.5" max="2.5" step="0.1" placeholder="" {{ $editable }}>
                         </td>
                     </tr>
                 @endforeach

@@ -1,8 +1,7 @@
 <div>
     @include('livewire.portal.evaluation.comitee.create')
-    {{--@include('livewire.portal.evaluation.create.edit')
+    @include('livewire.portal.evaluation.comitee.view')
     @include('livewire.partials.delete-modal')
-    @include('livewire.portal.evaluation.create.inactive') --}}
     <div class='p-0'>
         <div class="d-flex justify-content-between w-100 flex-wrap align-items-center">
             <div class="mb-lg-0">
@@ -136,13 +135,9 @@
                     <tr>
                         <th class="border-bottom">{{ __('Code') }}</th>
                         <th class="border-bottom">{{ __('Titre') }}</th>
-                        <th class="border-bottom">{{ __('Membre') }}</th>
-                        <th class="border-bottom">{{ __('Population Cible') }}</th>
                         <th class="border-bottom">{{ __('Date') }}</th>
-                        <th class="border-bottom">{{ __('Lieu') }}</th>
-                        <th class="border-bottom">{{ __('Durée') }}</th>
+                        <th class="border-bottom">{{ __('Location') }}</th>
                         <th class="border-bottom">{{ __('Etat') }}</th>
-                        <th class="border-bottom">{{ __('Nombre de la population') }}</th>
                         <th class="border-bottom">{{ __('Créer Par') }}</th>
                         <th class="border-bottom text-end">{{ __('Date Création') }}</th>
                         {{-- @canany(['client-delete', 'client-update']) --}}
@@ -152,74 +147,40 @@
                 </thead>
                 <tbody>
                     @forelse($comitees as $comitee)
-                        @php
-                            $remainingTime = $evaluation->end_date
-                                ? Carbon::parse($evaluation->end_date)
-                                    ->locale('fr')
-                                    ->diffForHumans()
-                                : 'N/A';
-                            $participantCount = $evaluation->participants()->count(); // Compte le nombre de participants
-                        @endphp
-                        @php
-                        @endphp
                         <tr>
-                            <td>{{ $evaluation->code }}</td>
-                            <td>{{ $evaluation->title }}</td>
-                            <td>{{ $evaluation->start_date }}</td>
-                            <td>{{ $evaluation->end_date }}</td>
+                            <td>{{ $comitee->code }}</td>
+                            <td>{{ $comitee->title }}</td>
                             <td>
-                                @if ($evaluation->is_active)
+                                {{ $comitee->created_at? Carbon::parse($comitee->date)->locale('fr')->isoFormat('LL'): '' }}
+                            </td>
+                            <td>{{ $comitee->location }}</td>
+                            <td>
+                                @if ($comitee->status)
                                     <span class="badge bg-success">{{ __('Actif') }}</span>
                                 @else
                                     <span class="badge bg-danger">{{ __('Inactif') }}</span>
                                 @endif
                             </td>
-                            <td wire:poll.1s>
-                                {{ \Carbon\Carbon::now()->diffForHumans(\Carbon\Carbon::parse($evaluation->end_date), [
-                                    'syntax' => \Carbon\Carbon::DIFF_RELATIVE_TO_NOW,
-                                    'options' => \Carbon\Carbon::JUST_NOW | \Carbon\Carbon::ONE_DAY_WORDS,
-                                ]) }}
+                            <td>
+                                {{ $comitee->user->name }}
                             </td>
-                            <td>{{ $participantCount }}</td>
-                            <td>{{ $evaluation->user->name }}</td>
                             <td class="text-end">
-                                {{ $evaluation->created_at? Carbon::parse($evaluation->created_at)->locale('fr')->isoFormat('LL'): '' }}
+                                {{ $comitee->created_at? Carbon::parse($comitee->created_at)->locale('fr')->isoFormat('LL'): '' }}
                             </td>
                             {{-- @canany(['client-delete', 'client-update']) --}}
                             <td class="text-center">
                                 {{-- @can('client-update') --}}
-                                <a href='#' wire:click.prevent="initData({{ $evaluation->id }})"
-                                    data-bs-toggle="modal" data-bs-target="#EditEvaluationModal">
+                                <a href='#' wire:click.prevent="initData({{ $comitee->id }})"
+                                    data-bs-toggle="modal" data-bs-target="#ViewcomiteeModal">
                                     <svg class="icon icon-xs" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
-                                        </path>
-                                    </svg>
-                                </a>
-                                <a href="#" wire:click.prevent="initData({{ $evaluation->id }})"
-                                    wire:click.prevent="initData({{ $evaluation->id }})" data-bs-toggle="modal"
-                                    data-bs-target="#CloseOrDeactivateModal">
-                                    <svg class="icon icon-xs text-warning" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                </a>
-                                {{-- @endcan --}}
-
-                                <a href="{{ route('portal.evaluation.cible', ['evaluation' => $evaluation->code]) }}"
-                                    class="btn btn-primary">
-                                    <!-- Icône SVG pour "Ajouter" -->
-                                    <svg class="icon icon-xs" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 4v16m8-8H4"></path>
+                                            d="M2 6H0v16h20V6H2zm2 2v12h16V8H4zm14 10H6v-8h12v8z"></path>
                                     </svg>
                                 </a>
 
                                 {{-- @can('client-delete') --}}
-                                <a href='#' wire:click.prevent="initData({{ $evaluation->id }})"
+                                <a href='#' wire:click.prevent="initData({{ $comitee->id }})"
                                     data-bs-toggle="modal" data-bs-target="#DeleteModal">
                                     <svg class="icon icon-xs text-danger" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

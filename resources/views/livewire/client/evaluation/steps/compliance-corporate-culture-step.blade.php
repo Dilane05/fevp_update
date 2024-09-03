@@ -76,7 +76,7 @@
                             <td class="text-center align-middle">
                                 <input type="radio"
                                     wire:model.live="performanceCriteria.{{ $index }}.selectedScore"
-                                    value="{{ $value }}" class="form-check-input">
+                                    value="{{ $value }}" class="form-check-input" {{ $editable }}>
                             </td>
                         @endforeach
                     </tr>

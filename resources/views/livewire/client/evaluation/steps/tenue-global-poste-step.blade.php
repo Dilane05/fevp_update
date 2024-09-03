@@ -56,15 +56,15 @@
                     <tr>
                         <td>
                             <input type="text" wire:model.live="keyResults.{{ $index }}.domain"
-                                class="form-control rounded-pill">
+                                class="form-control rounded-pill" {{ $editable }} >
                         </td>
                         <td>
                             <input type="text" wire:model.live="keyResults.{{ $index }}.note"
-                                class="form-control rounded-pill">
+                                class="form-control rounded-pill" {{ $editable }} >
                         </td>
                         <td>
                             <input type="text" wire:model.live="keyResults.{{ $index }}.observations"
-                                class="form-control rounded-pill">
+                                class="form-control rounded-pill" {{ $editable }} >
                         </td>
                     </tr>
                 @endforeach

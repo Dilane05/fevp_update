@@ -1,6 +1,6 @@
 <div wire:ignore.self class="modal side-layout-modal fade" id="CreateComiteeModal" tabindex="-1"
     aria-labelledby="modal-form" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:80%;">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:50%;">
         <div class="modal-content">
             <div class="modal-body p-0">
                 <div class="p-2 p-lg-4">
@@ -45,37 +45,29 @@
                             </div>
                         </div>
 
-                        <div>
-                            <label for="user-select">Sélectionnez des utilisateurs :</label>
-                            <select id="user-select" wire:model.live="selectedUsers" multiple class="form-control">
-                                @foreach ($users as $user)
-                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                @endforeach
-                            </select>
-
-                            <div class="mt-3">
-                                <h5>Utilisateurs sélectionnés :</h5>
-                                <ul>
-                                    @foreach ($selectedUsers as $selectedUserId)
-                                        <li>{{ $users->find($selectedUserId)->name }}</li>
-                                    @endforeach
-                                </ul>
+                        <div class="form-group my-3 row">
+                            <div class='col'>
+                                <label class="px-2" for="user_ids">{{ __('Membres') }}</label>
+                                <x-input.selectmultipleusers wire:model.live="user_ids" prettyname="user_ids"
+                                    :options="$users" selected="('user_ids')" multiple="multiple" />
+                                @error('user_ids')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
 
-                        @include('livewire.portal.evaluation.comitee.population')
-
-                        <div class="mb-3">
-                            <label class="form-label">Etat</label>
-                            <select class="form-select" wire:model="is_active">
-                                <option value="">{{ __('Sélectionnez un statut') }}</option>
-                                <option value="1">{{ __('Oui') }}</option>
-                                <option value="0">{{ __('Non') }}</option>
-                            </select>
-                            @error('is_active')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
+                        <div class="form-group my-3 row">
+                            <div class='form-group mb-3'>
+                                <label for="selected_cibles">{{__('Selectionner la cible')}} <span class="text-danger">*</span></label>
+                                <x-input.selectmultiple wire:model.live="postes" prettyname="postes" :options="$occupations->pluck('name','id')" :selected="$occupations->pluck('name','id')" />
+                                @error('postes')
+                                <div class="invalid-feedback">{{$message}}</div>
+                                @enderror
+                            </div>
                         </div>
+
+                        <p>
+                        </p>
 
                         <div class="d-flex justify-content-end">
                             <button type="button" class="btn btn-gray-200 text-gray-600 ms-auto mx-3"
@@ -90,23 +82,7 @@
     </div>
 
     <script>
-        document.addEventListener('livewire:load', function() {
-            $('#user-select').select2({
-                placeholder: 'Sélectionnez des utilisateurs',
-                allowClear: true
-            });
 
-            $('#user-select').on('change', function(e) {
-                @this.set('selectedUsers', $(this).val());
-            });
-
-            Livewire.hook('message.processed', (message, component) => {
-                $('#user-select').select2({
-                    placeholder: 'Sélectionnez des utilisateurs',
-                    allowClear: true
-                });
-            });
-        });
     </script>
 
 </div>

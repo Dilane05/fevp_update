@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('title');
             $table->date('date');
             $table->string('location');
-            $table->string('duration');
-            $table->string('status');
+            // $table->string('duration');
+            $table->boolean('status')->default(1);
             $table->foreignId('created_by')
                 ->nullable()
                 ->constrained('users')

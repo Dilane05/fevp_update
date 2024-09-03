@@ -36,6 +36,11 @@
         </ol>
     </nav>
 
+    @if (session()->has('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
 
     <livewire:checkout-evaluation-wizard show-step="create-evaluation-personal_info" :evaluation_id="$evaluation->id" />
     {{-- Success is as dangerous as failure. --}}

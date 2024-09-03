@@ -57,6 +57,8 @@
                     feedback. Explorez ses fonctionnalités pour tirer pleinement parti de cette nouvelle ère
                     d'évaluation au sein de notre entreprise.
                 </p>
+                @if ($evaluation)
+
                 @if (!$evaluation->is_active)
                     <div class="d-flex">
                         <button class="btn btn-secondary mx-1" disabled>Évaluation Clôturée</button>
@@ -83,6 +85,7 @@
                     @else
                         <button class="btn btn-secondary w-100" disabled>Pas autorisé</button>
                     @endif
+                @endif
                 @endif
             </div>
         </div>
@@ -357,6 +360,7 @@
             }
         </style>
 
+        @if ($evaluation)
         <script>
             // Set the start and end dates
             var startDate = new Date("{{ \Carbon\Carbon::parse($evaluation->start_date)->format('Y-m-d H:i:s') }}").getTime();
@@ -397,6 +401,9 @@
             // Update the count down every 1 second
             var countdownFunction = setInterval(updateCountdown, 1000);
         </script>
+
+        @endif
+
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {

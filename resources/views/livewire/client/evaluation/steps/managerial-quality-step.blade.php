@@ -69,7 +69,7 @@
 
     <div class="table-responsive mt-4">
         <div class="d-flex justify-content-end mb-2">
-            <button class="btn btn-outline-primary btn-sm rounded-pill" wire:click="addRow">Ajouter une ligne</button>
+            <button class="btn btn-outline-primary btn-sm rounded-pill" wire:click="addRow" {{ $editable }}>Ajouter une ligne</button>
         </div>
         <table class="table table-borderless rounded-3 shadow-sm align-middle">
             <thead class="bg-primary text-white rounded-top">
@@ -88,19 +88,19 @@
                     <tr>
                         <td>
                             <input type="text" wire:model.live="qualities.{{ $index }}.quality"
-                                class="form-control rounded-pill" {{ $is_manager }}>
+                                class="form-control rounded-pill" {{ $is_manager }} {{ $editable }}>
                         </td>
                         <td>
                             <input type="number" step="0.01" wire:model.live="qualities.{{ $index }}.target"
-                                class="form-control rounded-pill" {{ $is_manager }}>
+                                class="form-control rounded-pill" {{ $is_manager }} {{ $editable }}>
                         </td>
                         <td>
                             <input type="number" step="0.01" wire:model.live="qualities.{{ $index }}.realization"
-                                class="form-control rounded-pill" {{ $is_manager }}>
+                                class="form-control rounded-pill" {{ $is_manager }} {{ $editable }}>
                         </td>
                         <td>
                             <input type="text" wire:model.live="qualities.{{ $index }}.observations"
-                                class="form-control rounded-pill " disabled >
+                                class="form-control rounded-pill " {{ $editable }} >
                         </td>
                     </tr>
                 @endforeach
@@ -124,7 +124,7 @@
         </table>
 
         <div class="d-flex justify-content-end mb-2">
-            <button class="btn btn-outline-primary btn-sm rounded-pill" wire:click="addRow">Ajouter une ligne</button>
+            <button class="btn btn-outline-primary btn-sm rounded-pill" wire:click="addRow" {{ $editable }}>Ajouter une ligne</button>
         </div>
     </div>
 

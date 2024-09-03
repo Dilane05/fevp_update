@@ -33,5 +33,8 @@
         </div>
     </div>
 
-    @include('livewire.client.evaluation.control-navigation')
+    <div class="d-flex my-2 justify-content-end">
+        <button class="btn btn-primary" wire:click="submit"> {{ __('Sauvegarder') }} </button>
+    </div>
+
 </div>
