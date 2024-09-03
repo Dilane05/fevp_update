@@ -43,7 +43,7 @@
 
     <div class="container">
         <div class="row">
-            @foreach ($responseEvaluations as $responseEvaluation)
+            @forelse ($responseEvaluations as $responseEvaluation)
                 <div class="col-md-4 mb-4">
                     <div class="card border-0 shadow-sm rounded overflow-hidden">
                         <img src="https://via.placeholder.com/600x200" class="card-img-top" alt="Evaluation Image">
@@ -73,7 +73,11 @@
                         </div>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="shadow rounded">
+                    <p class="text-warning display-3 text-center"> {{ __('Vous n\'etes pas evaluateur !!!') }} </p>
+                </div>
+            @endforelse
         </div>
     </div>
 
