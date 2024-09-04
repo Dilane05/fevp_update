@@ -2,17 +2,19 @@
 
 namespace App\Livewire\Client\Evaluation;
 
-use App\Livewire\Client\Evaluation\Steps\BilanResultatStep;
-use App\Livewire\Client\Evaluation\Steps\BonusMalusStep;
-use App\Livewire\Client\Evaluation\Steps\ComplianceCorporateCultureStep;
-use App\Livewire\Client\Evaluation\Steps\ManagerialQualityStep;
+use Livewire\Component;
 use App\Livewire\Client\Evaluation\Steps\NoteStep;
 use App\Livewire\Client\Evaluation\Steps\OtherStep;
-use Livewire\Component;
 use Spatie\LivewireWizard\Components\WizardComponent;
-use App\Livewire\Client\Evaluation\Steps\PersonalInformationStep;
 use App\Livewire\Client\Evaluation\Steps\SanctionStep;
+use App\Livewire\Client\Evaluation\Steps\BonusMalusStep;
+use App\Livewire\Client\Evaluation\Steps\ValidateN1Step;
+use App\Livewire\Client\Evaluation\Steps\ValidateN2Step;
+use App\Livewire\Client\Evaluation\Steps\BilanResultatStep;
 use App\Livewire\Client\Evaluation\Steps\TenueGlobalPosteStep;
+use App\Livewire\Client\Evaluation\Steps\ManagerialQualityStep;
+use App\Livewire\Client\Evaluation\Steps\PersonalInformationStep;
+use App\Livewire\Client\Evaluation\Steps\ComplianceCorporateCultureStep;
 
 class CheckoutWizardComponent extends WizardComponent
 {
@@ -35,6 +37,8 @@ class CheckoutWizardComponent extends WizardComponent
             'create-evaluation-bonus_malus',
             'create-evaluation-sanctions',
             'create-evaluation-others',
+            'calculate-validate-n1',
+            'calculate-validate-n2'
         ];
 
         return collect($components)->mapWithKeys(function ($component) {
@@ -52,8 +56,10 @@ class CheckoutWizardComponent extends WizardComponent
             ComplianceCorporateCultureStep::class,
             BonusMalusStep::class,
             SanctionStep::class,
+            NoteStep::class,
             OtherStep::class,
-            NoteStep::class
+            ValidateN1Step::class,
+            ValidateN2Step::class,
 
         ];
     }

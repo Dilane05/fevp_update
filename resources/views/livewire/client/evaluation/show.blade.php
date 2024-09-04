@@ -51,6 +51,17 @@
                     'errorModal'));
                 evaluationReminderModal.show();
             });
+
+            // Désactiver le copier-coller dans les champs de saisie
+            var inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(function(input) {
+                input.addEventListener('copy', function(e) {
+                    e.preventDefault();
+                });
+                input.addEventListener('paste', function(e) {
+                    e.preventDefault();
+                });
+            });
         });
     </script>
     <!-- Inclure le script Bootstrap pour les tooltips -->
@@ -63,7 +74,5 @@
             });
         });
     </script>
-
-
 
 </div>

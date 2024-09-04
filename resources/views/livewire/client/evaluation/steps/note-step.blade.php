@@ -13,13 +13,14 @@
             <div class="col-md-6">
                 <h4>Moyenne par Rubrique</h4>
                 <ul class="list-group">
-                    <li class="list-group-item">Bilan Résultat: {{ number_format($average_bilan_resultat, 2) }}/20</li>
+                    <li class="list-group-item">Bilan Résultat:
+                        {{ number_format($note_bilan_resultat, 2) }}/{{ $total_bilan_resultat }}</li>
                     <li class="list-group-item">Tenue globale du poste:
-                        {{ number_format($average_tenue_global_poste, 2) }}/20</li>
+                        {{ number_format($note_tenue_global_poste, 2) }}/{{ $total_tenue_global_poste }}</li>
                     <li class="list-group-item">Qualité Managériale:
-                        {{ number_format($average_quality_managerial, 2) }}/20</li>
+                        {{ number_format($note_quality_managerial, 2) }}/{{ $total_quality_managerial }}</li>
                     <li class="list-group-item">Conformité à la culture d'entreprise:
-                        {{ number_format($average_compliance_corporate, 2) }}/20</li>
+                        {{ number_format($note_compliance_corporate, 2) }}/{{ $total_compliance_corporate }}</li>
                     <li class="list-group-item">Bonus Malus:
                         {{ number_format($note_bonus_malus, 2) }}</li>
                     <li class="list-group-item">Sanctions:
@@ -33,8 +34,12 @@
         </div>
     </div>
 
-    <div class="d-flex my-2 justify-content-end">
-        <button class="btn btn-primary" wire:click="submit"> {{ __('Sauvegarder') }} </button>
-    </div>
+    @if (auth()->user()->id == $response->user->responsable_n1 || auth()->user()->id == $response->user->responsable_n2)
+        @include('livewire.client.evaluation.control-navigation')
+    @else
+        <div class="d-flex my-2 justify-content-end">
+            <button class="btn btn-primary" wire:click="save"> {{ __('Sauvegarder') }} </button>
+        </div>
+    @endif
 
 </div>

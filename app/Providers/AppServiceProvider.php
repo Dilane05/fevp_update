@@ -6,15 +6,17 @@ use Livewire\Livewire;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
-use App\Livewire\Client\Evaluation\CheckoutWizardComponent;
-use App\Livewire\Client\Evaluation\Steps\BilanResultatStep;
-use App\Livewire\Client\Evaluation\Steps\BonusMalusStep;
-use App\Livewire\Client\Evaluation\Steps\ComplianceCorporateCultureStep;
-use App\Livewire\Client\Evaluation\Steps\ManagerialQualityStep;
 use App\Livewire\Client\Evaluation\Steps\NoteStep;
 use App\Livewire\Client\Evaluation\Steps\OtherStep;
-use App\Livewire\Client\Evaluation\Steps\PersonalInformationStep;
 use App\Livewire\Client\Evaluation\Steps\SanctionStep;
+use App\Livewire\Client\Evaluation\Steps\BonusMalusStep;
+use App\Livewire\Client\Evaluation\Steps\ValidateN1Step;
+use App\Livewire\Client\Evaluation\Steps\ValidateN2Step;
+use App\Livewire\Client\Evaluation\CheckoutWizardComponent;
+use App\Livewire\Client\Evaluation\Steps\BilanResultatStep;
+use App\Livewire\Client\Evaluation\Steps\ManagerialQualityStep;
+use App\Livewire\Client\Evaluation\Steps\PersonalInformationStep;
+use App\Livewire\Client\Evaluation\Steps\ComplianceCorporateCultureStep;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -114,6 +116,8 @@ class AppServiceProvider extends ServiceProvider
         Livewire::component('create-evaluation-sanctions', SanctionStep::class);
         Livewire::component('create-evaluation-others', OtherStep::class);
         Livewire::component('calculate-evaluation-notes', NoteStep::class);
+        Livewire::component('calculate-validate-n1', ValidateN1Step::class);
+        Livewire::component('calculate-validate-n2', ValidateN2Step::class);
 
     }
 }

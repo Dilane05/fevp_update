@@ -15,6 +15,9 @@ class NoteStep extends StepComponent
 
     public $note_bonus_malus, $note_sanction;
 
+    public $note_bilan_resultat, $note_tenue_global_poste, $note_quality_managerial, $note_compliance_corporate,
+        $total_bilan_resultat, $total_tenue_global_poste, $total_quality_managerial, $total_compliance_corporate;
+
     public $response;
 
     public function mount()
@@ -37,6 +40,16 @@ class NoteStep extends StepComponent
         $this->note_bonus_malus = is_numeric($response->note_bonus_malus) ? $response->note_bonus_malus : 0;
         $this->note_sanction = is_numeric($response->note_sanction) ? $response->note_sanction : 0;
 
+        $this->note_bilan_resultat = $note_bilan_resultat;
+        $this->note_tenue_global_poste = $note_tenue_global_poste;
+        $this->note_quality_managerial = $note_quality_managerial;
+        $this->note_compliance_corporate = $note_compliance_corporate;
+
+        $this->total_bilan_resultat = $total_bilan_resultat;
+        $this->total_tenue_global_poste = $total_tenue_global_poste;
+        $this->total_quality_managerial = $total_quality_managerial;
+        $this->total_compliance_corporate = $total_compliance_corporate;
+
         // Calculate individual averages
         $this->average_bilan_resultat = ($total_bilan_resultat > 0) ? ($note_bilan_resultat / $total_bilan_resultat) * 20 : 0;
         $this->average_tenue_global_poste = ($total_tenue_global_poste > 0) ? ($note_tenue_global_poste / $total_tenue_global_poste) * 20 : 0;
@@ -54,7 +67,7 @@ class NoteStep extends StepComponent
         $this->global_average = ($total_possible_scores > 0) ? ($total_actual_scores / $total_possible_scores) * 20 : 0;
     }
 
-    public function submit()
+    public function save()
     {
 
         if ($this->response->user_id == auth()->user()->id) {
@@ -63,25 +76,16 @@ class NoteStep extends StepComponent
             if (!$this->response->date) {
                 $this->response->date = now();
             }
-        } else {
-            if ($this->response->user->responsable_n1 == auth()->user()->id) {
-                if (!$this->response->is_n1) {
-                    $this->response->is_n1 = 1;
-                    $this->response->date_n1 = now();
-                    $this->response->is_editable = 0;
-                }
-            } else if ($this->response->user->responsable_n2 == auth()->user()->id) {
-                if (!$this->response->is_n2) {
-                    $this->response->is_n2 = 1;
-                    $this->response->date_n2 = now();
-                    $this->response->is_editable = 0;
-                }
-            }
         }
 
         $this->response->save();
 
         session()->flash('success', 'Evaluation Soumise avec succès.');
+    }
+
+    public function submit()
+    {
+        $this->nextStep();
     }
 
     public function stepInfo(): array
