@@ -12,6 +12,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css"
         rel="stylesheet">
 
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     @livewireStyles
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400&display=swap');

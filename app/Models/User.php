@@ -22,6 +22,7 @@ use App\Consultations\Filters\UnavailabilityFilter;
 use App\Consultations\Filters\SlotsPassedTodayFilter;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -156,6 +157,18 @@ class User extends Authenticatable
     public function responsableN2(): belongsTo
     {
         return $this->belongsTo(User::class,"responsable_n2");
+    }
+
+    // Relation pour les utilisateurs dont l'utilisateur est responsable N1
+    public function responsableN1Users() : HasMany
+    {
+        return $this->hasMany(User::class, 'responsable_n1');
+    }
+
+    // Relation pour les utilisateurs dont l'utilisateur est responsable N2
+    public function responsableN2Users() : HasMany
+    {
+        return $this->hasMany(User::class, 'responsable_n2');
     }
 
     public static function search($query): Builder

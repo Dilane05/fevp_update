@@ -11,6 +11,7 @@ use App\Livewire\Client\Evaluation\Steps\BonusMalusStep;
 use App\Livewire\Client\Evaluation\Steps\ValidateN1Step;
 use App\Livewire\Client\Evaluation\Steps\ValidateN2Step;
 use App\Livewire\Client\Evaluation\Steps\BilanResultatStep;
+use App\Livewire\Client\Evaluation\Steps\CareerComiteeStep;
 use App\Livewire\Client\Evaluation\Steps\TenueGlobalPosteStep;
 use App\Livewire\Client\Evaluation\Steps\ManagerialQualityStep;
 use App\Livewire\Client\Evaluation\Steps\PersonalInformationStep;
@@ -36,9 +37,10 @@ class CheckoutWizardComponent extends WizardComponent
             'create-evaluation-compliance_corporate_culture',
             'create-evaluation-bonus_malus',
             'create-evaluation-sanctions',
-            'create-evaluation-others',
+            'create-comitee-career',
+            // 'create-evaluation-others',
             'calculate-validate-n1',
-            'calculate-validate-n2'
+            'calculate-validate-n2',
         ];
 
         return collect($components)->mapWithKeys(function ($component) {
@@ -56,8 +58,9 @@ class CheckoutWizardComponent extends WizardComponent
             ComplianceCorporateCultureStep::class,
             BonusMalusStep::class,
             SanctionStep::class,
+            CareerComiteeStep::class,
             NoteStep::class,
-            OtherStep::class,
+            // OtherStep::class,
             ValidateN1Step::class,
             ValidateN2Step::class,
 

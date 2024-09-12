@@ -14,6 +14,7 @@ use App\Livewire\Client\Evaluation\Steps\ValidateN1Step;
 use App\Livewire\Client\Evaluation\Steps\ValidateN2Step;
 use App\Livewire\Client\Evaluation\CheckoutWizardComponent;
 use App\Livewire\Client\Evaluation\Steps\BilanResultatStep;
+use App\Livewire\Client\Evaluation\Steps\CareerComiteeStep;
 use App\Livewire\Client\Evaluation\Steps\ManagerialQualityStep;
 use App\Livewire\Client\Evaluation\Steps\PersonalInformationStep;
 use App\Livewire\Client\Evaluation\Steps\ComplianceCorporateCultureStep;
@@ -118,6 +119,7 @@ class AppServiceProvider extends ServiceProvider
         Livewire::component('calculate-evaluation-notes', NoteStep::class);
         Livewire::component('calculate-validate-n1', ValidateN1Step::class);
         Livewire::component('calculate-validate-n2', ValidateN2Step::class);
+        Livewire::component('create-comitee-career', CareerComiteeStep::class);
 
     }
 }

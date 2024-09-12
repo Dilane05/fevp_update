@@ -8,7 +8,7 @@
         <li class="nav-item">
             <a class="nav-link {{ $request->routeIs('client.dashboard') ? 'active' : '' }}"
                 href="{{ route('client.dashboard') }}" wire:navigate><i class="bi bi-house-door-fill me-2"></i><span
-                    data-translate="dashboard">Tableau de Bord</span></a>
+                    data-translate="dashboard">Accueil</span></a>
         </li>
         <li class="nav-item">
             <a class="nav-link {{ $request->routeIs('client.evaluations.index') ? 'active' : '' }}"
@@ -20,6 +20,13 @@
                 href="{{ route('client.evaluators.index') }}" wire:navigate>
                 <i class="bi bi-person-circle me-2"></i>
                 <span data-translate="evaluators">Évaluateurs</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('client.tbords.index') ? 'active' : '' }}"
+                href="{{ route('client.tbords.index') }}" wire:navigate>
+                <i class="bi bi-table me-2"></i> <!-- Icône de tableau pour Tbord -->
+                <span data-translate="tbord">Tbord</span>
             </a>
         </li>
         <li class="nav-item">

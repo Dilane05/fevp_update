@@ -38,7 +38,8 @@
         @include('livewire.client.evaluation.control-navigation')
     @else
         <div class="d-flex my-2 justify-content-end">
-            <button class="btn btn-primary" wire:click="save"> {{ __('Sauvegarder') }} </button>
+            <a class="btn btn-secondary rounded-pill" wire:click="previousStep">{{__('Précédent')}}</a>
+            <button class="btn btn-primary mx-2" wire:click="save"> {{ __('Sauvegarder') }} </button>
         </div>
     @endif
 
