@@ -53,7 +53,7 @@
                                     <th>nov.-23</th>
                                     <th>déc.-23</th>
                                     <th>Année 2023</th>
-                                    <th>NOTE</th>
+                                    <th>Note</th>
                                 </tr>
                             </thead>
                             <tbody>
