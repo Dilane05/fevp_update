@@ -54,9 +54,26 @@
                                     <tr>
                                         <td>Performance Globale /70</td>
                                         @foreach (['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'] as $month)
-                                            <td>{{ $performance['performance']['Note'][$month] ?? 0 }}</td>
+                                            <td>
+                                                0
+                                            </td>
                                         @endforeach
-                                        <td>{{ array_sum($performance['performance']['Note'] ?? []) }}</td>
+                                        <td>{{ array_sum($performance['performance']['Nb actions réalisées'] ?? []) }}
+                                        </td>
+                                        <td>{{ $performance['note'] ?? 0 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nb actions réalisées</td>
+                                        @foreach (['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'] as $month)
+                                            <td>
+                                                <input type="number"
+                                                    wire:model="performances[{{ $loop->parent->index }}]['performance']['Nb actions réalisées']['{{ $month }}']"
+                                                    class="form-control rounded-pill form-control rounded-pill-lg"
+                                                    value="{{ $performance['performance']['Nb actions réalisées'][$month] ?? '' }}">
+                                            </td>
+                                        @endforeach
+                                        <td>{{ array_sum($performance['performance']['Nb actions réalisées'] ?? []) }}
+                                        </td>
                                         <td>{{ $performance['note'] ?? 0 }}</td>
                                     </tr>
                                     <tr>
