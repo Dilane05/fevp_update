@@ -13,7 +13,7 @@ class Performance extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'months' => 'array',
+        'performances' => 'array',
     ];
 
     public function tbord() : BelongsTo

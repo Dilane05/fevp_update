@@ -33,11 +33,74 @@ class Index extends Component
                 'indicateur' => $performance->indicateur,
                 'objectif' => $performance->objectif,
                 'type_indicator' => $performance->type_indicator,
-                'performance' => $performance->performance,
+                // Si 'performances' est non null, on la prend, sinon on charge un array par défaut
+                'performance' => $performance->performances ? json_decode($performance->performances, true) : $this->defaultPerformanceArray(),
                 'cible' => $performance->cible,
                 'coef' => $performance->coef,
             ];
         })->toArray();
+    }
+
+    public function defaultPerformanceArray()
+    {
+        return [
+            'Nb actions réalisées' => [
+                'jan' => null,
+                'feb' => null,
+                'mar' => null,
+                'apr' => null,
+                'may' => null,
+                'jun' => null,
+                'jul' => null,
+                'aug' => null,
+                'sep' => null,
+                'oct' => null,
+                'nov' => null,
+                'dec' => null
+            ],
+            'Nb actions réalisées dans délais' => [
+                'jan' => null,
+                'feb' => null,
+                'mar' => null,
+                'apr' => null,
+                'may' => null,
+                'jun' => null,
+                'jul' => null,
+                'aug' => null,
+                'sep' => null,
+                'oct' => null,
+                'nov' => null,
+                'dec' => null
+            ],
+            'Nb actions planifiées' => [
+                'jan' => null,
+                'feb' => null,
+                'mar' => null,
+                'apr' => null,
+                'may' => null,
+                'jun' => null,
+                'jul' => null,
+                'aug' => null,
+                'sep' => null,
+                'oct' => null,
+                'nov' => null,
+                'dec' => null
+            ],
+            '% Mise en œuvre' => [
+                'jan' => null,
+                'feb' => null,
+                'mar' => null,
+                'apr' => null,
+                'may' => null,
+                'jun' => null,
+                'jul' => null,
+                'aug' => null,
+                'sep' => null,
+                'oct' => null,
+                'nov' => null,
+                'dec' => null
+            ]
+        ];
     }
 
     public function render()

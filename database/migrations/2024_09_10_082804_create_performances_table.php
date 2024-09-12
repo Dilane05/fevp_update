@@ -16,11 +16,11 @@ return new class extends Migration
             $table->foreignId('tbord_id')->constrained()->onDelete('cascade');
             $table->string('objectif');
             $table->string('indicateur');
-            $table->string('type_indicator');
-            $table->string('performance');
+            $table->string('type_indicator')->nullable();
+            $table->json('performances')->nullable();
             $table->decimal('cible', 5, 2); // Valeur cible
             $table->decimal('coef', 5, 2);  // Coefficient
-            $table->json('months')->nullable();         // Stocke les données mensuelles en format JSON
+            $table->float(10,2,'note')->nullable();
             $table->timestamps();
         });
     }
