@@ -1,6 +1,6 @@
 # Installation et Configuration de l'Application Web FEVP
 
-Ce projet est une application FEVP : Fiche d'écaluation des employés developé en laravel 11 intégrant Livewire 3 et d'autres packages essentiels comme Laravel Breeze, Livewire Volt, et bien d'autres. Suivez les étapes ci-dessous pour installer et configurer l'application sur votre environnement local.
+Ce projet est L'application FEVP : Fiche d'écaluation des employés developé en laravel 11 intégrant Livewire 3 et d'autres packages essentiels comme Laravel Breeze, Livewire Volt, et bien d'autres. Suivez les étapes ci-dessous pour installer et configurer l'application sur votre environnement local.
 
 ## Prérequis
 
@@ -18,8 +18,8 @@ Avant de commencer, assurez-vous d'avoir installé :
 Clonez le projet à partir du dépôt Git :
 
 ```bash
-git clone https://github.com/ton-projet/nom-du-projet.git
-cd nom-du-projet
+git clone https://github.com/Dilane05/fevp
+cd fevp
 ```
 
 ### 2. Installation des dépendances backend
@@ -87,10 +87,11 @@ Voici quelques-uns des principaux packages inclus dans ce projet :
 - Livewire : ^3.4
 - Laravel Breeze : ^2.0 (Pour l'authentification)
 - Livewire Volt : ^1.6 (Pour une intégration Livewire fluide)
-- Maatwebsite Excel : ^3.1 (Pour l'import/export Excel)
+- Maatwebsite Excel : ^3.1 (Pour l'import/export Excel des employes)
 - Spatie Laravel Permission : ^6.7 (Gestion des rôles et permissions)
 - Spatie Laravel PDF : ^1.5 (Génération de PDFs)
 - Barryvdh Laravel DomPDF : (Pour générer des PDFs à partir de vues)
 - laravel-livewire-wizard : Pour gerer les evaluations
-- Pour plus de détails, consultez le fichier composer.json.
+
+Pour plus de détails, consultez le fichier composer.json.
 
