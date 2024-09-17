@@ -84,13 +84,13 @@ Accédez à l'application via : http://localhost:8000
 ## Packages utilisés
 Voici quelques-uns des principaux packages inclus dans ce projet :
 
-Livewire : ^3.4
-Laravel Breeze : ^2.0 (Pour l'authentification)
-Livewire Volt : ^1.6 (Pour une intégration Livewire fluide)
-Maatwebsite Excel : ^3.1 (Pour l'import/export Excel)
-Spatie Laravel Permission : ^6.7 (Gestion des rôles et permissions)
-Spatie Laravel PDF : ^1.5 (Génération de PDFs)
-Barryvdh Laravel DomPDF : (Pour générer des PDFs à partir de vues)
-laravel-livewire-wizard : Pour gerer les evaluations
-Pour plus de détails, consultez le fichier composer.json.
+- Livewire : ^3.4
+- Laravel Breeze : ^2.0 (Pour l'authentification)
+- Livewire Volt : ^1.6 (Pour une intégration Livewire fluide)
+- Maatwebsite Excel : ^3.1 (Pour l'import/export Excel)
+- Spatie Laravel Permission : ^6.7 (Gestion des rôles et permissions)
+- Spatie Laravel PDF : ^1.5 (Génération de PDFs)
+- Barryvdh Laravel DomPDF : (Pour générer des PDFs à partir de vues)
+- laravel-livewire-wizard : Pour gerer les evaluations
+- Pour plus de détails, consultez le fichier composer.json.
 
