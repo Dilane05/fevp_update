@@ -58,11 +58,11 @@ class CheckoutWizardComponent extends WizardComponent
             ComplianceCorporateCultureStep::class,
             BonusMalusStep::class,
             SanctionStep::class,
+            ValidateN1Step::class,
+            ValidateN2Step::class,
             NoteStep::class,
             CareerComiteeStep::class,
             // OtherStep::class,
-            ValidateN1Step::class,
-            ValidateN2Step::class,
 
         ];
     }

@@ -63,11 +63,6 @@ Route::group(['prefix' => 'portal', 'middleware' => ['auth']], function () {
         Route::get('/create/comitees', App\Livewire\Portal\Evaluation\Comitee\Index::class)->name('portal.comitee.cible');
     });
 
-        //Client Feedback
-    Route::prefix('client-feedbacks')->group(function () {
-        Route::get('/', App\Livewire\Portal\Feedback\Index::class)->name('portal.client-feedback.index');
-    });
-
     //AuditLogs
     Route::prefix('auditlogs')->group(function () {
         Route::get('/', App\Livewire\Portal\AuditLogs\Index::class)->name('portal.auditlogs.index');

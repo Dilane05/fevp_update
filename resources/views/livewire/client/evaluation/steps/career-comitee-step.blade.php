@@ -273,11 +273,11 @@
                                     <strong>Date : </strong> Le ………/ …… / ………
                                 </div>
                             @else
-                                {{-- @if ($this->response->user->responsable_n2 == auth()->user()->id) --}}
+                                @if (auth()->user()->occupation === "rrdch")
                                     <div class="my-1">
                                         <button class="btn btn-primary" wire:click="sign_rrdch"> Cliquez pour signer </button>
                                     </div>
-                                {{-- @endif --}}
+                                @endif
                             @endif
                         </td>
                     </tr>
