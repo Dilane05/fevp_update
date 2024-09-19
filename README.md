@@ -18,7 +18,7 @@ Avant de commencer, assurez-vous d'avoir installé :
 Clonez le projet à partir du dépôt Git :
 
 ```bash
-git clone https://github.com/Dilane05/fevp
+git clone https://github.com/DilaneDevCadyst/fevp
 cd fevp
 ```
 

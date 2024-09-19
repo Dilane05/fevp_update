@@ -36,6 +36,8 @@ Route::group(['prefix' => 'my', 'middleware' => ['auth', 'role:user']], function
 
     Route::get('/tbord/{code}', App\Livewire\Client\Tbord\Find\Index::class)->name('client.tbords.find');
 
+    Route::get('/contrat-performance', App\Livewire\Client\PerformanceContract\Index::class)->name('client.performance-contract.index');
+
     //AuditLogs
     Route::prefix('auditlogs')->group(function () {
         Route::get('/', App\Livewire\Client\AuditLogs\Index::class)->name('client.auditlogs');
