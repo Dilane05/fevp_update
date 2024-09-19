@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
 
         // $this->call(AssignTypeFichierToUsersSeeder::class);
 
-        $this->call(SitesTableSeeder::class);
+        // $this->call(SitesTableSeeder::class);
 
         // Crée 50 utilisateurs et leur assigne le rôle 'user'
         // User::factory(50)->create(50)->each(function ($user) {
