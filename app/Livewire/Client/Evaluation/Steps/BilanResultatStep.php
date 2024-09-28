@@ -5,7 +5,9 @@ namespace App\Livewire\Client\Evaluation\Steps;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\Indicator;
+use App\Models\PerformanceContrat;
 use App\Models\ResponseEvaluation;
+use App\Models\PerformanceContract;
 use Illuminate\Support\Facades\Validator;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Spatie\LivewireWizard\Components\StepComponent;
@@ -35,6 +37,51 @@ class BilanResultatStep extends StepComponent
 
         if ($this->response->bilan_resultat) {
             $this->rows = $this->response->bilan_resultat;
+        } else {
+            // Récupérer l'année en cours
+            $currentYear = date('Y');
+
+            // Trouver le contrat de performance de l'année en cours
+            $performanceContract = PerformanceContract::where('year', $currentYear)->first();
+
+            if ($performanceContract) {
+                // Récupérer les objectifs (performance_contrats) et leurs indicateurs pour ce contrat de performance
+                $performanceContrats = PerformanceContrat::where('performance_contract_id', $performanceContract->id)
+                    ->with('indicateurs') // Charger les indicateurs associés
+                    ->get();
+
+                // Remplir le tableau $rows avec les informations des indicateurs
+                $this->rows = $performanceContrats->flatMap(function ($performanceContrat) {
+                    return $performanceContrat->indicateurs->map(function ($indicator) {
+
+                        // Vérifier si la cible contient un pourcentage
+                        if (strpos($indicator->cible, '%') !== false) {
+                            $cible_pct = $indicator->cible;
+                            $cible_nb = null; // Pas de valeur numérique
+                        } else {
+                            $cible_pct = null; // Pas de pourcentage
+                            $cible_nb = $indicator->cible;
+                        }
+
+                        return [
+                            'objectif' => $indicator->nom,
+                            'indicateur' => $indicator->type,
+                            'coef' => $indicator->coef,
+                            'cible_pct' => $cible_pct,
+                            'cible_nb' => $cible_nb,
+                            'resultat_pct' => null, // Rempli plus tard
+                            'resultat_nb' => null, // Rempli plus tard
+                            'note' => null, // Rempli plus tard
+                            'observations' => null,
+                        ];
+                    });
+                })->toArray();
+            } else {
+                // Si aucun contrat de performance n'est trouvé pour l'année en cours, garder une ligne vide
+                $this->rows = [
+                    ['objectif' => '', 'indicateur' => '', 'coef' => '', 'cible_pct' => '', 'cible_nb' => '', 'resultat_pct' => '', 'resultat_nb' => '', 'note' => '', 'observations' => ''],
+                ];
+            }
         }
         $this->globalNote = $this->response->note_bilan_resultat ?? 0;
 
@@ -128,9 +175,9 @@ class BilanResultatStep extends StepComponent
         if (!empty($this->errorMessages)) {
             $this->dispatch('show-error-modal');
         } else {
-            if($this->editable == "disabled"){
+            if ($this->editable == "disabled") {
                 $this->nextStep();
-            }else{
+            } else {
                 $this->response->bilan_resultat = $this->rows;
                 $this->response->note_bilan_resultat = $this->globalNote;
                 $this->response->save();
@@ -205,7 +252,7 @@ class BilanResultatStep extends StepComponent
             'rows.*.indicateur.required' => 'L\'indicateur est requis au niveau de la ligne :index.',
             'rows.*.coef.required' => 'Le coefficient est requis au niveau de la ligne :index.',
             'rows.*.coef.numeric' => 'Le coefficient doit être un nombre au niveau de la ligne :index.',
-                        'rows.*.cible_pct.numeric' => 'La cible en pourcentage doit être un nombre au niveau de la ligne :index.',
+            'rows.*.cible_pct.numeric' => 'La cible en pourcentage doit être un nombre au niveau de la ligne :index.',
             'rows.*.cible_nb.numeric' => 'La cible en nombre doit être un nombre au niveau de la ligne :index.',
             'rows.*.resultat_pct.numeric' => 'Le résultat en pourcentage doit être un nombre au niveau de la ligne :index.',
             'rows.*.resultat_nb.numeric' => 'Le résultat en nombre doit être un nombre au niveau de la ligne :index.',
@@ -217,8 +264,10 @@ class BilanResultatStep extends StepComponent
     protected function checkConflictingData()
     {
         foreach ($this->rows as $index => $row) {
-            if (!empty($row['cible_pct']) && !empty($row['cible_nb']) ||
-                !empty($row['resultat_pct']) && !empty($row['resultat_nb'])) {
+            if (
+                !empty($row['cible_pct']) && !empty($row['cible_nb']) ||
+                !empty($row['resultat_pct']) && !empty($row['resultat_nb'])
+            ) {
                 $this->errorMessages[] = 'Vous ne pouvez pas utiliser à la fois les pourcentages et les nombres dans la ligne ' . ($index + 1) . '. Veuillez choisir uniquement l\'un ou l\'autre.';
                 break;
             }

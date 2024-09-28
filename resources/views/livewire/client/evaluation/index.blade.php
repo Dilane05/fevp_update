@@ -43,7 +43,7 @@
 
     <div class="container">
         <div class="row">
-            @foreach ($evaluations as $evaluation)
+            @forelse ($evaluations as $evaluation)
                 <div class="col-md-4 mb-4">
                     <div class="card border-0 shadow-sm rounded overflow-hidden">
                         <img src="https://via.placeholder.com/600x200" class="card-img-top" alt="Evaluation Image">
@@ -76,13 +76,19 @@
                                                 class="btn btn-primary w-100">Commencer l'évaluation</button>
                                         @endif
                                     @else
-                                        <button class="btn btn-secondary w-100" disabled>Pas autorisé</button>
+                                        <button class="btn btn-secondary w-100" disabled>Vous etes hors de la cible</button>
                                     @endif
                             @endif
                         </div>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="d-flex justify-content-center">
+                    <div class="shadow p-2">
+                        <h3 class="text-warning"> {{ __('Aucune évaluation') }} </h3>
+                    </div>
+                </div>
+            @endforelse
         </div>
     </div>
 

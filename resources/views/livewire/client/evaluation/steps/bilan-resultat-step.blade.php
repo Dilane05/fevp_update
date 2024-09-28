@@ -36,9 +36,9 @@
         <h4 class="text-primary fw-bold mb-3">I - BILAN DES RÉSULTATS</h4>
         <p class="text-secondary">Suivi des réalisations de la période d’évaluation (rendement et efficacité)</p>
         <div class="table-responsive">
-            <div class="d-flex justify-content-end mb-2">
+            {{-- <div class="d-flex justify-content-end mb-2">
                 <button class="btn btn-outline-primary btn-sm rounded-pill" wire:click="addRow" {{ $editable }}>Ajouter une ligne</button>
-            </div>
+            </div> --}}
 
             <table class="table table-borderless rounded-3 shadow-sm align-middle" >
                 <thead class="bg-primary text-white rounded-top">
@@ -64,10 +64,10 @@
                         <tr>
                             <td class="fw-bold">{{ $index + 1 }}</td>
                             <td><input type="text" class="form-control rounded-pill"
-                                    wire:model.live="rows.{{ $index }}.objectif" {{ $editable }} ></td>
+                                    wire:model.live="rows.{{ $index }}.objectif" {{ $editable }} disabled ></td>
                             <td {{ $editable }}>
                                 <select class="form-select rounded-pill"
-                                    wire:model.live="rows.{{ $index }}.indicateur">
+                                    wire:model.live="rows.{{ $index }}.indicateur" disabled>
                                     <option value="">Sélectionner un Indicateur</option>
                                     @foreach ($indicators as $indicator)
                                         <option value="{{ $indicator }}">{{ __('Indicateur') }} {{ $indicator }}</option>
@@ -75,13 +75,13 @@
                                 </select>
                             </td>
                             <td><input type="number" class="form-control rounded-pill"
-                                    wire:model.live="rows.{{ $index }}.coef" {{ $editable }}></td>
+                                    wire:model.live="rows.{{ $index }}.coef" {{ $editable }} disabled></td>
                             <td><input type="number" class="form-control rounded-pill"
-                                    wire:model.live="rows.{{ $index }}.cible_pct" {{ $editable }}></td>
+                                    wire:model.live="rows.{{ $index }}.cible_pct" {{ $editable }} disabled ></td>
                             <td><input type="number" class="form-control rounded-pill"
-                                    wire:model.live="rows.{{ $index }}.cible_nb" {{ $editable }}></td>
+                                    wire:model.live="rows.{{ $index }}.cible_nb" {{ $editable }} disabled></td>
                             <td><input type="number" class="form-control rounded-pill"
-                                    wire:model.live="rows.{{ $index }}.resultat_pct" {{ $editable }}></td>
+                                    wire:model.live="rows.{{ $index }}.resultat_pct" {{ $editable }} ></td>
                             <td><input type="number" class="form-control rounded-pill"
                                     wire:model.live="rows.{{ $index }}.resultat_nb" {{ $editable }}></td>
                             <td><input type="number" class="form-control rounded-pill" disabled
@@ -104,9 +104,9 @@
                 </tfoot>
             </table>
 
-            <div class="d-flex justify-content-end mt-2">
+            {{-- <div class="d-flex justify-content-end mt-2">
                 <button class="btn btn-outline-primary btn-sm rounded-pill" wire:click="addRow" {{ $editable }}>Ajouter une ligne</button>
-            </div>
+            </div> --}}
 
         </div>
         <div class="mt-4 p-3 bg-light border rounded" style="border-left: 4px solid #17a2b8;">

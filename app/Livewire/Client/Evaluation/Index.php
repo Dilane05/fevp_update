@@ -6,19 +6,22 @@ use Livewire\Component;
 use App\Models\Evaluation;
 use App\Models\ResponseEvaluation;
 use Illuminate\Support\Facades\Auth;
+use App\Livewire\Traits\WithDataTable;
 use Illuminate\Support\Facades\Redirect;
 
 class Index extends Component
 {
 
+    // use WithDataTable;
+
     // public $evaluations = [];
     public $search = '';
     public $perPage = 9;
 
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
+    // public function updatingSearch()
+    // {
+    //     $this->resetPage();
+    // }
 
     public function mount()
     {

@@ -55,7 +55,7 @@ class Index extends Component
             'title' => $this->title,
             'date' => $this->date,
             'location' => $this->location,
-            'status' => 'active', // ou tout autre statut par défaut
+            'status' => 1, // ou tout autre statut par défaut
             'created_by' => auth()->id(),
         ]);
 

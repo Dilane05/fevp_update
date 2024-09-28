@@ -125,6 +125,7 @@
             </select>
         </div>
     </div>
+
     <div class="card">
         <div class="table-responsive  text-gray-700">
             @php
@@ -163,8 +164,10 @@
                         <tr>
                             <td>{{ $evaluation->code }}</td>
                             <td>{{ $evaluation->title }}</td>
-                            <td>{{ $evaluation->start_date }}</td>
-                            <td>{{ $evaluation->end_date }}</td>
+                            <td>{{ \Carbon\Carbon::parse($evaluation->start_date)->locale('fr')->isoFormat('D MMMM YYYY') }}
+                            </td>
+                            <td>{{ \Carbon\Carbon::parse($evaluation->end_date)->locale('fr')->isoFormat('D MMMM YYYY') }}
+                            </td>
                             <td>
                                 @if ($evaluation->is_active)
                                     <span class="badge bg-success">{{ __('Actif') }}</span>
@@ -187,7 +190,8 @@
                             <td class="text-center">
                                 {{-- @can('client-update') --}}
                                 <a href='#' wire:click.prevent="initData({{ $evaluation->id }})"
-                                    data-bs-toggle="modal" data-bs-target="#EditEvaluationModal">
+                                    data-bs-toggle="modal" data-bs-target="#EditEvaluationModal"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier l'évaluation">
                                     <svg class="icon icon-xs" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -195,9 +199,31 @@
                                         </path>
                                     </svg>
                                 </a>
+
+                                <a href="{{ route('portal.evaluation.cible', ['evaluation' => $evaluation->code]) }}"
+                                    class="" data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="Ajouter la population cible">
+                                    <svg class="icon icon-xs" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 4v16m8-8H4"></path>
+                                    </svg>
+                                </a>
+
+                                {{-- Lien pour voir les détails de l'évaluation --}}
+                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="Voir les détails de l'évaluation">
+                                    <svg class="icon icon-xs" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12h5l-1.405-1.405A2 2 0 0017 9.172l-1.828 1.828m-4.586-4.586a2 2 0 00-2.828 2.828L9.172 9l5.656 5.656m4.586-4.586a2 2 0 112.828 2.828L11.828 21H9v-2.828L14.586 12z">
+                                        </path>
+                                    </svg>
+                                </a>
+
                                 <a href="#" wire:click.prevent="initData({{ $evaluation->id }})"
-                                    wire:click.prevent="initData({{ $evaluation->id }})" data-bs-toggle="modal"
-                                    data-bs-target="#CloseOrDeactivateModal">
+                                    data-bs-toggle="modal" data-bs-target="#CloseOrDeactivateModal"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Fermer ou désactiver l'évaluation">
                                     <svg class="icon icon-xs text-warning" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -206,19 +232,21 @@
                                 </a>
                                 {{-- @endcan --}}
 
-                                <a href="{{ route('portal.evaluation.cible', ['evaluation' => $evaluation->code]) }}"
-                                    class="btn btn-primary">
-                                    <!-- Icône SVG pour "Ajouter" -->
-                                    <svg class="icon icon-xs" fill="none" stroke="currentColor"
+                                {{-- Lien pour voir les réponses de l'évaluation --}}
+                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="Voir les réponses de l'évaluation">
+                                    <svg class="icon icon-xs text-info" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 4v16m8-8H4"></path>
+                                            d="M17 8h2a2 2 0 012 2v8a2 2 0 01-2 2H7a2 2 0 01-2-2v-8a2 2 0 012-2h2m0-2v2m8-2v2m-8 0h8">
+                                        </path>
                                     </svg>
                                 </a>
 
                                 {{-- @can('client-delete') --}}
                                 <a href='#' wire:click.prevent="initData({{ $evaluation->id }})"
-                                    data-bs-toggle="modal" data-bs-target="#DeleteModal">
+                                    data-bs-toggle="modal" data-bs-target="#DeleteModal" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Supprimer l'évaluation">
                                     <svg class="icon icon-xs text-danger" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -228,6 +256,7 @@
                                 </a>
                                 {{-- @endcan --}}
                             </td>
+
                             {{-- @endcanany --}}
                         </tr>
                     @empty
@@ -251,5 +280,11 @@
         </div>
     </div>
     @push('scripts')
+        <script>
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+        </script>
     @endpush
 </div>
