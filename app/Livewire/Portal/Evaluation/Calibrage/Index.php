@@ -3,6 +3,10 @@
 namespace App\Livewire\Portal\Evaluation\Calibrage;
 
 use App\Livewire\Portal\Evaluation\Calibrage\Steps\HandleBilanResult;
+use App\Livewire\Portal\Evaluation\Calibrage\Steps\HandleBonusMalus;
+use App\Livewire\Portal\Evaluation\Calibrage\Steps\HandleComplianceCorporateCulture;
+use App\Livewire\Portal\Evaluation\Calibrage\Steps\HandleManagerialQuality;
+use App\Livewire\Portal\Evaluation\Calibrage\Steps\HandleSanction;
 use App\Livewire\Portal\Evaluation\Calibrage\Steps\HandleTenueGlobalPoste;
 use App\Models\Calibrage;
 use App\Models\ResponseEvaluation;
@@ -11,7 +15,7 @@ use Livewire\Component;
 class Index extends Component
 {
 
-    use HandleBilanResult , HandleTenueGlobalPoste;
+    use HandleBilanResult , HandleTenueGlobalPoste , HandleManagerialQuality , HandleComplianceCorporateCulture , HandleBonusMalus , HandleSanction;
 
     public $step = 1;
 
@@ -30,6 +34,10 @@ class Index extends Component
         } else {
             $this->firstMountingBilan();
             $this->firstTenueGlobalBilan();
+            $this->firstManagerialQuality();
+            $this->firstComplianceCorporate();
+            $this->firstBonusMalus();
+            $this->firstSanction();
             // Sinon, créer une nouvelle réponse avec le statut de brouillon
         }
 

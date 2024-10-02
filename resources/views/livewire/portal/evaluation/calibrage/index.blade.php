@@ -63,12 +63,13 @@
         @elseif($step == 2)
             @include('livewire.portal.evaluation.calibrage.steps.tenue-global')
         @elseif($step == 3)
-
+            @include('livewire.portal.evaluation.calibrage.steps.managerial-quality')
         @elseif($step == 4)
-
+        @include('livewire.portal.evaluation.calibrage.steps.compliance-corporate')
         @elseif($step == 5)
-
+        @include('livewire.portal.evaluation.calibrage.steps.bonus-malus')
         @elseif($step == 6)
+            @include('livewire.portal.evaluation.calibrage.steps.sanction')
         @endif
 
         <div class="d-flex justify-content-end my-2">
