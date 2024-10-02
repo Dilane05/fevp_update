@@ -25,6 +25,33 @@
                             @enderror
                         </div>
 
+
+                        <!-- Ajout de l'upload d'image -->
+                        <div class="mb-3">
+                            <label class="form-label">{{ __('Image de l\'évaluation') }}</label>
+                            <div class="custom-file">
+                                <input type="file" class="form-control" accept="image/*" wire:model="image">
+                                @error('image')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- Prévisualisation de l'image sélectionnée -->
+                            <div class="mt-3" wire:loading wire:target="image">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+
+                            @if ($image)
+                                <div class="mt-3">
+                                    <img src="{{ $image->temporaryUrl() }}" class="img-fluid" alt="Image Preview"
+                                        style="max-width: 100%; height: auto;">
+                                </div>
+                            @endif
+                        </div>
+                        <!-- Fin de l'upload d'image -->
+
                         <div class="mb-3">
                             <label class="form-label">Date de début</label>
                             <input type="date" class="form-control" wire:model="start_date">

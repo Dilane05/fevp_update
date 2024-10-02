@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Builder;
 
 class ResponseEvaluation extends Model
 {
@@ -37,5 +38,27 @@ class ResponseEvaluation extends Model
         'sanction' => 'array',
         'other' => 'array',
     ];
+
+    public static function search($query): Builder
+    {
+        return empty($query) ? static::query() :
+            static::query()
+            ->where(function ($q) use ($query) {
+                // $q->where('first_name', 'like', '%' . $query . '%');
+                // $q->orWhere('last_name', 'like', '%' . $query . '%');
+                // $q->orWhere('email', 'like', '%' . $query . '%');
+                // $q->orWhere('occupation', 'like', '%' . $query . '%');
+                // $q->orWhere('phone_number', 'like', '%' . $query . '%');
+                $q->WhereHas('evaluation', function ($q) use ($query) {
+                    $q->WhereHas('user', function ($q) use ($query) {
+                        $q->where('first_name', 'like', '%' . $query . '%');
+                        $q->orWhere('last_name', 'like', '%' . $query . '%');
+                        $q->orWhere('email', 'like', '%' . $query . '%');
+                        $q->orWhere('occupation', 'like', '%' . $query . '%');
+                        $q->orWhere('phone_number', 'like', '%' . $query . '%');
+                    });
+                });
+            });
+    }
 
 }

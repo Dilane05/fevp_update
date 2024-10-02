@@ -53,6 +53,7 @@
                                     <tr>
                                         <th>Objectifs</th>
                                         <th>Indicateurs</th>
+                                        <th>Type D'Indicateur</th>
                                         <th>Cible</th>
                                         <th>Coef</th>
                                         <th>Fréq évaluation</th>
@@ -82,10 +83,21 @@
                                                         wire:model="objectifs.{{ $index }}.indicateurs.{{ $indicateurIndex }}.nom"
                                                         placeholder="Nom de l'indicateur">
                                                 </td>
+                                                <td>
+                                                    <select class="form-control rounded-pill" wire:model="objectifs.{{ $index }}.indicateurs.{{ $indicateurIndex }}.type">
+                                                        <option value="">{{ __('Selectionner le Type D\'Indicateur') }}</option>
+                                                        @foreach ($indicators as $indicator)
+                                                            <option value="{{ $indicator }}">{{ $indicator }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    {{-- <input type="text" class="form-control rounded-pill"
+                                                        wire:model="objectifs.{{ $index }}.indicateurs.{{ $indicateurIndex }}.type"
+                                                        placeholder="Nom de l'indicateur"> --}}
+                                                </td>
                                                 <td><input type="text" class="form-control rounded-pill"
                                                         wire:model="objectifs.{{ $index }}.indicateurs.{{ $indicateurIndex }}.cible"
                                                         placeholder="Cible"></td>
-                                                <td><input type="number" class="form-control rounded-pill"
+                                                <td><input type="text" class="form-control rounded-pill"
                                                         wire:model="objectifs.{{ $index }}.indicateurs.{{ $indicateurIndex }}.coef"
                                                         placeholder="Coef"></td>
                                                 <td><input type="text" class="form-control rounded-pill"

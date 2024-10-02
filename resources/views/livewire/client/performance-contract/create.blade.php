@@ -97,7 +97,7 @@
                                             <td><input type="text" class="form-control rounded-pill"
                                                     wire:model="objectifs.{{ $index }}.indicateurs.{{ $indicateurIndex }}.cible"
                                                     placeholder="Cible"></td>
-                                            <td><input type="number" class="form-control rounded-pill"
+                                            <td><input type="text" class="form-control rounded-pill"
                                                     wire:model="objectifs.{{ $index }}.indicateurs.{{ $indicateurIndex }}.coef"
                                                     placeholder="Coef"></td>
                                             <td><input type="text" class="form-control rounded-pill"

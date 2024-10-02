@@ -72,8 +72,10 @@ Route::group(['prefix' => 'portal', 'middleware' => ['auth']], function () {
         Route::get('/', App\Livewire\Portal\Scorecard\Index::class)->name('portal.test.index');
         Route::get('/setting/indicator', App\Livewire\Portal\Scorecard\Indicator\Index::class)->name('portal.indicator.index');
         Route::get('/create', App\Livewire\Portal\Evaluation\Create\Index::class)->name('portal.evaluation.index');
+        Route::get('/response/{code}', App\Livewire\Portal\Evaluation\Response\Index::class)->name('portal.evaluation.response');
         Route::get('/create/{evaluation}/participants', App\Livewire\Portal\Evaluation\Cible\Index::class)->name('portal.evaluation.cible');
         Route::get('/create/comitees', App\Livewire\Portal\Evaluation\Comitee\Index::class)->name('portal.comitee.cible');
+        Route::get('/calibrage/{id}', App\Livewire\Portal\Evaluation\Calibrage\Index::class)->name('portal.calibrage.index');
     });
 
     //AuditLogs

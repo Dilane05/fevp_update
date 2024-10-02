@@ -3,6 +3,7 @@
     @include('livewire.portal.evaluation.create.edit')
     @include('livewire.partials.delete-modal')
     @include('livewire.portal.evaluation.create.inactive')
+    {{-- @include('livewire.portal.evaluation.create.response') --}}
     <div class='p-0'>
         <div class="d-flex justify-content-between w-100 flex-wrap align-items-center">
             <div class="mb-lg-0">
@@ -136,7 +137,7 @@
                 <thead>
                     <tr>
                         <th class="border-bottom">{{ __('Code') }}</th>
-                        <th class="border-bottom">{{ __('title') }}</th>
+                        <th class="border-bottom">{{ __('Titre') }}</th>
                         <th class="border-bottom">{{ __('Date de Début') }}</th>
                         <th class="border-bottom">{{ __('Date de Fin') }}</th>
                         <th class="border-bottom">{{ __('Status') }}</th>
@@ -211,7 +212,7 @@
                                 </a>
 
                                 {{-- Lien pour voir les détails de l'évaluation --}}
-                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="top"
+                                {{-- <a href="#" data-bs-toggle="tooltip" data-bs-placement="top"
                                     title="Voir les détails de l'évaluation">
                                     <svg class="icon icon-xs" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -219,7 +220,7 @@
                                             d="M15 12h5l-1.405-1.405A2 2 0 0017 9.172l-1.828 1.828m-4.586-4.586a2 2 0 00-2.828 2.828L9.172 9l5.656 5.656m4.586-4.586a2 2 0 112.828 2.828L11.828 21H9v-2.828L14.586 12z">
                                         </path>
                                     </svg>
-                                </a>
+                                </a> --}}
 
                                 <a href="#" wire:click.prevent="initData({{ $evaluation->id }})"
                                     data-bs-toggle="modal" data-bs-target="#CloseOrDeactivateModal"
@@ -233,7 +234,9 @@
                                 {{-- @endcan --}}
 
                                 {{-- Lien pour voir les réponses de l'évaluation --}}
-                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="top"
+                                <a href="{{ route('portal.evaluation.response', ['code' => $evaluation->code]) }}"
+                                {{-- wire:click.prevent="initData({{ $evaluation->id }})" data-bs-toggle="modal" data-bs-target="#responseModal"  --}}
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
                                     title="Voir les réponses de l'évaluation">
                                     <svg class="icon icon-xs text-info" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

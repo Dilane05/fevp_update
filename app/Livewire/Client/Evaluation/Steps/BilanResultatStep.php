@@ -42,7 +42,7 @@ class BilanResultatStep extends StepComponent
             $currentYear = date('Y');
 
             // Trouver le contrat de performance de l'année en cours
-            $performanceContract = PerformanceContract::where('year', $currentYear)->first();
+            $performanceContract = PerformanceContract::where('year', $currentYear)->where('user_id', auth()->user()->id)->first();
 
             if ($performanceContract) {
                 // Récupérer les objectifs (performance_contrats) et leurs indicateurs pour ce contrat de performance
@@ -54,13 +54,18 @@ class BilanResultatStep extends StepComponent
                 $this->rows = $performanceContrats->flatMap(function ($performanceContrat) {
                     return $performanceContrat->indicateurs->map(function ($indicator) {
 
-                        // Vérifier si la cible contient un pourcentage
-                        if (strpos($indicator->cible, '%') !== false) {
-                            $cible_pct = $indicator->cible;
-                            $cible_nb = null; // Pas de valeur numérique
+                        // Nettoyage de la chaîne cible pour supprimer les espaces ou autres caractères invisibles
+                        $cible_cleaned = trim($indicator->cible);
+
+                        // Vérification si la cible contient un pourcentage
+                        if (strpos($cible_cleaned, '%') !== false) {
+                            // Retrait du symbole '%' et conversion en nombre flottant
+                            $cible_pct = floatval(str_replace('%', '', $cible_cleaned));
+                            $cible_nb = null; // Pas de valeur numérique brute
                         } else {
-                            $cible_pct = null; // Pas de pourcentage
-                            $cible_nb = $indicator->cible;
+                            // Si pas de pourcentage, on considère que c'est une valeur numérique
+                            $cible_pct = null;
+                            $cible_nb = is_numeric($cible_cleaned) ? floatval($cible_cleaned) : null;
                         }
 
                         return [

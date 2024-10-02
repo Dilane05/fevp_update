@@ -24,6 +24,39 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
+                        <!-- Image actuelle -->
+                        <div class="mb-3">
+                            <label class="form-label">{{ __('Image actuelle') }}</label>
+                            @if ($currentImage)
+                                <img src="{{ Storage::url($currentImage) }}" class="img-fluid" alt="Image actuelle"
+                                    style="max-width: 100%; height: auto;">
+                            @else
+                                <p>{{ __('Aucune image') }}</p>
+                            @endif
+                        </div>
+
+                        <!-- Champ pour choisir une nouvelle image -->
+                        <div class="mb-3">
+                            <label class="form-label">{{ __('Nouvelle image (optionnelle)') }}</label>
+                            <input type="file" class="form-control" accept="image/*" wire:model="image">
+                            @error('image')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+
+                            <!-- Prévisualisation de la nouvelle image -->
+                            <div class="mt-3" wire:loading wire:target="image">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+
+                            @if ($image)
+                                <div class="mt-3">
+                                    <img src="{{ $image->temporaryUrl() }}" class="img-fluid"
+                                        alt="Prévisualisation de l'image" style="max-width: 100%; height: auto;">
+                                </div>
+                            @endif
+                        </div>
 
                         <div class="mb-3">
                             <label class="form-label">Date de début</label>

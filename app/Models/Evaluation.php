@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Evaluation extends Model
 {
@@ -30,6 +31,11 @@ class Evaluation extends Model
     public function comitees()
     {
         return $this->belongsToMany(User::class, 'membre_comitee_calibrage');
+    }
+
+    public function responses() : HasMany
+    {
+        return $this->hasMany(ResponseEvaluation::class);
     }
 
 }

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('evaluations', function (Blueprint $table) {
             $table->id();
             $table->string('code');
+            $table->string('image')->nullable();
             $table->string('title');
             $table->longText('description')->nullable();
             $table->date('start_date');

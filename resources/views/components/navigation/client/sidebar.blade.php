@@ -30,6 +30,13 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('client.performance-contract.index') ? 'active' : '' }}"
+                href="{{ route('client.performance-contract.index') }}" wire:navigate>
+                <i class="bi bi-file-earmark-text me-2"></i> <!-- Icône pour Contrat de performance -->
+                <span data-translate="contrat-performance">Contrat de performance</span>
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="#"><i class="bi bi-gear me-2"></i><span
                     data-translate="settings">Paramètre</span></a>
         </li>

@@ -107,6 +107,18 @@
                                         </span>
                                     </a>
                                 </li>
+
+                                <li class="nav-item  {{ request()->routeIs('portal.comitee.cible') ? 'active' : '' }}">
+                                    <a href="{{ route('portal.comitee.cible') }}" wire:navigate class="nav-link">
+                                        <span class="sidebar-icon">
+                                            <svg class="icon icon-sm" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12l1.5 1.5 4.5-4.5M3 12l1.5 1.5L6 12m15 0c0 6.075-4.925 11-11 11S2 18.075 2 12 6.925 1 12 1s11 4.925 11 11z" />
+                                            </svg>
+                                        </span>
+                                        <span class="sidebar-text">{{ __('Comité de calibrage') }}</span>
+                                    </a>
+                                </li>
+
                                 @can('message-read')
                                 <li class="nav-item  {{ $request->routeIs('portal.recommendations.messages.index') ? 'active' : '' }}">
                                     <a href="{{route('portal.recommendations.messages.index')}}" wire:navigate class="nav-link">
@@ -119,6 +131,7 @@
                                         <span class="sidebar-text">{{__('Messages')}}</span>
                                     </a>
                                 </li>
+
                                 @endcan
 
 
