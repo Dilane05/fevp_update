@@ -10,12 +10,33 @@ trait HandleBonusMalus
         ['description' => '', 'note' => ''],
     ];
 
+    public $projectsRes = [
+        ['description' => '', 'note' => ''],
+        ['description' => '', 'note' => ''],
+    ];
+
     public $totalBonusMalus = 0;
 
     public function firstBonusMalus()
     {
         $this->projects = $this->response->bonus_malus;
         $this->totalBonusMalus = $this->response->note_bonus_malus ?? 0;
+    }
+
+    public function checkBonusMalus()
+    {
+        if ($this->calibrage->bonus_malus) {
+            $this->calibrageMountingBonusMalus();
+        } else {
+            $this->firstBonusMalus();
+        }
+    }
+
+    public function calibrageMountingBonusMalus()
+    {
+        $this->projects = $this->calibrage->bonus_malus;
+        $this->projectsRes = $this->response->bonus_malus;
+        $this->totalBonusMalus = $this->calibrage->note_bonus_malus ?? 0;
     }
 
     public function updatedProjects($propertyName)
@@ -49,4 +70,24 @@ trait HandleBonusMalus
         return $isValid ? true : $errors;
     }
 
+    public function submitBonusMalus()
+    {
+
+        $validationResult = $this->validateProjects();
+
+        if ($validationResult !== true) {
+            $this->errorMessages = $validationResult;
+            $this->errorsModalVisible = true;
+            return;
+        }
+
+        if ($this->editable == "disabled") {
+            $this->nextStep();
+        } else {
+            $this->calibrage->bonus_malus = $this->projects;
+            $this->calibrage->note_bonus_malus = $this->totalBonusMalus;
+            $this->calibrage->save();
+            $this->nextStep();
+        }
+    }
 }

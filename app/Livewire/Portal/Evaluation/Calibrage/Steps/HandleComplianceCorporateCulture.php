@@ -30,6 +30,25 @@ trait HandleComplianceCorporateCulture
         ],
     ];
 
+    public $performanceCriteriaRes = [
+        [
+            'criteria' => 'Le respect des règles: travaille selon les règles de l\'art du métier (normes, procédures, instructions de travail…)',
+            'selectedScore' => null
+        ],
+        [
+            'criteria' => 'Le respect des engagements: (Ex: Tâche à faire, Délais convenus…)',
+            'selectedScore' => null
+        ],
+        [
+            'criteria' => 'Un travail de qualité au 1er coup: (rigueur, exactitude, précision)',
+            'selectedScore' => null
+        ],
+        [
+            'criteria' => 'Propreté/Hygiène: (Environnement de travail propre, EPI, Vêtements, Véhicules…)',
+            'selectedScore' => null
+        ],
+    ];
+
     public $globalScoreCpl;
 
     public function firstComplianceCorporate()
@@ -39,6 +58,25 @@ trait HandleComplianceCorporateCulture
 
         $this->globalScoreCpl = $this->response->note_compliance_resultat ?? 0;
 
+    }
+
+    public function checkComplianceCorporate()
+    {
+        // dd('ok');
+        if ($this->calibrage->compliance_corporate) {
+            $this->calibrageMountingComplianceCorporate();
+        } else {
+            $this->firstComplianceCorporate();
+        }
+    }
+
+    public function calibrageMountingComplianceCorporate()
+    {
+        $this->performanceCriteria = $this->calibrage->compliance_corporate;
+        $this->performanceCriteriaRes = $this->response->compliance_corporate;
+        $this->globalScoreMgr = $this->calibrage->compliance_corporate ?? 0;
+        // dd($this->performanceCriteria);
+        $this->calculateGlobalScore();
     }
 
     private function validateCriteria()
@@ -70,4 +108,24 @@ trait HandleComplianceCorporateCulture
         $this->validateCriteria();
     }
 
+    public function submitComplianceCorporate()
+    {
+
+        $validationResult = $this->validateCriteria();
+
+        if ($validationResult !== true) {
+            $this->errorMessages = $validationResult;
+            $this->errorsModalVisible = true;
+            return;
+        }
+
+        if ($this->editable == "disabled") {
+            $this->nextStep();
+        } else {
+            $this->calibrage->compliance_corporate = $this->performanceCriteria;
+            $this->calibrage->note_compliance_resultat = $this->globalScoreCpl;
+            $this->calibrage->save();
+            $this->nextStep();
+        }
+    }
 }

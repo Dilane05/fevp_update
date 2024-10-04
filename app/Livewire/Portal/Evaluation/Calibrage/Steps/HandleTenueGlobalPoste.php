@@ -10,9 +10,16 @@ trait HandleTenueGlobalPoste
 
     public $keyResults = [
         ['domain' => '', 'note' => '', 'observations' => ''],
+        // ['domain' => '', 'note' => '', 'observations' => ''],
+        // ['domain' => '', 'note' => '', 'observations' => ''],
+        // ['domain' => '', 'note' => '', 'observations' => ''],
+    ];
+
+    public $keyResultsRes = [
         ['domain' => '', 'note' => '', 'observations' => ''],
-        ['domain' => '', 'note' => '', 'observations' => ''],
-        ['domain' => '', 'note' => '', 'observations' => ''],
+        // ['domain' => '', 'note' => '', 'observations' => ''],
+        // ['domain' => '', 'note' => '', 'observations' => ''],
+        // ['domain' => '', 'note' => '', 'observations' => ''],
     ];
 
     public $globalScore;
@@ -27,7 +34,23 @@ trait HandleTenueGlobalPoste
         $this->globalScore = $this->response->note_tenue_global ?? 0;
 
         $this->calculateGlobalScore();
+    }
 
+    public function checkTenueGlobal()
+    {
+        if ($this->calibrage->tenue_global) {
+            $this->calibrageMountingTenueGlobal();
+        } else {
+            $this->firstTenueGlobalBilan();
+        }
+    }
+
+    public function calibrageMountingTenueGlobal()
+    {
+        $this->keyResults = $this->calibrage->tenue_global;
+        $this->keyResultsRes = $this->response->tenue_global;
+        $this->globalScore = $tzhis->calibrage->note_tenue_global ?? 0;
+        $this->calculateGlobalScore();
     }
 
     public function updatedKeyResults($propertyName)
@@ -89,6 +112,28 @@ trait HandleTenueGlobalPoste
         } else {
             $this->globalScore = 0; // Ou une autre valeur par défaut
         }
+    }
+
+    public function submitTenueGlobal()
+    {
+
+        $validationResult = $this->validateKeyResults();
+
+        if ($validationResult !== true) {
+            $this->errorMessages = $validationResult;
+            $this->errorsModalVisible = true;
+            return;
+        }
+
+        if ($this->editable == "disabled") {
+            $this->nextStep();
+        } else {
+            $this->calibrage->tenue_global = $this->keyResults;
+            $this->calibrage->note_tenue_global = $this->globalScore;
+            $this->calibrage->save();
+            $this->nextStep();
+        }
+
     }
 
 }

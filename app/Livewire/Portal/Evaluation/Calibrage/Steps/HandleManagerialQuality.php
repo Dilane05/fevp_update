@@ -9,7 +9,13 @@ trait HandleManagerialQuality
 
     public $qualities = [
         ['quality' => '', 'target' => '', 'realization' => '', 'observations' => ''],
+        // ['quality' => '', 'target' => '', 'realization' => '', 'observations' => ''],
+        // Vous pouvez ajouter plus de lignes par défaut si nécessaire
+    ];
+
+    public $qualitiesRes = [
         ['quality' => '', 'target' => '', 'realization' => '', 'observations' => ''],
+        // ['quality' => '', 'target' => '', 'realization' => '', 'observations' => ''],
         // Vous pouvez ajouter plus de lignes par défaut si nécessaire
     ];
 
@@ -25,14 +31,38 @@ trait HandleManagerialQuality
         $user = User::findOrFail($this->response->user_id);
         if ($user->type_fiche->value_manageriale <= 0) {
             $this->is_manager = "disabled";
-        }else{
+        } else {
             $this->totalNoteMgr = $user->type_fiche->value_manageriale;
         }
 
         $this->qualities = $this->response->manegerial_quality;
         $this->globalScoreMgr = $this->response->note_mangeriale_quality ?? 0;
         $this->calculateglobalScoreMgr();
+    }
 
+    public function checkManagerialQuality()
+    {
+        if ($this->calibrage->manegerial_quality) {
+            $this->calibrageMountingManagerialQuality();
+        } else {
+            $this->firstManagerialQuality();
+        }
+    }
+
+    public function calibrageMountingManagerialQuality()
+    {
+
+        $user = User::findOrFail($this->response->user_id);
+        if ($user->type_fiche->value_manageriale <= 0) {
+            $this->is_manager = "disabled";
+        } else {
+            $this->totalNoteMgr = $user->type_fiche->value_manageriale;
+        }
+
+        $this->qualities = $this->calibrage->manegerial_quality;
+        $this->qualitiesRes = $this->response->manegerial_quality;
+        $this->globalScoreMgr = $this->calibrage->note_mangeriale_quality ?? 0;
+        $this->calculateGlobalScore();
     }
 
     public function updatedQualities()
@@ -88,5 +118,28 @@ trait HandleManagerialQuality
         }
 
         $this->globalScoreMgr = $totalScore;
+    }
+
+    public function submitManagerialQuality()
+    {
+
+        $validationResult = $this->validateQualities();
+        if ($validationResult !== true) {
+            $this->errorMessages = $validationResult;
+            $this->errorsModalVisible = true;
+            return;
+        }
+
+        // Calculer la note globale avant de passer à l'étape suivante
+        $this->calculateGlobalScore();
+
+        if ($this->editable == "disabled") {
+            $this->nextStep();
+        } else {
+            $this->calibrage->manegerial_quality = $this->qualities;
+            $this->calibrage->note_mangeriale_quality = $this->globalScoreMgr;
+            $this->calibrage->save();
+            $this->nextStep();
+        }
     }
 }

@@ -1,4 +1,3 @@
-
 <div class="mb-4">
     <h4 class="text-primary fw-bold mb-3">I - BILAN DES RÉSULTATS</h4>
     <p class="text-secondary">Suivi des réalisations de la période d’évaluation (rendement et efficacité)</p>
@@ -7,7 +6,7 @@
             <button class="btn btn-outline-primary btn-sm rounded-pill" wire:click="addRow" {{ $editable }}>Ajouter une ligne</button>
         </div> --}}
 
-        <table class="table table-borderless rounded-3 shadow-sm align-middle" >
+        <table class="table table-borderless rounded-3 shadow-sm align-middle">
             <thead class="bg-primary text-white rounded-top">
                 <tr>
                     <th rowspan="2" class="py-3">N°</th>
@@ -30,31 +29,82 @@
                 @foreach ($rows as $index => $row)
                     <tr>
                         <td class="fw-bold">{{ $index + 1 }}</td>
-                        <td><input type="text" class="form-control rounded-pill"
-                                wire:model.live="rows.{{ $index }}.objectif" {{ $editable }} disabled ></td>
+                        <td>
+                            <input type="text" class="form-control rounded-pill"
+                                wire:model.live="rows.{{ $index }}.objectif" {{ $editable }} disabled>
+                            <span
+                                style="color: {{ $row['objectif'] != $rowsRes[$index]['objectif'] ? 'orange' : 'gray' }}">
+                                Mention Initiale: {{ $rowsRes[$index]['objectif'] }}
+                            </span>
+                        </td>
                         <td {{ $editable }}>
                             <select class="form-select rounded-pill"
                                 wire:model.live="rows.{{ $index }}.indicateur" disabled>
                                 <option value="">Sélectionner un Indicateur</option>
                                 @foreach ($indicators as $indicator)
-                                    <option value="{{ $indicator }}">{{ __('Indicateur') }} {{ $indicator }}</option>
-                                @endforeach {{ $editable }}
+                                    <option value="{{ $indicator }}">{{ __('Indicateur') }} {{ $indicator }}
+                                    </option>
+                                @endforeach
                             </select>
+                            <span
+                                style="color: {{ $row['indicateur'] != $rowsRes[$index]['indicateur'] ? 'orange' : 'gray' }}">
+                                Mention Initiale: {{ $rowsRes[$index]['indicateur'] }}
+                            </span>
                         </td>
-                        <td><input type="number" class="form-control rounded-pill"
-                                wire:model.live="rows.{{ $index }}.coef" {{ $editable }} disabled></td>
-                        <td><input type="number" class="form-control rounded-pill"
-                                wire:model.live="rows.{{ $index }}.cible_pct" {{ $editable }} disabled ></td>
-                        <td><input type="number" class="form-control rounded-pill"
-                                wire:model.live="rows.{{ $index }}.cible_nb" {{ $editable }} disabled></td>
-                        <td><input type="number" class="form-control rounded-pill"
-                                wire:model.live="rows.{{ $index }}.resultat_pct" {{ $editable }} ></td>
-                        <td><input type="number" class="form-control rounded-pill"
-                                wire:model.live="rows.{{ $index }}.resultat_nb" {{ $editable }}></td>
-                        <td><input type="number" class="form-control rounded-pill" disabled
-                                wire:model.live="rows.{{ $index }}.note" {{ $editable }}></td>
-                        <td><input type="text" class="form-control rounded-pill"
-                                wire:model.live="rows.{{ $index }}.observations" {{ $editable }}></td>
+                        <td>
+                            <input type="number" class="form-control rounded-pill"
+                                wire:model.live="rows.{{ $index }}.coef" {{ $editable }} disabled>
+                            <span style="color: {{ $row['coef'] != $rowsRes[$index]['coef'] ? 'orange' : 'gray' }}">
+                                Mention Initiale: {{ $rowsRes[$index]['coef'] }}
+                            </span>
+                        </td>
+                        <td>
+                            <input type="number" class="form-control rounded-pill"
+                                wire:model.live="rows.{{ $index }}.cible_pct" {{ $editable }} disabled>
+                            <span
+                                style="color: {{ $row['cible_pct'] != $rowsRes[$index]['cible_pct'] ? 'orange' : 'gray' }}">
+                                Mention Initiale: {{ $rowsRes[$index]['cible_pct'] }}
+                            </span>
+                        </td>
+                        <td>
+                            <input type="number" class="form-control rounded-pill"
+                                wire:model.live="rows.{{ $index }}.cible_nb" {{ $editable }} disabled>
+                            <span
+                                style="color: {{ $row['cible_nb'] != $rowsRes[$index]['cible_nb'] ? 'orange' : 'gray' }}">
+                                Mention Initiale: {{ $rowsRes[$index]['cible_nb'] }}
+                            </span>
+                        </td>
+                        <td>
+                            <input type="number" class="form-control rounded-pill"
+                                wire:model.live="rows.{{ $index }}.resultat_pct" {{ $editable }}>
+                            <span
+                                style="color: {{ $row['resultat_pct'] != $rowsRes[$index]['resultat_pct'] ? 'orange' : 'gray' }}">
+                                Mention Initiale: {{ $rowsRes[$index]['resultat_pct'] }}
+                            </span>
+                        </td>
+                        <td>
+                            <input type="number" class="form-control rounded-pill"
+                                wire:model.live="rows.{{ $index }}.resultat_nb" {{ $editable }}>
+                            <span
+                                style="color: {{ $row['resultat_nb'] != $rowsRes[$index]['resultat_nb'] ? 'orange' : 'gray' }}">
+                                Mention Initiale: {{ $rowsRes[$index]['resultat_nb'] }}
+                            </span>
+                        </td>
+                        <td>
+                            <input type="number" class="form-control rounded-pill" disabled
+                                wire:model.live="rows.{{ $index }}.note" {{ $editable }}>
+                            <span style="color: {{ $row['note'] != $rowsRes[$index]['note'] ? 'orange' : 'gray' }}">
+                                Mention Initiale: {{ $rowsRes[$index]['note'] }}
+                            </span>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control rounded-pill"
+                                wire:model.live="rows.{{ $index }}.observations" {{ $editable }}>
+                            <span
+                                style="color: {{ $row['observations'] != $rowsRes[$index]['observations'] ? 'orange' : 'gray' }}">
+                                Mention Initiale: {{ $rowsRes[$index]['observations'] }}
+                            </span>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

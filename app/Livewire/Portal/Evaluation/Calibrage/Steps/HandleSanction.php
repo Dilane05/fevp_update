@@ -13,12 +13,36 @@ trait HandleSanction
         ['type' => 'Nombre de mise à pied de 6 à 8 jours', 'number' => 0, 'sanction' => 0],
     ];
 
+    public $sanctionsRes = [
+        ['type' => 'Nombre d\'avertissement (s)', 'number' => 0, 'sanction' => 0],
+        ['type' => 'Nombre de blâme (s)', 'number' => 0, 'sanction' => 0],
+        ['type' => 'Nombre de mise à pied de 1 à 3 jours', 'number' => 0, 'sanction' => 0],
+        ['type' => 'Nombre de mise à pied de 4 à 5 jours', 'number' => 0, 'sanction' => 0],
+        ['type' => 'Nombre de mise à pied de 6 à 8 jours', 'number' => 0, 'sanction' => 0],
+    ];
+
     public $totalSanctionScore = 0;
 
     public function firstSanction()
     {
         $this->sanctions = $this->response->sanction;
         $this->totalSanctionScore = $this->response->note_sanction ?? 0;
+    }
+
+    public function checkSanction()
+    {
+        if ($this->calibrage->sanction) {
+            $this->calibrageMountingSanction();
+        } else {
+            $this->firstSanction();
+        }
+    }
+
+    public function calibrageMountingSanction()
+    {
+        $this->sanctions = $this->calibrage->sanction;
+        $this->sanctionsRes = $this->response->sanction;
+        $this->totalSanctionScore = $this->calibrage->note_sanction ?? 0;
     }
 
     public function updatedSanctions($propertyName, $value)
@@ -49,4 +73,16 @@ trait HandleSanction
         $this->totalSanctionScore = $totalSanctionScore;
     }
 
+    public function submitSanction()
+    {
+
+        if ($this->editable == "disabled") {
+            $this->nextStep();
+        } else {
+            $this->calibrage->sanction = $this->sanctions;
+            $this->calibrage->note_sanction = $this->totalSanctionScore;
+            $this->calibrage->save();
+            $this->nextStep();
+        }
+    }
 }

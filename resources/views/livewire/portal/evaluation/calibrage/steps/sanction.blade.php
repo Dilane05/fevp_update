@@ -21,11 +21,13 @@
                         <td class="align-middle">
                             <input type="number" wire:model.live="sanctions.{{ $index }}.number"
                                 class="form-control rounded-pill" min="0" {{ $editable }}>
+                            @if (!empty($sanctionsRes[$index]['number']))
+                                <span
+                                    style="color: {{ $sanctions[$index]['number'] != $sanctionsRes[$index]['number'] ? 'orange' : 'gray' }}">
+                                    Ancienne: {{ $sanctionsRes[$index]['number'] }}
+                                </span>
+                            @endif
                         </td>
-                        {{-- <td class="align-middle">
-                            <input type="text" wire:model.live="sanctions.{{ $index }}.sanction"
-                                class="form-control rounded-pill" disabled value="{{ number_format($sanction['sanction'], 2) }}">
-                        </td> --}}
                     </tr>
                 @endforeach
             </tbody>

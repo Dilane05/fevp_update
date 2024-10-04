@@ -106,7 +106,6 @@
             });
         });
     </script>
-
     @endpush
 
 </div>

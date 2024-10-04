@@ -23,19 +23,43 @@
                         <td>
                             <input type="text" wire:model.live="qualities.{{ $index }}.quality"
                                 class="form-control rounded-pill" {{ $is_manager }} {{ $editable }}>
+                            @if (!empty($qualitiesRes[$index]['quality']))
+                                <span
+                                    style="color: {{ $quality['quality'] != $qualitiesRes[$index]['quality'] ? 'orange' : 'gray' }}">
+                                    Mention initiale: {{ $qualitiesRes[$index]['quality'] }}
+                                </span>
+                            @endif
                         </td>
                         <td>
                             <input type="number" step="0.01" wire:model.live="qualities.{{ $index }}.target"
                                 class="form-control rounded-pill" {{ $is_manager }} {{ $editable }}>
+                            @if (!empty($qualitiesRes[$index]['target']))
+                                <span
+                                    style="color: {{ $quality['target'] != $qualitiesRes[$index]['target'] ? 'orange' : 'gray' }}">
+                                    Mention initiale: {{ $qualitiesRes[$index]['target'] }}
+                                </span>
+                            @endif
                         </td>
                         <td>
                             <input type="number" step="0.01"
                                 wire:model.live="qualities.{{ $index }}.realization"
                                 class="form-control rounded-pill" {{ $is_manager }} {{ $editable }}>
+                            @if (!empty($qualitiesRes[$index]['realization']))
+                                <span
+                                    style="color: {{ $quality['realization'] != $qualitiesRes[$index]['realization'] ? 'orange' : 'gray' }}">
+                                    Mention initiale: {{ $qualitiesRes[$index]['realization'] }}
+                                </span>
+                            @endif
                         </td>
                         <td>
                             <input type="text" wire:model.live="qualities.{{ $index }}.observations"
-                                class="form-control rounded-pill " {{ $editable }}>
+                                class="form-control rounded-pill" {{ $editable }}>
+                            @if (!empty($qualitiesRes[$index]['observations']))
+                                <span
+                                    style="color: {{ $quality['observations'] != $qualitiesRes[$index]['observations'] ? 'orange' : 'gray' }}">
+                                    Mention initiale: {{ $qualitiesRes[$index]['observations'] }}
+                                </span>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
@@ -43,8 +67,11 @@
             <tfoot>
                 <tr>
                     <td colspan="4" class="text-center text-muted fw-bold fs-5">
-                        Note Globale: <span class="text-primary">{{ number_format($globalScoreMgr, 2) }} /
-                            {{ $totalNoteMgr }} </span>
+                        Note Globale: <span class="text-primary">
+                            {{ number_format($globalScoreMgr, 2) }}
+                            {{-- / --}}
+                            {{-- {{ $totalNoteMgr }}  --}}
+                        </span>
                     </td>
                 </tr>
                 {{-- <tr>

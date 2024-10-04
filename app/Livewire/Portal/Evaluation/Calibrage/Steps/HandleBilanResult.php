@@ -11,9 +11,6 @@ trait HandleBilanResult
 {
 
     public $totalCoef = 0;
-    public $errorMessages = [];
-    public $tfootErrorMessages = [];
-    public $hasObservation = false;
     public $globalNote = 0;
     public $totalPossibleNote = 0;
     public $response;
@@ -38,6 +35,10 @@ trait HandleBilanResult
         ['objectif' => '', 'indicateur' => '', 'coef' => '', 'cible_pct' => '', 'cible_nb' => '', 'resultat_pct' => '', 'resultat_nb' => '', 'note' => '', 'observations' => ''],
     ];
 
+    public $rowsRes = [
+        ['objectif' => '', 'indicateur' => '', 'coef' => '', 'cible_pct' => '', 'cible_nb' => '', 'resultat_pct' => '', 'resultat_nb' => '', 'note' => '', 'observations' => ''],
+    ];
+
     public $indicators = ['performance', 'reputation', 'execution', 'budget'];
 
     public function firstMountingBilan()
@@ -52,6 +53,28 @@ trait HandleBilanResult
         $this->calculateNotes();
         $this->tfootErrorMessages[] = 'Note : ' . number_format($this->globalNote, 2) . '/' . $this->totalCoef;
 
+    }
+
+    public function checkBilan()
+    {
+        if($this->calibrage->note_bilan_resultat){
+            $this->calibrageMountingBilan();
+        }else{
+            $this->firstMountingBilan();
+        }
+    }
+
+    public function calibrageMountingBilan()
+    {
+        $user = User::findOrFail($this->response->user_id);
+        $this->totalCoef = $user->type_fiche->value_result;
+
+        $this->rows = $this->calibrage->bilan_resultat;
+        $this->rowsRes = $this->response->bilan_resultat;
+
+        $this->globalNote = $this->calibrage->note_bilan_resultat ?? 0;
+        $this->calculateNotes();
+        $this->tfootErrorMessages[] = 'Note : ' . number_format($this->globalNote, 2) . '/' . $this->totalCoef;
     }
 
     protected function calculateNotes()
@@ -174,6 +197,48 @@ trait HandleBilanResult
             ) {
                 $this->errorMessages[] = 'Vous ne pouvez pas utiliser à la fois les pourcentages et les nombres dans la ligne ' . ($index + 1) . '. Veuillez choisir uniquement l\'un ou l\'autre.';
                 break;
+            }
+        }
+    }
+
+    public function submitBilanResultat()
+    {
+        $this->errorMessages = [];
+        $rowsToValidate = $this->getValidRows();
+
+        $validator = Validator::make(['rows' => $rowsToValidate], $this->rules(), $this->messages());
+
+        if ($validator->fails()) {
+            foreach ($validator->errors()->getMessages() as $key => $messages) {
+                foreach ($messages as $message) {
+                    $index = explode('.', $key)[1];
+                    $ligne = $index + 1;
+                    $this->errorMessages[] = str_replace(':index', $ligne, $message);
+                }
+            }
+        }
+
+        $totalCoef = array_sum(array_column($rowsToValidate, 'coef'));
+        if ($totalCoef != $this->totalCoef) {
+            $this->errorMessages[] = 'Le total des coefficients renseignés doit être égal à ' . $this->totalCoef;
+        }
+
+        if (!$this->hasObservation) {
+            $this->errorMessages[] = 'Au moins une observation doit être renseignée.';
+        }
+
+        $this->checkConflictingData(); // Ajouter la vérification des conflits
+
+        if (!empty($this->errorMessages)) {
+            $this->dispatch('show-error-modal');
+        } else {
+            if ($this->editable == "disabled") {
+                $this->nextStep();
+            } else {
+                $this->calibrage->bilan_resultat = $this->rows;
+                $this->calibrage->note_bilan_resultat = $this->globalNote;
+                $this->calibrage->save();
+                $this->nextStep();
             }
         }
     }

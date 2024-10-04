@@ -24,15 +24,33 @@
                     <tr>
                         <td>
                             <input type="text" wire:model.live="keyResults.{{ $index }}.domain"
-                                class="form-control rounded-pill" {{ $editable }} >
+                                class="form-control rounded-pill" {{ $editable }}>
+                            @if (!empty($keyResultsRes[$index]['domain']))
+                                <span
+                                    style="color: {{ $result['domain'] != $keyResultsRes[$index]['domain'] ? 'orange' : 'gray' }}">
+                                    Mention Initiale: {{ $keyResultsRes[$index]['domain'] }}
+                                </span>
+                            @endif
                         </td>
                         <td>
                             <input type="text" wire:model.live="keyResults.{{ $index }}.note"
-                                class="form-control rounded-pill" {{ $editable }} >
+                                class="form-control rounded-pill" {{ $editable }}>
+                            @if (!empty($keyResultsRes[$index]['note']))
+                                <span
+                                    style="color: {{ $result['note'] != $keyResultsRes[$index]['note'] ? 'orange' : 'gray' }}">
+                                    Mention Initiale: {{ $keyResultsRes[$index]['note'] }}
+                                </span>
+                            @endif
                         </td>
                         <td>
                             <input type="text" wire:model.live="keyResults.{{ $index }}.observations"
-                                class="form-control rounded-pill" {{ $editable }} >
+                                class="form-control rounded-pill" {{ $editable }}>
+                            @if (!empty($keyResultsRes[$index]['observations']))
+                                <span
+                                    style="color: {{ $result['observations'] != $keyResultsRes[$index]['observations'] ? 'orange' : 'gray' }}">
+                                    Mention Initiale: {{ $keyResultsRes[$index]['observations'] }}
+                                </span>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

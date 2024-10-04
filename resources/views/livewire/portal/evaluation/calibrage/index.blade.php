@@ -1,4 +1,5 @@
 <div>
+    @include('livewire.portal.evaluation.calibrage.error-modal')
     <!-- Wizard Header -->
     <nav class="nav my-2 shadow rounded" aria-label="Tabs">
         <div class="nav-link border-0 mx-2 text-primary d-inline-flex align-items-center py-2 px-1 fw-bold text-sm {{ $step == 1 ? 'text-info fw-bold' : 'text-gray-500' }}"
@@ -27,7 +28,7 @@
         </div>
         <div class="nav-link border-0 mx-2 text-primary d-inline-flex align-items-center py-2 px-1 fw-bold text-sm {{ $step == 7 ? 'text-info fw-bold' : 'text-gray-500' }}"
             style="font-size: 13px; cursor: pointer;" wire:click="setStep(7)">
-            {{ __('AUTRES') }}
+            {{ __('Notes') }}
         </div>
     </nav>
 
@@ -65,11 +66,13 @@
         @elseif($step == 3)
             @include('livewire.portal.evaluation.calibrage.steps.managerial-quality')
         @elseif($step == 4)
-        @include('livewire.portal.evaluation.calibrage.steps.compliance-corporate')
+            @include('livewire.portal.evaluation.calibrage.steps.compliance-corporate')
         @elseif($step == 5)
-        @include('livewire.portal.evaluation.calibrage.steps.bonus-malus')
+            @include('livewire.portal.evaluation.calibrage.steps.bonus-malus')
         @elseif($step == 6)
             @include('livewire.portal.evaluation.calibrage.steps.sanction')
+        @elseif($step == 7)
+            @include('livewire.portal.evaluation.calibrage.steps.note')
         @endif
 
         <div class="d-flex justify-content-end my-2">
@@ -77,6 +80,27 @@
                 <button type="button" class="btn btn-secondary mx-2"
                     wire:click="prevStep">{{ __('Précédent') }}</button>
             @endif
+
+            @if ($step === 1)
+                <button type="button" class="btn btn-info mx-2"
+                    wire:click="submitBilanResultat">{{ __('Sauvegarder') }}</button>
+            @elseif ($step === 2)
+                <button type="button" class="btn btn-info mx-2"
+                    wire:click="submitTenueGlobal">{{ __('Sauvegarder') }}</button>
+            @elseif ($step === 3)
+                <button type="button" class="btn btn-info mx-2"
+                    wire:click="submitManagerialQuality">{{ __('Sauvegarder') }}</button>
+            @elseif ($step === 4)
+                <button type="button" class="btn btn-info mx-2"
+                    wire:click="submitComplianceCorporate">{{ __('Sauvegarder') }}</button>
+            @elseif ($step === 5)
+                <button type="button" class="btn btn-info mx-2"
+                    wire:click="submitBonusMalus">{{ __('Sauvegarder') }}</button>
+            @elseif ($step === 6)
+                <button type="button" class="btn btn-info mx-2"
+                    wire:click="submitSanction">{{ __('Sauvegarder') }}</button>
+            @endif
+
             <button type="button" class="btn btn-primary" wire:click="nextStep">{{ __('Suivant') }}</button>
         </div>
 
