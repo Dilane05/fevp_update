@@ -40,7 +40,7 @@ jobs:
         run: php artisan storage:link
         
       - name: Clear cache
-        run: php artisan optimize:clear
+        run: php artisan cache:clear
 
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
