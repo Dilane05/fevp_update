@@ -19,7 +19,7 @@ jobs:
           php-version: '8.1' # Changer en fonction de la version PHP requise par Laravel
 
       - name: Install Composer dependencies
-        run: composer install --ignore-platform-reqs
+        run: composer install
 
       # - name: Install NPM dependencies
       #   run: npm install
