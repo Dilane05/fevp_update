@@ -39,6 +39,7 @@ trait HandleNote
         $this->note_sanction = is_numeric($response->note_sanction) ? $response->note_sanction : 0;
 
         $this->note_bilan_resultat = $note_bilan_resultat;
+        // dd($note_bilan_resultat);
         $this->note_tenue_global_poste = $note_tenue_global_poste;
         $this->note_quality_managerial = $note_quality_managerial;
         $this->note_compliance_corporate = $note_compliance_corporate;
@@ -64,5 +65,18 @@ trait HandleNote
         // Calculate global average score on a scale of 20
         $this->global_average = ($total_possible_scores > 0) ? ($total_actual_scores / $total_possible_scores) * 20 : 0;
     }
+
+    // public function getPercentages()
+    // {
+    //     // Calculer les pourcentages pour chaque rubrique
+    //     return [
+    //         $this->total_bilan_resultat ? ($this->note_bilan_resultat / $this->total_bilan_resultat) * 100 : 0,
+    //         $this->total_tenue_global_poste ? ($this->note_tenue_global_poste / $this->total_tenue_global_poste) * 100 : 0,
+    //         $this->total_quality_managerial ? ($this->note_quality_managerial / $this->total_quality_managerial) * 100 : 0,
+    //         $this->total_compliance_corporate ? ($this->note_compliance_corporate / $this->total_compliance_corporate) * 100 : 0,
+    //         $this->note_bonus_malus,
+    //         $this->note_sanction,
+    //     ];
+    // }
 
 }

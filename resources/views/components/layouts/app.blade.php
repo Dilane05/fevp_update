@@ -33,6 +33,8 @@
     <link type="text/css" href="{{ asset('vendor/medium-editor/css/themes/default.css') }}" rel="stylesheet">
     <link type="text/css" href="{{ asset('css/theme.css') }}" rel="stylesheet">
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     @livewireStyles
     <style>
         * {

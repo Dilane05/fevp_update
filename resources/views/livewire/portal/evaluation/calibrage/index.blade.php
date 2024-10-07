@@ -58,6 +58,9 @@
         </button>
     </div> --}}
 
+
+
+
     <div class="shadow p-2 rounded">
         @if ($step == 1)
             @include('livewire.portal.evaluation.calibrage.steps.bilan-result')
@@ -104,7 +107,13 @@
             <button type="button" class="btn btn-primary" wire:click="nextStep">{{ __('Suivant') }}</button>
         </div>
 
+        <div class="chart-container">
+            <!-- Canvas pour le diagramme radar -->
+            <canvas id="notesRadarChart"></canvas>
+        </div>
+
     </div>
+
     <style>
         /* .criteria-cell {
             max-width: 80px;
@@ -147,8 +156,24 @@
             background-color: #e9ecef;
             cursor: pointer;
         }
+
+        .chart-container {
+            width: 55%;  /* Réduire la largeur du conteneur */
+            margin: 20px auto;
+            /* background-color: #fff; */
+            /* padding: 10px;  Moins de padding */
+            border-radius: 10px;  /* Angles légèrement plus arrondis */
+        }
+
+        canvas {
+            max-width: 100%;  /* S'assurer que le canvas occupe moins de place */
+            height: 400px;  /* Hauteur plus réduite pour un affichage compact */
+        }
+
     </style>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             window.addEventListener('validation-errors', event => {
@@ -162,4 +187,63 @@
             });
         });
     </script>
+
+    <script>
+        // Quand le document est chargé, on crée le diagramme radar
+
+        var percentages = [
+            ({{ $note_bilan_resultat }} / {{ $total_bilan_resultat }}) * 100,
+            ({{ $note_tenue_global_poste }} / {{ $total_tenue_global_poste }}) * 100,
+            ({{ $note_quality_managerial }} / {{ $total_quality_managerial }}) * 100,
+            ({{ $note_compliance_corporate }} / {{ $total_compliance_corporate }}) * 100,
+        ];
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var ctx = document.getElementById('notesRadarChart').getContext('2d');
+            var radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        'Bilan Résultat',
+                        'Tenue globale du poste',
+                        'Qualité Managériale',
+                        'Conformité à la culture d\'entreprise',
+                    ],
+                    datasets: [{
+                        label: 'Forces et Faiblesses',
+                        data: percentages, // Les pourcentages calculés
+                        backgroundColor: 'rgba(173, 216, 230, 0.15)', // Bleu très doux et transparent
+                        borderColor: 'rgba(0, 123, 255, 0.5)', // Douce couleur bleue
+                        borderWidth: 1.5,
+                        pointBackgroundColor: 'rgba(0, 123, 255, 0.7)', // Points plus subtils
+                        pointBorderColor: '#ffffff',
+                        pointHoverBackgroundColor: '#ffffff',
+                        pointHoverBorderColor: 'rgba(0, 123, 255, 0.7)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: 'rgba(0, 0, 0, 0.05)' // Lignes douces
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)', // Grille très légère
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100 // Les pourcentages vont de 0 à 100
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false // Masquer la légende pour un design épuré
+                        }
+                    }
+                }
+            });
+        });
+
+    </script>
+
 </div>

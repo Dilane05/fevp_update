@@ -246,6 +246,16 @@
                                     </svg>
                                 </a>
 
+                                <a href="{{ route('portal.evaluation.statistics', ['code' => $evaluation->code]) }}"
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="Voir les statistiques de l'évaluation">
+                                    <svg class="icon icon-xs text-info" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 17v-6m4 6v-3m4 3v-9m-8 9V10m0 0h10M5 20h14a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v14a1 1 0 001 1z" />
+                                    </svg>
+                                </a>
+
                                 {{-- @can('client-delete') --}}
                                 <a href='#' wire:click.prevent="initData({{ $evaluation->id }})"
                                     data-bs-toggle="modal" data-bs-target="#DeleteModal" data-bs-toggle="tooltip"

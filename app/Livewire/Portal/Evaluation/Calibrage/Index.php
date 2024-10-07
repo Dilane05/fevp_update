@@ -16,11 +16,11 @@ use Livewire\Component;
 class Index extends Component
 {
 
-    use HandleBilanResult , HandleTenueGlobalPoste , HandleManagerialQuality , HandleComplianceCorporateCulture , HandleBonusMalus , HandleSanction , HandleBonusMalus , HandleNote;
+    use HandleBilanResult, HandleTenueGlobalPoste, HandleManagerialQuality, HandleComplianceCorporateCulture, HandleBonusMalus, HandleSanction, HandleBonusMalus, HandleNote;
 
     public $step = 1;
 
-    public $response , $response_id;
+    public $response, $response_id;
 
     public $calibrage;
 
@@ -68,6 +68,8 @@ class Index extends Component
             // Sinon, créer une nouvelle réponse avec le statut de brouillon
         }
 
+        $this->calculateNote();
+
     }
 
     public function nextStep()
@@ -90,11 +92,15 @@ class Index extends Component
         if ($this->step === 7) {
             $this->calculateNote();
         }
-
     }
 
     public function render()
     {
-        return view('livewire.portal.evaluation.calibrage.index')->layout('components.layouts.dashboard');
+        return view(
+            'livewire.portal.evaluation.calibrage.index',
+            [
+                // 'percentages' => $this->getPercentages()
+            ]
+        )->layout('components.layouts.dashboard');
     }
 }
