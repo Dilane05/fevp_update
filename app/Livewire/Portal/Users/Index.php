@@ -3,6 +3,7 @@
 namespace App\Livewire\Portal\Users;
 
 use Log;
+use Carbon\Carbon;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\TypeFiche;
@@ -24,27 +25,77 @@ class Index extends Component
     public $roles = [];
     public $user = null;
     public $user_id = null;
+
+    // Informations personnelles
     public $first_name = null;
     public $last_name = null;
     public $email = null;
     public $phone_number = null;
-    public $password = null;
+    public $occupation = null; // Ajouté
+    public $is_manager = false; // Ajouté
+    public $pemp_temp = null; // Ajouté
+    public $date_of_birth = null; // Ajouté
     public $gender = null;
-    public ?string $role_name;
+    public $emergency_contact_name = null; // Ajouté
+    public $emergency_contact_phone = null; // Ajouté
+
+    // Détails de l'emploi
+    public $type_fiche_id = null; // Ajouté
+    public $main_evaluator = null; // Ajouté
+    public $second_evaluator = null; // Ajouté
+    public $direction_id = null; // Ajouté
+    public $enterprise_id = null; // Ajouté
+    public $site_id = null; // Ajouté
+    public $hiring_date = null; // Ajouté
+    public $length_of_service = null; // Ajouté
+    public $statut_category = null; // Ajouté
+    public $responsable_n1 = null; // Ajouté
+    public $responsable_n2 = null; // Ajouté
+
+    // Détails du compte
     public $status = 1;
-    public $auth_role;
+    public $password = null;
+    public $confirm_password;
+
+    // Autres variables
+    public ?string $role_name = null;
+    public $auth_role = null;
     public $user_file = null;
-    public $selectedStatus, $selectedSexe;
-    public $countdown;
+    public $selectedStatus = null; // Ajouté
+    public $selectedSexe = null; // Ajouté
+    public $countdown = null; // Ajouté
+
+    // UUID - Peut être utilisé pour générer un identifiant unique
+    public $uuid = null; // Ajouté pour correspondre à la table users
+    public $matricule = null; // Ajouté pour correspondre à la table users
 
     //Update & Store Rules
     protected array $rules = [
-        'first_name' => 'required',
-        'last_name' => 'required',
-        'phone_number' => 'required',
-        'email' => 'required|email|unique:users',
-        'gender' => 'required',
-
+        'matricule' => 'required|string|max:255',
+        'first_name' => 'required|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'occupation' => 'nullable|string|max:255',
+        'is_manager' => 'nullable|boolean',
+        'pemp_temp' => 'nullable|string|max:255',
+        'type_fiche_id' => 'nullable|exists:type_fiches,id',
+        'main_evaluator' => 'nullable|exists:users,id',
+        'second_evaluator' => 'nullable|exists:users,id',
+        'direction_id' => 'nullable|exists:directions,id',
+        'enterprise_id' => 'nullable|exists:enterprises,id',
+        'site_id' => 'nullable|exists:sites,id',
+        'hiring_date' => 'nullable|date',
+        'length_of_service' => 'nullable|integer',
+        'statut_category' => 'nullable|string|max:255',
+        'responsable_n1' => 'nullable|exists:users,id',
+        'responsable_n2' => 'nullable|exists:users,id',
+        'date_of_birth' => 'nullable|date',
+        'email' => 'required|string|email|max:255|unique:users',
+        'phone_number' => 'nullable|string|max:20',
+        'gender' => 'nullable|in:male,female',
+        'emergency_contact_name' => 'nullable|string|max:255',
+        'emergency_contact_phone' => 'nullable|string|max:20',
+        'status' => 'required|boolean',
+        'password' => 'required|string|min:8',
     ];
 
     public function mount()
@@ -66,17 +117,36 @@ class Index extends Component
         if (!Gate::allows('user-create')) {
             return abort(401);
         }
+
+        // dd($this->second_evaluator);
         $this->validate();
 
 
         $user = User::create([
-            'matricule' => 'ssss5',
+            'matricule' => $this->matricule,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
+            'occupation' => $this->occupation,
+            'is_manager' => $this->is_manager,
+            'pemp_temp' => $this->pemp_temp,
+            'type_fiche_id' => $this->type_fiche_id,
+            'main_evaluator' => $this->main_evaluator,
+            'second_evaluator' => $this->second_evaluator,
+            'direction_id' => $this->direction_id,
+            'enterprise_id' => $this->enterprise_id,
+            'site_id' => $this->site_id,
+            'hiring_date' => $this->hiring_date,
+            'length_of_service' => $this->length_of_service,
+            'statut_category' => $this->statut_category,
+            'responsable_n1' => $this->responsable_n1,
+            'responsable_n2' => $this->responsable_n2,
+            'date_of_birth' => $this->date_of_birth,
             'email' => $this->email,
             'phone_number' => $this->phone_number,
             'gender' => $this->gender,
-            'status' => $this->status === "true" ?  1 : 0,
+            'emergency_contact_name' => $this->emergency_contact_name,
+            'emergency_contact_phone' => $this->emergency_contact_phone,
+            'status' => $this->status === "true" ? 1 : 0,
             'password' => bcrypt($this->password),
         ]);
 
@@ -90,34 +160,74 @@ class Index extends Component
 
     public function update()
     {
+        // Vérifiez les autorisations
         if (!Gate::allows('user-update')) {
             return abort(401);
         }
+
+        // Validation des données
         $this->validate([
             'first_name' => 'required',
             'last_name' => 'required',
             'phone_number' => 'required',
             'email' => ['required', 'email', Rule::unique('users')->ignore($this->user->id)],
             'gender' => 'required',
+            'status' => 'required|boolean',
+            'occupation' => 'nullable|string',
+            'hiring_date' => 'nullable|date',
+            'date_of_birth' => 'nullable|date',
+            'type_fiche_id' => 'nullable|exists:type_fiches,id',
+            'main_evaluator' => 'nullable|exists:users,id',
+            'second_evaluator' => 'nullable|exists:users,id',
+            'direction_id' => 'nullable|exists:directions,id',
+            'enterprise_id' => 'nullable|exists:enterprises,id',
+            'site_id' => 'nullable|exists:sites,id',
+            'emergency_contact_name' => 'nullable|string',
+            'emergency_contact_phone' => 'nullable|string',
+            'length_of_service' => 'nullable|integer',
+            'statut_category' => 'nullable|string',
+            'responsable_n1' => 'nullable|exists:users,id',
+            'responsable_n2' => 'nullable|exists:users,id',
+            // Autres validations selon les besoins...
         ]);
 
+        // Mise à jour des données de l'utilisateur
         $this->user->update([
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'email' => $this->email,
             'phone_number' => $this->phone_number,
             'gender' => $this->gender,
-            'status' => $this->status === "true" ?  1 : 0,
+            'status' => $this->status === "true" ? 1 : 0,
+            'occupation' => $this->occupation,
+            'hiring_date' => $this->hiring_date ? Carbon::parse($this->hiring_date) : null,
+            'date_of_birth' => $this->date_of_birth ? Carbon::parse($this->date_of_birth) : null,
+            'type_fiche_id' => $this->type_fiche_id,
+            'main_evaluator' => $this->main_evaluator,
+            'second_evaluator' => $this->second_evaluator,
+            'direction_id' => $this->direction_id,
+            'enterprise_id' => $this->enterprise_id,
+            'site_id' => $this->site_id,
+            'emergency_contact_name' => $this->emergency_contact_name,
+            'emergency_contact_phone' => $this->emergency_contact_phone,
+            'length_of_service' => $this->length_of_service,
+            'statut_category' => $this->statut_category,
+            'responsable_n1' => $this->responsable_n1,
+            'responsable_n2' => $this->responsable_n2,
+            // Ne pas mettre à jour le mot de passe si aucun nouveau mot de passe n'est fourni
             'password' => empty($this->password) ? $this->user->password : bcrypt($this->password),
         ]);
 
+        // Mise à jour des rôles si nécessaire
         if ($this->user->getRoleNames()->first() != $this->role_name) {
             $this->user->syncRoles($this->role_name);
         }
 
+        // Réinitialiser les champs et afficher un message de succès
         $this->clearFields();
         $this->closeModalAndFlashMessage(__('User successfully updated!'), 'EditUserModal');
     }
+
 
     public function delete()
     {
@@ -141,17 +251,47 @@ class Index extends Component
         $this->clearFields();
         $this->closeModalAndFlashMessage(__('User successfully deleted!'), 'DeleteModal');
     }
+
     public function initData($user_id)
     {
         $user = User::findOrFail($user_id);
 
+        // Informations personnelles
         $this->user = $user;
         $this->first_name = $user->first_name;
         $this->last_name = $user->last_name;
         $this->email = $user->email;
         $this->phone_number = $user->phone_number;
+        $this->occupation = $user->occupation;
+        $this->is_manager = $user->is_manager;
+        $this->pemp_temp = $user->pemp_temp;
+
+        // Dates formatées pour les champs d'entrée
+        $this->date_of_birth = $user->date_of_birth ? Carbon::parse($user->date_of_birth)->format('Y-m-d') : null;
+        $this->hiring_date = $user->hiring_date ? Carbon::parse($user->hiring_date)->format('Y-m-d') : null;
+
+        // Détails supplémentaires
         $this->gender = $user->gender;
-        $this->status = $user->status;
+        $this->emergency_contact_name = $user->emergency_contact_name;
+        $this->emergency_contact_phone = $user->emergency_contact_phone;
+
+        // Détails de l'emploi
+        $this->type_fiche_id = $user->type_fiche_id;
+        $this->main_evaluator = $user->main_evaluator;
+        $this->second_evaluator = $user->second_evaluator;
+        $this->direction_id = $user->direction_id;
+        $this->enterprise_id = $user->enterprise_id;
+        $this->site_id = $user->site_id;
+        $this->length_of_service = $user->length_of_service;
+        $this->statut_category = $user->statut_category;
+        $this->responsable_n1 = $user->responsable_n1;
+        $this->responsable_n2 = $user->responsable_n2;
+
+        // Détails du compte
+        $this->status = $user->status; // Assurez-vous que le status est bien géré (1 ou 0)
+        $this->password = null; // Ne pas charger le mot de passe pour des raisons de sécurité
+
+        // Récupérer le rôle
         $this->role_name = $user->getRoleNames()->first();
     }
 
@@ -222,10 +362,30 @@ class Index extends Component
     public function clearFields()
     {
         $this->reset([
+            'uuid',
+            'matricule',
             'first_name',
             'last_name',
+            'occupation',
+            'is_manager',
+            'pemp_temp',
+            'type_fiche_id',
+            'main_evaluator',
+            'second_evaluator',
+            'direction_id',
+            'enterprise_id',
+            'site_id',
+            'hiring_date',
+            'length_of_service',
+            'statut_category',
+            'responsable_n1',
+            'responsable_n2',
+            'date_of_birth',
             'email',
             'phone_number',
+            'gender',
+            'emergency_contact_name',
+            'emergency_contact_phone',
             'status',
             'password',
         ]);
@@ -255,11 +415,19 @@ class Index extends Component
         // Calcul du total des utilisateurs inactifs
         $total_inactive_users = User::where('status', false)->count();
 
+        // dd($users);
+
         return view('livewire.portal.users.index', [
             'users' => $users,
+            'userss' => User::all(),
             'active_users' => $total_active_users,
             'inactive_users' => $total_inactive_users,
             'users_count' => $total_users,
+            'occupations' => User::distinct()->pluck('occupation'),
+            'pemp_temps' => User::distinct()->pluck('pemp_temp'),
+            'directions' => \App\Models\Direction::all(),
+            'enterprises' => \App\Models\Enterprise::all(),
+            'sites' => \App\Models\Site::all(),
         ])->layout('components.layouts.dashboard');
     }
 }

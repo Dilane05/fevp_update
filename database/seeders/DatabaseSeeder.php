@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Site;
 use App\Models\User;
+use IndicatorsSeeder;
 use App\Models\Direction;
 use App\Models\Enterprise;
 use Illuminate\Support\Str;
@@ -32,6 +33,8 @@ class DatabaseSeeder extends Seeder
         $this->call(EnterprisesTableSeeder::class);
 
         $this->call(TypeFichierSeeder::class);
+
+        $this->call(IndicatorsSeeder::class);
 
         // $this->call(AssignTypeFichierToUsersSeeder::class);
 

@@ -106,7 +106,7 @@
                             <h5 class="card-title">Nombre total de participants</h5>
                         </div>
                     </div>
-                    <h3 class="text-primary">150</h3>
+                    <h3 class="text-primary"> {{  $evaluation->participants()->count(); }} </h3>
                     <p>Employés attendus pour cette session.</p>
                 </div>
             </div>
@@ -133,7 +133,7 @@
                     <div class="d-flex align-items-center justify-content-center mb-3">
                         <i class="bi bi-person-badge-fill stat-icon"></i>
                         <div>
-                            <h5 class="card-title">Évaluations complétées par les managers</h5>
+                            <h5 class="card-title">Évaluations par les managers</h5>
                         </div>
                     </div>
                     <h3 class="text-warning">75%</h3>

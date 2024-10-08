@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('name')->nullable();
             $table->string('occupation')->nullable();
+            $table->boolean('is_manager')->default(0);
             $table->string('pemp_temp')->nullable();
             $table->foreignId('type_fiche_id')->nullable()->constrained('type_fiches')->onDelete('cascade');
             $table->foreignId('main_evaluator')->nullable()->constrained('users')->onDelete('cascade');

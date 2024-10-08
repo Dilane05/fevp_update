@@ -4,6 +4,7 @@ namespace App\Livewire\Portal\Evaluation\Statistics;
 
 use App\Models\User;
 use Livewire\Component;
+use App\Models\Evaluation;
 use Livewire\WithPagination;
 
 class Index extends Component
@@ -20,6 +21,14 @@ class Index extends Component
     public $perPage = 10;
     public $selectedUsers = [];
     public $selectAll = false;
+
+    public $evaluation;
+
+    public function mount($code)
+    {
+        // dd($code)
+        $this->evaluation = Evaluation::where('code',$code)->first();
+    }
 
     public function render()
     {
