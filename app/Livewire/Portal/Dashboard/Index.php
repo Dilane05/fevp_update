@@ -26,7 +26,15 @@ class Index extends Component
     public function render()
     {
 
+        $logs = match ($this->role) {
+            "supervisor" => AuditLog::whereUserId(auth()->user()->id)->orderBy('created_at', 'desc')->take(10),
+            "manager" => AuditLog::manager()->orderBy('created_at', 'desc')->take(10),
+            "admin" => AuditLog::orderBy('created_at', 'desc')->take(10),
+            default => AuditLog::whereUserId(auth()->user()->id)->orderBy('created_at', 'desc')->take(10),
+        };
+
         return view('livewire.portal.dashboard.index', [
+            'logs' => $logs,
         ])->layout('components.layouts.dashboard');
     }
 }
