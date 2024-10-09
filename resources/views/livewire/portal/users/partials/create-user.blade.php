@@ -13,18 +13,32 @@
                     <x-form-items.form wire:submit="store" class="form-modal">
                         <input type="hidden" name="user_id" value="" id="userId">
 
-                        <div class='form-group mb-3'>
-                            <label for="role_name">{{ __('Role') }} <span class="text-danger">*</span></label>
-                            <select wire:model.change="role_name" name="role_name"
-                                class="form-select  @error('role_name') is-invalid @enderror">
-                                <option value="">{{ __('Select Role') }}</option>
-                                @foreach ($roles as $role)
-                                    <option value="{{ $role->name }}">{{ $role->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('role')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                        <div class='row form-group mb-3'>
+                            <div class="col-md-6">
+                                <label for="role_name">{{ __('Role') }} <span class="text-danger">*</span></label>
+                                <select wire:model.change="role_name" name="role_name"
+                                    class="form-select  @error('role_name') is-invalid @enderror">
+                                    <option value="">{{ __('Select Role') }}</option>
+                                    @foreach ($roles as $role)
+                                        <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('role')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class='col-md-6'>
+                                <label for="type_fiche">{{ __('Type de fiche') }}</label>
+                                <select id="type_fiche" wire:model.live="type_fiche_id" class="form-select">
+                                    <option value="">{{ __('Sélectionner le type de fiche') }}</option>
+                                    @foreach ($type_fiches as $type_fiche)
+                                        <option value="{{ $type_fiche->id }}">{{ $type_fiche->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('type_fiche_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
 
                         <!-- Matricule -->
@@ -43,7 +57,7 @@
                                 <label for="status">{{ __('Statut') }}</label>
                                 <select wire:model="status" name="status"
                                     class="form-select @error('status') is-invalid @enderror">
-                                    <option value="">{{ __('Sélectionner le statut') }}</option>
+                                    <option value="0">{{ __('Sélectionner le statut') }}</option>
                                     <option value="1">{{ __('Actif') }}</option>
                                     <option value="0">{{ __('Inactif') }}</option>
                                 </select>
@@ -175,14 +189,16 @@
                         <div class="form-group mb-3 row">
                             <div class='col-md-6'>
                                 <label for="main_evaluator">{{ __('Évaluateur Principal') }}</label>
-                                <x-input.select-search wire:model="main_evaluator" prettyname="main_evaluator" :options="$userss->pluck('last_name','id','first_name')->toArray()" />
+                                <x-input.select-search wire:model="main_evaluator" prettyname="main_evaluator"
+                                    :options="$userss->pluck('last_name', 'id', 'first_name')->toArray()" />
                                 @error('main_evaluator')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class='col-md-6'>
                                 <label for="second_evaluator">{{ __('Deuxième Évaluateur') }}</label>
-                                <x-input.select-search wire:model="second_evaluator" prettyname="second_evaluator" :options="$userss->pluck('last_name','id','first_name')->toArray()" />
+                                <x-input.select-search wire:model="second_evaluator" prettyname="second_evaluator"
+                                    :options="$userss->pluck('last_name', 'id', 'first_name')->toArray()" />
                                 @error('second_evaluator')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -232,7 +248,8 @@
                             </div>
                             <div class='col-md-6'>
                                 <label for="responsable_n1">{{ __('Responsable N1') }}</label>
-                                <x-input.select-search wire:model="responsable_n1" prettyname="responsable_n1" :options="$userss->pluck('last_name','id','first_name')->toArray()" />
+                                <x-input.select-search wire:model="responsable_n1" prettyname="responsable_n1"
+                                    :options="$userss->pluck('last_name', 'id', 'first_name')->toArray()" />
                                 @error('responsable_n1')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -242,7 +259,8 @@
                         <div class="form-group mb-3 row">
                             <div class='col-md-6'>
                                 <label for="responsable_n2">{{ __('Responsable N2') }}</label>
-                                <x-input.select-search wire:model="responsable_n2" prettyname="responsable_n2" :options="$userss->pluck('last_name','id','first_name')->toArray()" />
+                                <x-input.select-search wire:model="responsable_n2" prettyname="responsable_n2"
+                                    :options="$userss->pluck('last_name', 'id', 'first_name')->toArray()" />
                                 @error('responsable_n2')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

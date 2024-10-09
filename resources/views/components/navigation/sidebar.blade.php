@@ -150,7 +150,7 @@
                                 </li>
                                 @endcan
 
-                                <li class="nav-item ">
+                                {{-- <li class="nav-item ">
                                     <a href="{{route('portal.auditlogs.index')}}" wire:navigate class="nav-link">
                                         <span class="sidebar-icon">
                                             <svg class="icon icon-sm " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -159,8 +159,8 @@
                                         </span>
                                         <span class="sidebar-text">{{__('Roles & Permissions')}}</span>
                                     </a>
-                                </li>
-                                <li class="nav-item ">
+                                </li> --}}
+                                {{-- <li class="nav-item ">
                                     <a href="{{route('portal.auditlogs.index')}}" wire:navigate class="nav-link">
                                         <span class="sidebar-icon">
                                             <svg class="icon icon-sm " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -171,7 +171,7 @@
                                         </span>
                                         <span class="sidebar-text">{{__('Parametres')}}</span>
                                     </a>
-                                </li>
+                                </li> --}}
                                 <li class="nav-item {{ $request->routeIs('portal.auditlogs.*') ? 'active' : '' }}">
                                     <a href="{{route('portal.auditlogs.index')}}" wire:navigate class="nav-link">
                                         <span class="sidebar-icon">

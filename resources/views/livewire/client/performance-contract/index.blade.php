@@ -54,7 +54,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="my-2">
-                <h3 class="text-center">{{ __('Contrat de performances des employés n-1') }}</h3>
+                <h3 class="text-center">{{ __('Contrat de performances des n-1') }}</h3>
 
                 <div class="shadow p-2 rounded bg-white">
                     <table class="table table-hover table-bordered table-striped text-center">
@@ -110,7 +110,7 @@
 
         <div class="col-md-6">
             <div class="my-2 me-4">
-                <h3 class="text-center">{{ __('Mes Contrat de performances') }}</h3>
+                <h3 class="text-center">{{ __('Mes Contrats de performances') }}</h3>
 
                 <div class="shadow p-2 rounded bg-white">
                     <table class="table table-hover table-bordered table-striped text-center">

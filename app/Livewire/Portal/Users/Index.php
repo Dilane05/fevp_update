@@ -11,7 +11,9 @@ use Illuminate\Support\Str;
 use App\Exports\UsersExport;
 use App\Imports\UsersImport;
 use Illuminate\Validation\Rule;
+use App\Models\PerformanceContrat;
 use Spatie\Permission\Models\Role;
+use App\Models\PerformanceContract;
 use Illuminate\Support\Facades\Gate;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Cache;
@@ -25,6 +27,10 @@ class Index extends Component
     public $roles = [];
     public $user = null;
     public $user_id = null;
+
+    public $user_ids = [];
+
+    public $title;
 
     // Informations personnelles
     public $first_name = null;
@@ -65,9 +71,20 @@ class Index extends Component
     public $selectedSexe = null; // Ajouté
     public $countdown = null; // Ajouté
 
+    public $type_fiche;
+
     // UUID - Peut être utilisé pour générer un identifiant unique
     public $uuid = null; // Ajouté pour correspondre à la table users
     public $matricule = null; // Ajouté pour correspondre à la table users
+
+    public $objectifs = [];
+
+    public $year, $performanceContract;
+
+    // public $title, $user_id;
+
+    public $indicators = ['performance', 'reputation', 'execution', 'budget'];
+
 
     //Update & Store Rules
     protected array $rules = [
@@ -102,7 +119,110 @@ class Index extends Component
     {
         $this->roles = Role::select('id', 'name')->whereNotIn('name', ['client'])->get();
         $this->countdown = 10; // Temps initial du compte à rebours
-        // dd(TypeFiche::all());
+        $this->objectifs = [
+            [
+                'valeur' => '',
+                'indicateurs' => [
+                    ['cible' => '', 'type', 'coef' => '', 'frequence' => '', 'mode_calcul' => '', 'observations' => '']
+                ]
+            ]
+        ];
+    }
+
+    public function addIndicateur($index)
+    {
+        $this->objectifs[$index]['indicateurs'][] = [
+            'cible' => '',
+            'type' => '',
+            'coef' => '',
+            'frequence' => '',
+            'mode_calcul' => '',
+            'observations' => ''
+        ];
+    }
+
+    public function addObjectif()
+    {
+        $this->objectifs[] = [
+            'valeur' => '',
+            'indicateurs' => [
+                ['cible' => '', 'type', 'coef' => '', 'frequence' => '', 'mode_calcul' => '', 'observations' => '']
+            ]
+        ];
+    }
+
+    public function removeIndicateur($objectifIndex, $indicateurIndex)
+    {
+        unset($this->objectifs[$objectifIndex]['indicateurs'][$indicateurIndex]);
+        $this->objectifs[$objectifIndex]['indicateurs'] = array_values($this->objectifs[$objectifIndex]['indicateurs']);
+    }
+
+    public function removeObjectif($index)
+    {
+        unset($this->objectifs[$index]);
+        $this->objectifs = array_values($this->objectifs);
+    }
+
+    public function contract()
+    {
+        // Sauvegarder tous les objectifs et indicateurs dans la base de données
+
+
+        $this->validate([
+            'title' => 'required',
+            'year' => 'required|numeric',
+            'user_ids' => 'required'
+        ]);
+
+        foreach ($this->user_ids as $key => $user_id) {
+            // dd($user_id);
+            // Récupérer l'utilisateur actuellement connecté
+            $user = User::findOrFail($user_id);
+
+            // Extraire les 2 premières lettres du prénom et du nom
+            $prenom = substr($user->first_name, 0, 2);
+            $nom = substr($user->last_name, 0, 2);
+
+            // Extraire les 2 derniers chiffres de l'année actuelle
+            $year = substr($this->year, -2);
+
+            // Générer le code Tbord personnalisé
+            $perf = 'Perf' . strtoupper($prenom) . strtoupper($nom) . $year;
+
+            $performance = PerformanceContract::Create([
+                'code' => $perf,
+                'title' => $this->title,
+                'year' => $this->year,
+                'user_id' => $user_id,
+                'created_by' => auth()->user()->id
+            ]);
+
+            foreach ($this->objectifs as $objectifData) {
+                // Création d'un nouvel objectif
+                $objectif = PerformanceContrat::create([
+                    'performance_contract_id' => $performance->id,
+                    'valeur' => $objectifData['valeur']
+                ]);
+
+                // Sauvegarde des indicateurs liés à l'objectif
+                foreach ($objectifData['indicateurs'] as $indicateurData) {
+                    $objectif->indicateurs()->create([
+                        'nom' => $indicateurData['nom'],
+                        'type' => $indicateurData['type'],
+                        'cible' => $indicateurData['cible'],
+                        'coef' => $indicateurData['coef'],
+                        'frequence' => $indicateurData['frequence'],
+                        'mode_calcul' => $indicateurData['mode_calcul'],
+                        'observations' => $indicateurData['observations']
+                    ]);
+                }
+            }
+        }
+
+        // Rafraîchir les objectifs après la sauvegarde
+        $this->mount();
+
+        $this->closeModalAndFlashMessage(__('Contrat de performance sauvegardés avec succès.'), 'CreateContractModal');
     }
 
     // public function updatedRoleName($value)
@@ -146,7 +266,7 @@ class Index extends Component
             'gender' => $this->gender,
             'emergency_contact_name' => $this->emergency_contact_name,
             'emergency_contact_phone' => $this->emergency_contact_phone,
-            'status' => $this->status === "true" ? 1 : 0,
+            'status' => $this->status,
             'password' => bcrypt($this->password),
         ]);
 
@@ -169,7 +289,7 @@ class Index extends Component
         $this->validate([
             'first_name' => 'required',
             'last_name' => 'required',
-            'phone_number' => 'required',
+            'phone_number' => 'nullable',
             'email' => ['required', 'email', Rule::unique('users')->ignore($this->user->id)],
             'gender' => 'required',
             'status' => 'required|boolean',
@@ -191,6 +311,8 @@ class Index extends Component
             // Autres validations selon les besoins...
         ]);
 
+        // dd($this->status);
+
         // Mise à jour des données de l'utilisateur
         $this->user->update([
             'first_name' => $this->first_name,
@@ -198,7 +320,7 @@ class Index extends Component
             'email' => $this->email,
             'phone_number' => $this->phone_number,
             'gender' => $this->gender,
-            'status' => $this->status === "true" ? 1 : 0,
+            'status' => $this->status,
             'occupation' => $this->occupation,
             'hiring_date' => $this->hiring_date ? Carbon::parse($this->hiring_date) : null,
             'date_of_birth' => $this->date_of_birth ? Carbon::parse($this->date_of_birth) : null,
@@ -260,11 +382,13 @@ class Index extends Component
         $this->user = $user;
         $this->first_name = $user->first_name;
         $this->last_name = $user->last_name;
+        $this->matricule = $user->matricule;
         $this->email = $user->email;
         $this->phone_number = $user->phone_number;
         $this->occupation = $user->occupation;
         $this->is_manager = $user->is_manager;
         $this->pemp_temp = $user->pemp_temp;
+        $this->type_fiche = $user->type_fiche ? $user->type_fiche->id : '';
 
         // Dates formatées pour les champs d'entrée
         $this->date_of_birth = $user->date_of_birth ? Carbon::parse($user->date_of_birth)->format('Y-m-d') : null;
@@ -420,6 +544,7 @@ class Index extends Component
         return view('livewire.portal.users.index', [
             'users' => $users,
             'userss' => User::all(),
+            'type_fiches' => \App\Models\TypeFiche::all(),
             'active_users' => $total_active_users,
             'inactive_users' => $total_inactive_users,
             'users_count' => $total_users,
@@ -428,6 +553,7 @@ class Index extends Component
             'directions' => \App\Models\Direction::all(),
             'enterprises' => \App\Models\Enterprise::all(),
             'sites' => \App\Models\Site::all(),
+            'years' => range(now()->year - 10, now()->year + 10),
         ])->layout('components.layouts.dashboard');
     }
 }
