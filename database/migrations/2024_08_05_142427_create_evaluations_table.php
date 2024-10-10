@@ -11,18 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('evaluations', function (Blueprint $table) {
-            $table->id();
-            $table->string('code');
-            $table->string('image')->nullable();
-            $table->string('title');
-            $table->longText('description')->nullable();
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->boolean('is_active');
-            $table->foreignId('user_id')->constrained(table: 'users', indexName: 'created_by')->onDelete('cascade');
-            $table->timestamps();
-        });
+            Schema::create('evaluations', function (Blueprint $table) {
+                $table->id();
+                $table->string('code')->unique();
+                $table->string('image')->nullable();
+                $table->string('title');
+                $table->longText('description')->nullable();
+                $table->date('start_date');
+                $table->date('end_date');
+                $table->boolean('is_active');
+                $table->foreignId('user_id')->constrained(table: 'users', indexName: 'created_by')->onDelete('cascade');
+                $table->timestamps();
+            });
     }
 
     /**

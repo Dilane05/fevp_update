@@ -28,7 +28,7 @@ class Index extends Component
     public $responses = [];
 
     protected $rules = [
-        'code' => 'required|string|max:255',
+        // 'code' => 'required|string|max:255',
         'start_date' => 'required|date',
         'end_date' => 'required|date|after_or_equal:start_date',
         'is_active' => 'required|boolean',
@@ -41,8 +41,10 @@ class Index extends Component
 
         $path = $this->image->store('evaluation', 'public');
 
+        $code = Evaluation::generateEvaluationCode();
+
         Evaluation::create([
-            'code' => $this->code,
+            'code' => $code,
             'title' => $this->title,
             'description' => $this->description,
             'start_date' => $this->start_date,
@@ -165,7 +167,8 @@ class Index extends Component
 
         Carbon::setLocale('fr'); // Set Carbon locale to French
 
-        $evaluations = Evaluation::all();
+        $evaluations = Evaluation::search($this->query)
+        ->orderBy($this->orderBy, $this->orderAsc)->paginate($this->perPage);
 
         $resultCount = 0;
 

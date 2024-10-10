@@ -9,13 +9,13 @@
                         <p>{{ __('Modifier une évaluation existante') }} &#128522;</p>
                     </div>
                     <x-form-items.form wire:submit.prevent="update" class="form-modal">
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label class="form-label">Code</label>
                             <input type="text" class="form-control" wire:model="code">
                             @error('code')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
-                        </div>
+                        </div> --}}
 
                         <div class="mb-3">
                             <label class="form-label">Titre</label>

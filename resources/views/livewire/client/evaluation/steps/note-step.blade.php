@@ -28,8 +28,9 @@
                 </ul>
             </div>
 
-            <div class="col-md-6">
-                <canvas id="evaluationChart"></canvas>
+            <div class="chart-container">
+                <!-- Canvas pour le diagramme radar -->
+                <canvas id="notesRadarChart"></canvas>
             </div>
 
         </div>
@@ -39,18 +40,24 @@
         @include('livewire.client.evaluation.control-navigation')
     @else
         <div class="d-flex my-2 justify-content-end">
-            <a class="btn btn-secondary rounded-pill" wire:click="previousStep">{{__('Précédent')}}</a>
+            <a class="btn btn-secondary rounded-pill" wire:click="previousStep">{{ __('Précédent') }}</a>
             <button class="btn btn-primary mx-2" wire:click="save"> {{ __('Sauvegarder') }} </button>
         </div>
     @endif
 
-    @push('scripts_head')
     <script>
-        alert('k')
-        document.addEventListener('livewire:load', function () {
-            var ctx = document.getElementById('evaluationChart').getContext('2d');
+        // Quand le document est chargé, on crée le diagramme radar
 
-            var evaluationChart = new Chart(ctx, {
+        var percentages = [
+            ({{ $note_bilan_resultat }} / {{ $total_bilan_resultat }}) * 100,
+            ({{ $note_tenue_global_poste }} / {{ $total_tenue_global_poste }}) * 100,
+            ({{ $note_quality_managerial }} / {{ $total_quality_managerial }}) * 100,
+            ({{ $note_compliance_corporate }} / {{ $total_compliance_corporate }}) * 100,
+        ];
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var ctx = document.getElementById('notesRadarChart').getContext('2d');
+            var radarChart = new Chart(ctx, {
                 type: 'radar',
                 data: {
                     labels: [
@@ -58,54 +65,42 @@
                         'Tenue globale du poste',
                         'Qualité Managériale',
                         'Conformité à la culture d\'entreprise',
-                        'Bonus Malus',
-                        'Sanctions'
                     ],
                     datasets: [{
-                        label: 'Résultat évalué',
-                        data: [
-                            {{ $note_bilan_resultat }},
-                            {{ $note_tenue_global_poste }},
-                            {{ $note_quality_managerial }},
-                            {{ $note_compliance_corporate }},
-                            {{ $note_bonus_malus }},
-                            {{ $note_sanction }}
-                        ],
-                        backgroundColor: 'rgba(255, 193, 7, 0.2)',  // Doux et léger
-                        borderColor: 'rgba(255, 193, 7, 1)',
-                        borderWidth: 2
-                    }, {
-                        label: 'Minimum - 50%',
-                        data: [10, 10, 5, 7.5, 0, 0],  // valeurs minimums
-                        backgroundColor: 'rgba(220, 53, 69, 0.2)',
-                        borderColor: 'rgba(220, 53, 69, 1)',
-                        borderWidth: 2
-                    }, {
-                        label: 'Note Max - 100%',
-                        data: [
-                            {{ $total_bilan_resultat }},
-                            {{ $total_tenue_global_poste }},
-                            {{ $total_quality_managerial }},
-                            {{ $total_compliance_corporate }},
-                            5,  // Note max pour Bonus
-                            5   // Note max pour Sanctions
-                        ],
-                        backgroundColor: 'rgba(40, 167, 69, 0.2)',
-                        borderColor: 'rgba(40, 167, 69, 1)',
-                        borderWidth: 2
+                        label: 'Forces et Faiblesses',
+                        data: percentages, // Les pourcentages calculés
+                        backgroundColor: 'rgba(173, 216, 230, 0.15)', // Bleu très doux et transparent
+                        borderColor: 'rgba(0, 123, 255, 0.5)', // Douce couleur bleue
+                        borderWidth: 1.5,
+                        pointBackgroundColor: 'rgba(0, 123, 255, 0.7)', // Points plus subtils
+                        pointBorderColor: '#ffffff',
+                        pointHoverBackgroundColor: '#ffffff',
+                        pointHoverBorderColor: 'rgba(0, 123, 255, 0.7)'
                     }]
                 },
                 options: {
-                    scale: {
-                        ticks: {
-                            beginAtZero: true,
-                            max: 20
+                    responsive: true,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: 'rgba(0, 0, 0, 0.05)' // Lignes douces
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)', // Grille très légère
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100 // Les pourcentages vont de 0 à 100
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false // Masquer la légende pour un design épuré
                         }
                     }
                 }
             });
         });
+
     </script>
-    @endpush
 
 </div>
