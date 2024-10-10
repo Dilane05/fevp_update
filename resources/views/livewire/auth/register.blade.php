@@ -24,7 +24,7 @@
                                 <div class="mb-0  py-2"> <span class="text-xl fs-1 fw-bold">{{ __('Wellness')}}</span><span class="text-primary h2 fw-bold bg-success p-1 rounded">{{__('Base')}}</span></div>
                                 <p>{{__('Already have an account?')}} <a href="{{route('login')}}" class="fw-bold text-decoration-underline"> {{__('Sign In')}}</a></p>
                             </div>
-                            <x-form-items.form wire:submit="createUser" class="mt-1 needs-validation" id="loginForm">
+                            <x-form-items.form wire:submit.prevent="createUser" class="mt-1 needs-validation" id="loginForm">
                                 <div class="form-group mb-2 row">
                                     <div class="col">
                                         <label for="first_name" class="col-md-4 col-form-label text-md-right">{{ __('First Name') }}</label>

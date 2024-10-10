@@ -8,7 +8,7 @@
                         <h1 class="mb-0 h4">{{ __('Mise à jour des utilisateurs') }}</h1>
                         <p>{{ __('Mettez à jour les details d\'un utilisateur') }} &#128522;</p>
                     </div>
-                    <x-form-items.form wire:submit="update" class="form-modal">
+                    <x-form-items.form wire:submit.prevent="update" class="form-modal">
                         <input type="hidden" name="user_id" value="" id="userId">
 
                         <div class='row form-group mb-3'>

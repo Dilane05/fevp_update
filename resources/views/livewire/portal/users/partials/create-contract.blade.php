@@ -10,7 +10,7 @@
                         <p>{{ __('Créer un nouveau contrat de performance') }} &#128522;</p>
                     </div>
 
-                    <x-form-items.form wire:submit="contract" class="form-modal">
+                    <x-form-items.form wire:submit.prevent="contract" class="form-modal">
 
 
                     <div class="shadow p-2 my-2">

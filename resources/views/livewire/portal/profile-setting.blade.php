@@ -32,7 +32,7 @@
             <div class='col-md-7'>
                 <div class='card p-3 text-gray-700'>
                     <h5 class="pb-3">{{__('Personal Details')}}</h5>
-                    <x-form-items.form wire:submit="updateProfile" nctype="multipart/form-data" class="form-modal">
+                    <x-form-items.form wire:submit.prevent="updateProfile" nctype="multipart/form-data" class="form-modal">
                         <div class="form-group mb-4 row">
                             <div class='col-md-6 col-xs-12'>
                                 <label for="first_name">{{__('First Name')}}</label>
@@ -105,7 +105,7 @@
                         <small class="text-muted fw-light fs-6 fst-italic">{{__('Upload transparent/white background signature')}} <a href='https://www.signwell.com/online-signature/draw/' target="_blank">{{__("check here!")}}</a> </small>
                     </h5>
 
-                    <x-form-items.form wire:submit="saveSignature" nctype="multipart/form-data" class="form-modal">
+                    <x-form-items.form wire:submit.prevent="saveSignature" nctype="multipart/form-data" class="form-modal">
                         <div class="form-group mb-4">
                             <input type="file" wire:model="signature" class="form-control  @error('signature') is-invalid @enderror" />
                             @error('signature')
@@ -126,7 +126,7 @@
                 </div>
                 <div class='card p-3 text-gray-700 mt-3'>
                     <h5 class="pb-3">{{__('Password Reset')}}</h5>
-                    <x-form-items.form wire:submit="passwordReset" nctype="multipart/form-data" class="form-modal">
+                    <x-form-items.form wire:submit.prevent="passwordReset" nctype="multipart/form-data" class="form-modal">
                         <div class='form-group mb-4'>
                             <label for="current_password">{{__('Current Password')}}</label>
                             <input wire:model="current_password" type="text" class="form-control  @error('current_password') is-invalid @enderror">

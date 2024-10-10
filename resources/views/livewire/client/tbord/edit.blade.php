@@ -9,7 +9,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <x-form-items.form wire:submit="update" class="form-modal">
+                    <x-form-items.form wire:submit.prevent="update" class="form-modal">
                         <div class="shadow p-2 my-2">
                             <div class="row">
                                 <div class="col-md-4">

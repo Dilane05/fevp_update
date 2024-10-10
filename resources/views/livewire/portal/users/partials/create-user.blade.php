@@ -10,7 +10,7 @@
                         <p>{{ __('Créer un nouvel utilisateur') }} &#128522;</p>
                     </div>
 
-                    <x-form-items.form wire:submit="store" class="form-modal">
+                    <x-form-items.form wire:submit.prevent="store" class="form-modal">
                         <input type="hidden" name="user_id" value="" id="userId">
 
                         <div class='row form-group mb-3'>

@@ -7,8 +7,8 @@
                         <h1 class="mb-0 h4">{{__('Share your feedback')}}</h1>
                         <p>{{__('Tell us how you are doing')}} &#128522;</p>
                     </div>
-                    <x-form-items.form wire:submit="saveFeedback">
-                        
+                    <x-form-items.form wire:submit.prevent="saveFeedback">
+
                         <div class="form-group mb-2">
                             <label for="client_feedback">{{__('Your feedback')}}</label>
                             <livewire:portal.trix :value="$client_feedback">

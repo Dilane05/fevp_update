@@ -8,7 +8,7 @@
                         <h1 class="mb-0 h4">{{ __('Création d\'un comité de calibrage') }}</h1>
                         <p>{{ __('Créer un nouveau comité de calibrage') }} &#128522;</p>
                     </div>
-                    <x-form-items.form wire:submit="store" class="form-modal">
+                    <x-form-items.form wire:submit.prevent="store" class="form-modal">
                         <div class="row my-2">
                             <div class="col">
                                 <label class="form-label">Code</label>

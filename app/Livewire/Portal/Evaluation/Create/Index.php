@@ -32,7 +32,7 @@ class Index extends Component
         'start_date' => 'required|date',
         'end_date' => 'required|date|after_or_equal:start_date',
         'is_active' => 'required|boolean',
-        'image' => 'image|max:5096', // Limite de 5MB pour l'image
+        // 'image' => 'image|max:5096', // Limite de 5MB pour l'image
     ];
 
     public function store()

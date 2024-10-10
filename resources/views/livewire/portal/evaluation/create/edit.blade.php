@@ -8,7 +8,7 @@
                         <h1 class="mb-0 h4">{{ __('Modification d\'une évaluation') }}</h1>
                         <p>{{ __('Modifier une évaluation existante') }} &#128522;</p>
                     </div>
-                    <x-form-items.form wire:submit="update" class="form-modal">
+                    <x-form-items.form wire:submit.prevent="update" class="form-modal">
                         <div class="mb-3">
                             <label class="form-label">Code</label>
                             <input type="text" class="form-control" wire:model="code">

@@ -8,7 +8,7 @@
                         <h1 class="mb-0 h4">{{ __('Création des formules sur les indicateurs') }}</h1>
                         <p>{{ __('Créer un nouvelle indicateur') }} &#128522;</p>
                     </div>
-                    <x-form-items.form wire:submit="store" class="form-modal">
+                    <x-form-items.form wire:submit.prevent="store" class="form-modal">
                         <input type="hidden" wire:model="indicatorId">
                         <div class="mb-3">
                             <label class="form-label">Nom</label>
