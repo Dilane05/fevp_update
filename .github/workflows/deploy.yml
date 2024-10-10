@@ -27,7 +27,7 @@ jobs:
       # - name: Build assets
       #   run: npm run production
 
-      - name: Copy .env
+      # - name: Copy .env
         # run: cp .env.example .env
 
       - name: Generate application key
