@@ -79,6 +79,8 @@ Route::group(['prefix' => 'portal', 'middleware' => ['auth']], function () {
         Route::get('/statistic/{code}', App\Livewire\Portal\Evaluation\Statistics\Index::class)->name('portal.evaluation.statistics');
     });
 
+    Route::get('/contract_performances', App\Livewire\Portal\PerformanceContract\Index::class)->name('portal.performance_contract.index');
+
     //AuditLogs
     Route::prefix('auditlogs')->group(function () {
         Route::get('/', App\Livewire\Portal\AuditLogs\Index::class)->name('portal.auditlogs.index');

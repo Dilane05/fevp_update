@@ -167,7 +167,6 @@ class Index extends Component
     {
         // Sauvegarder tous les objectifs et indicateurs dans la base de données
 
-
         $this->validate([
             'title' => 'required',
             'year' => 'required|numeric',

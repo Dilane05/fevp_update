@@ -115,7 +115,7 @@
                                             </td>
                                             <td>
                                                 <button class="btn btn-sm btn-danger rounded-pill"
-                                                    wire:click="removeIndicateur({{ $index }}, {{ $indicateurIndex }})">
+                                                    wire:click.prevent="removeIndicateur({{ $index }}, {{ $indicateurIndex }})">
                                                     Supprimer
                                                 </button>
                                             </td>
@@ -131,7 +131,7 @@
                         objectif</button>
 
                         <div class="text-end mt-4">
-                            <button type="button" class="btn btn-outline-secondary" wire:click="clearFields"
+                            <button type="button" class="btn btn-outline-secondary" wire:click.prevent="clearFields"
                                 data-bs-dismiss="modal">{{ __('Annuler') }}</button>
                             <button type="submit" class="btn btn-primary">{{ __('Créer') }}</button>
                         </div>

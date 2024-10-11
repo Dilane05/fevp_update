@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Client\PerformanceContract;
+namespace App\Livewire\Portal\PerformanceContract;
 
 use App\Models\User;
 use Livewire\Component;
@@ -14,13 +14,15 @@ class Index extends Component
 
     use WithDataTable;
 
+    public $title;
+    public $year, $performanceContract;
     public $objectifs = [];
 
-    public $year, $performanceContract;
-
-    public $title, $user_id;
+    public $user_id , $user_ids;
 
     public $indicators = ['performance', 'reputation', 'execution', 'budget'];
+
+    public $contract;
 
     public function mount()
     {
@@ -28,7 +30,7 @@ class Index extends Component
             [
                 'valeur' => '',
                 'indicateurs' => [
-                    ['cible' => '','type', 'coef' => '', 'frequence' => '', 'mode_calcul' => '', 'observations' => '']
+                    ['cible' => '', 'type', 'coef' => '', 'frequence' => '', 'mode_calcul' => '', 'observations' => '']
                 ]
             ]
         ];
@@ -51,7 +53,7 @@ class Index extends Component
         $this->objectifs[] = [
             'valeur' => '',
             'indicateurs' => [
-                ['cible' => '','type','coef' => '', 'frequence' => '', 'mode_calcul' => '', 'observations' => '']
+                ['cible' => '', 'type', 'coef' => '', 'frequence' => '', 'mode_calcul' => '', 'observations' => '']
             ]
         ];
     }
@@ -68,65 +70,65 @@ class Index extends Component
         $this->objectifs = array_values($this->objectifs);
     }
 
-    protected $rules = [
-        'title' => 'required',
-        'year' => 'required|numeric',
-        'user_id' => 'required'
-    ];
-
     public function store()
     {
         // Sauvegarder tous les objectifs et indicateurs dans la base de données
 
-
-        $this->validate();
-
-        // Récupérer l'utilisateur actuellement connecté
-        $user = User::findOrFail($this->user_id);
-
-        // Extraire les 2 premières lettres du prénom et du nom
-        $prenom = substr($user->first_name, 0, 2);
-        $nom = substr($user->last_name, 0, 2);
-
-        // Extraire les 2 derniers chiffres de l'année actuelle
-        $year = substr($this->year, -2);
-
-        // Générer le code Tbord personnalisé
-        $perf = 'Perf' . strtoupper($prenom) . strtoupper($nom) . $year;
-
-        $performance = PerformanceContract::Create([
-            'code' => $perf,
-            'title' => $this->title,
-            'year' => $this->year,
-            'user_id' => $this->user_id,
-            'created_by' => auth()->user()->id
+        $this->validate([
+            'title' => 'required',
+            'year' => 'required|numeric',
+            'user_ids' => 'required'
         ]);
 
-        foreach ($this->objectifs as $objectifData) {
-            // Création d'un nouvel objectif
-            $objectif = PerformanceContrat::create([
-                'performance_contract_id' => $performance->id,
-                'valeur' => $objectifData['valeur']
+        foreach ($this->user_ids as $key => $user_id) {
+            // dd($user_id);
+            // Récupérer l'utilisateur actuellement connecté
+            $user = User::findOrFail($user_id);
+
+            // Extraire les 2 premières lettres du prénom et du nom
+            $prenom = substr($user->first_name, 0, 2);
+            $nom = substr($user->last_name, 0, 2);
+
+            // Extraire les 2 derniers chiffres de l'année actuelle
+            $year = substr($this->year, -2);
+
+            // Générer le code Tbord personnalisé
+            $perf = 'Perf' . strtoupper($prenom) . strtoupper($nom) . $year;
+
+            $performance = PerformanceContract::Create([
+                'code' => $perf,
+                'title' => $this->title,
+                'year' => $this->year,
+                'user_id' => $user_id,
+                'created_by' => auth()->user()->id
             ]);
 
-            // Sauvegarde des indicateurs liés à l'objectif
-            foreach ($objectifData['indicateurs'] as $indicateurData) {
-                $objectif->indicateurs()->create([
-                    'nom' => $indicateurData['nom'],
-                    'type' => $indicateurData['type'],
-                    'cible' => $indicateurData['cible'],
-                    'coef' => $indicateurData['coef'],
-                    'frequence' => $indicateurData['frequence'],
-                    'mode_calcul' => $indicateurData['mode_calcul'],
-                    'observations' => $indicateurData['observations']
+            foreach ($this->objectifs as $objectifData) {
+                // Création d'un nouvel objectif
+                $objectif = PerformanceContrat::create([
+                    'performance_contract_id' => $performance->id,
+                    'valeur' => $objectifData['valeur']
                 ]);
+
+                // Sauvegarde des indicateurs liés à l'objectif
+                foreach ($objectifData['indicateurs'] as $indicateurData) {
+                    $objectif->indicateurs()->create([
+                        'nom' => $indicateurData['nom'],
+                        'type' => $indicateurData['type'],
+                        'cible' => $indicateurData['cible'],
+                        'coef' => $indicateurData['coef'],
+                        'frequence' => $indicateurData['frequence'],
+                        'mode_calcul' => $indicateurData['mode_calcul'],
+                        'observations' => $indicateurData['observations']
+                    ]);
+                }
             }
         }
 
         // Rafraîchir les objectifs après la sauvegarde
         $this->mount();
 
-        $this->closeModalAndFlashMessage(__('Contrat de performance sauvegardés avec succès.'), 'EditPerformanceContract');
+        $this->closeModalAndFlashMessage(__('Contrat de performance sauvegardés avec succès.'), 'CreateContractModal');
     }
 
     public function initData($id)
@@ -270,16 +272,29 @@ class Index extends Component
 
     public function render()
     {
+        $contracts = PerformanceContract::search($this->query)
+            ->orderBy($this->orderBy, $this->orderAsc)->paginate($this->perPage);
 
-        // Générer la plage d'années : 10 années avant et 10 années après l'année actuelle
-        $years = range(now()->year - 10, now()->year + 10);
+        return view(
+            'livewire.portal.performance-contract.index',
+            compact('contracts'),
+            [
+                'years' => range(now()->year - 10, now()->year + 10),
+                'userss' => User::all(),
+                'users' => User::all(),
+            ]
+        )->layout('components.layouts.dashboard');
+    }
 
-        $users = auth()->user()->responsableN1Users;
-
-        $performances = PerformanceContract::search($this->query)->where('created_by', auth()->user()->id)->orderBy($this->orderBy, $this->orderAsc)->paginate($this->perPage);
-
-        $myPerformances = PerformanceContract::search($this->query)->where('user_id', auth()->user()->id)->orderBy($this->orderBy, $this->orderAsc)->paginate($this->perPage);
-
-        return view('livewire.client.performance-contract.index',  compact('users', 'years', 'performances', 'myPerformances'))->layout('components.layouts.client.dashboard');;
+    public function clearFields()
+    {
+        $this->reset([
+            'title',
+            'year',
+            'user_id',
+            'user_ids',
+            'objectifs',
+            'indicators',
+        ]);
     }
 }
