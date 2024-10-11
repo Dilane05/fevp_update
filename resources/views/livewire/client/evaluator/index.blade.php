@@ -45,37 +45,31 @@
         <div class="row">
             @forelse ($responseEvaluations as $responseEvaluation)
                 <div class="col-md-4 mb-4">
-                    <div class="card border-0 shadow-sm rounded overflow-hidden">
-                        <img src="https://via.placeholder.com/600x200" class="card-img-top" alt="Evaluation Image">
+                    <div class="card border-0 shadow-sm rounded">
                         <div class="card-body">
-                            <h5 class="card-title">{{ $responseEvaluation->evaluation->title }} : <span
-                                    class="fw-bold">{{ $responseEvaluation->evaluation->code }}</span> </h5>
+                            <h5 class="card-title">{{ $responseEvaluation->evaluation->title }} : <strong>{{ $responseEvaluation->evaluation->code }}</strong></h5>
+                            <p class="card-text text-muted">{{ $responseEvaluation->user->name }} | {{ $responseEvaluation->date }}</p>
                             <p class="card-text text-muted">
-                                {{ $responseEvaluation->user->name }} | {{ $responseEvaluation->date }}
-                            </p>
-                            <p class="card-text text-muted">
-                                {{ $responseEvaluation->status ? 'Terminer' : 'Brouillon' }} |
-                                {{ $responseEvaluation->is_send ? 'Envoyé' : 'Non Envoyé' }}
+                                Statut : {{ $responseEvaluation->status ? 'Terminé' : 'Brouillon' }} |
+                                Envoi : {{ $responseEvaluation->is_send ? 'Envoyé' : 'Non Envoyé' }}
                             </p>
 
-                            {{-- <p class="text-muted">Du {{ $evaluation->start_date->format('d M Y') }} au
-                                {{ $evaluation->end_date->format('d M Y') }}</p> --}}
                             @if (!$responseEvaluation->evaluation->is_active)
-                                <div class="d-flex">
-                                    <button class="btn btn-secondary mx-1" disabled>Évaluation Clôturée</button>
-                                    <button class="btn btn-primary"
-                                        wire:click="startEvaluation({{ $responseEvaluation->id }})">Voir les
-                                        Détails</button>
-                                @else
-                                    <button wire:click="startEvaluation({{ $responseEvaluation->id }})"
-                                        class="btn btn-primary w-100"> Evaluer </button>
+                                <div class="d-flex justify-content-between">
+                                    <button class="btn btn-secondary" disabled>Évaluation Clôturée</button>
+                                    <button class="btn btn-primary" wire:click="startEvaluation({{ $responseEvaluation->id }})">Voir les Détails</button>
+                                </div>
+                            @else
+                                <button wire:click="startEvaluation({{ $responseEvaluation->id }})" class="btn btn-primary w-100">Évaluer</button>
                             @endif
                         </div>
                     </div>
                 </div>
             @empty
-                <div class="shadow rounded">
-                    <p class="text-warning display-3 text-center"> {{ __('Vous n\'etes pas evaluateur !!!') }} </p>
+                <div class="col-12">
+                    <div class="alert alert-warning text-center" role="alert">
+                        <h3>{{ __('Vous n\'êtes pas évaluateur !!!') }}</h3>
+                    </div>
                 </div>
             @endforelse
         </div>

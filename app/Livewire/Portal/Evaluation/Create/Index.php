@@ -39,7 +39,7 @@ class Index extends Component
     {
         $this->validate();
 
-        $path = $this->image->store('evaluation', 'public');
+        // $path = $this->image->store('evaluation', 'public');
 
         $code = Evaluation::generateEvaluationCode();
 
@@ -50,7 +50,7 @@ class Index extends Component
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
             'is_active' => $this->is_active,
-            'image' => $path,
+            // 'image' => $path,
             'user_id' => auth()->user()->id,
         ]);
 
@@ -118,13 +118,13 @@ class Index extends Component
         ]);
 
         // Si une nouvelle image a été uploadée, on remplace l'ancienne
-        if ($this->image) {
-            $imageName = $this->image->store('evaluation', 'public'); // Enregistre la nouvelle image
+        // if ($this->image) {
+        //     $imageName = $this->image->store('evaluation', 'public'); // Enregistre la nouvelle image
 
-            $this->evaluation->update([
-                'image' => $imageName,
-            ]);
-        }
+        //     $this->evaluation->update([
+        //         'image' => $imageName,
+        //     ]);
+        // }
 
         $this->resetFields();
 

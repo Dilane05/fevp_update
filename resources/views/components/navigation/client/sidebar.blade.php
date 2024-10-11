@@ -1,7 +1,7 @@
 @inject('request', 'Illuminate\Http\Request')
 <div class="sidebar d-flex flex-column">
     <div class="text-center mb-4">
-        <img src="https://via.placeholder.com/70" alt="Avatar" class="avatar mb-3">
+        <img src="{{ asset(Auth::user()->gender == 'male' ? 'img/male.jpeg' : (Auth::user()->gender == 'female' ? 'img/female.jpeg' : 'img/unknown.jpeg')) }}" alt="Avatar" class="avatar mb-3">
         <h5>{{ auth()->user()->name }}</h5>
     </div>
     <ul class="nav flex-column mb-2">
@@ -22,13 +22,13 @@
                 <span data-translate="evaluators">Évaluateurs</span>
             </a>
         </li>
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('client.tbords.index') ? 'active' : '' }}"
                 href="{{ route('client.tbords.index') }}" wire:navigate>
                 <i class="bi bi-table me-2"></i> <!-- Icône de tableau pour Tbord -->
                 <span data-translate="tbord">Tbord</span>
             </a>
-        </li>
+        </li> --}}
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('client.performance-contract.index') ? 'active' : '' }}"
                 href="{{ route('client.performance-contract.index') }}" wire:navigate>

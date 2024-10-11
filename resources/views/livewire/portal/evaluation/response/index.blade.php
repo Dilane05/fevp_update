@@ -1,4 +1,5 @@
 <div>
+    @include('livewire.portal.evaluation.response.print')
     <div class='p-0'>
         <div class="d-flex justify-content-between w-100 flex-wrap align-items-center">
             <div class="mb-lg-0">
@@ -76,57 +77,72 @@
         </div>
     </div>
 
+    <div class="d-flex justify-content-end">
+        <div class="my-3" wire:loading.remove>
+            <a data-bs-toggle="modal" data-bs-target="#printResponseModal"
+                class="btn btn-primary btn-lg d-inline-flex align-items-center {{ $responses->count() > 0 ? '' : 'disabled' }}">
+
+                <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                </svg>
+                {{ __('Imprimer Pdf') }} {{ $responses->count() }}
+            </a>
+        </div>
+        {{-- <div class="text-center mx-2" wire:loading wire:target="export">
+            <div class="text-center">
+                <div class="spinner-grow text-grey-300" style="width: 0.9rem; height: 0.9rem;" role="status"></div>
+                <div class="spinner-grow text-grey-300" style="width: 0.9rem; height: 0.9rem;" role="status"></div>
+                <div class="spinner-grow text-grey-300" style="width: 0.9rem; height: 0.9rem;" role="status"></div>
+                <div class="spinner-grow text-grey-300" style="width: 0.9rem; height: 0.9rem;" role="status">
+                </div>
+            </div>
+        </div> --}}
+    </div>
+
     <div class="row">
         @forelse ($responses as $responseEvaluation)
             <div class="col-md-4 mb-4">
-                <div class="card border-0 shadow-sm rounded overflow-hidden">
-                    @php
-                        $currentImage = $evaluation->image;
-                        // dd($currentImage);
-                    @endphp
-
-                    @if ($currentImage)
-                        <img src="{{ Storage::url($currentImage) }}" class="img-fluid" alt="Image actuelle"
-                            style="max-width: 100%; height: auto;">
-                    @else
-                        <img src="https://via.placeholder.com/600x200" class="card-img-top" alt="Evaluation Image">
-                    @endif
-
+                <div class="card border-0 shadow-sm rounded">
                     <div class="card-body">
-                        {{-- <h5 class="card-title">{{ $responseEvaluation->evaluation->title }} : <span
-                                class="fw-bold">{{ $responseEvaluation->evaluation->code }}</span> </h5> --}}
                         <p class="card-text">
-                        <p class="">
-                            <span class="fw-bold"> {{ 'Nom de l\'évaluer : ' }} </span> <span class="text-muted">
-                                {{ $responseEvaluation->user->name }} </span>
+                            <span class="fw-bold">Matricule de l'évalué : </span>
+                            <span class="text-muted">{{ $responseEvaluation->user->matricule }}</span>
                         </p>
-                        {{-- {{ $responseEvaluation->date }} --}}
+                        <p class="card-text">
+                            <span class="fw-bold">Nom de l'évalué : </span>
+                            <span class="text-muted">{{ $responseEvaluation->user->name }}</span>
+                        </p>
+                        <p class="card-text">
+                            <span class="fw-bold">Poste de l'évalué : </span>
+                            <span class="text-muted">{{ $responseEvaluation->user->occupation }}</span>
                         </p>
                         <p class="card-text {{ $responseEvaluation->status && $responseEvaluation->is_send ? 'text-success' : 'text-muted' }}">
-                            {{ $responseEvaluation->status ? 'Terminer' : 'Brouillon' }} |
-                            {{ $responseEvaluation->is_send ? 'Envoyé le ' . \Carbon\Carbon::parse($responseEvaluation->date)->translatedFormat('j F Y') : 'Non Envoyé' }}
+                            Statut : {{ $responseEvaluation->status ? 'Terminé' : 'Brouillon' }} |
+                            Envoi : {{ $responseEvaluation->is_send ? 'Envoyé le ' . \Carbon\Carbon::parse($responseEvaluation->date)->translatedFormat('j F Y') : 'Non Envoyé' }}
                         </p>
 
-                        {{-- <p class="text-muted">Du {{ $evaluation->start_date->format('d M Y') }} au
-                                {{ $evaluation->end_date->format('d M Y') }}</p> --}}
                         @if (!$responseEvaluation->evaluation->is_active)
                             <div class="d-flex">
                                 <button class="btn btn-secondary mx-1" disabled>Évaluation Clôturée</button>
-                                <button class="btn btn-primary"
-                                    wire:click="startEvaluation({{ $responseEvaluation->id }})">Voir les
-                                    Détails</button>
-                            @else
-                                <a href="{{ route('portal.calibrage.index',$responseEvaluation->id) }}" class="btn btn-primary w-100"> Calibrer </a>
+                                <button class="btn btn-primary" wire:click="startEvaluation({{ $responseEvaluation->id }})">Voir les Détails</button>
+                            </div>
+                        @else
+                            <a href="{{ route('portal.calibrage.index', $responseEvaluation->id) }}" class="btn btn-primary w-100">Calibrer</a>
                         @endif
                     </div>
                 </div>
             </div>
         @empty
-            <div class="shadow rounded">
-                <p class="text-warning display-3 text-center"> {{ __('Aucune Réponse Trouvez !!!') }} </p>
+            <div class="col-12">
+                <div class="alert alert-warning text-center" role="alert">
+                    <h3>{{ __('Aucune Réponse Trouvée !!!') }}</h3>
+                </div>
             </div>
         @endforelse
     </div>
+
     <!-- Pagination Links -->
     <div class="mt-4 d-flex justify-content-center">
         {{-- {{ $evaluation->responses->links() }} --}}

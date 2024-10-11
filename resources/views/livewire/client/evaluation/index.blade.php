@@ -42,22 +42,28 @@
     @endif
 
     <div class="container">
-        <div class="row">
-            @forelse ($evaluations as $evaluation)
-                <div class="col-md-4 mb-4">
-                    <div class="card border-0 shadow-sm rounded overflow-hidden">
-                        <img src="https://via.placeholder.com/600x200" class="card-img-top" alt="Evaluation Image">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $evaluation->title }} : <span
-                                    class="fw-bold">{{ $evaluation->code }}</span> </h5>
-                            <p class="card-text text-muted">
-                                {{ \Illuminate\Support\Str::limit($evaluation->description, 100) }}</p>
-                            <p class="text-muted">Du {{ $evaluation->start_date->format('d M Y') }} au
-                                {{ $evaluation->end_date->format('d M Y') }}</p>
-                            @if (!$evaluation->is_active)
-                                <div class="d-flex">
-                                    <button class="btn btn-secondary mx-1" disabled>Évaluation Clôturée</button>
-                                    <button class="btn btn-primary" wire:click="startEvaluation({{ $evaluation->id }})">Voir les Détails</button>
+        <div class="container mt-4">
+            <h2 class="text-center mb-4">Évaluations Disponibles</h2>
+
+            <div class="row">
+                @forelse ($evaluations as $evaluation)
+                    <div class="col-md-4 mb-4">
+                        <div class="card border-0 shadow-sm rounded">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $evaluation->title }} :
+                                    <strong>{{ $evaluation->code }}</strong></h5>
+                                <p class="card-text text-muted">
+                                    {{ \Illuminate\Support\Str::limit($evaluation->description, 100) }}</p>
+                                <p class="text-muted">Du {{ $evaluation->start_date->format('d M Y') }} au
+                                    {{ $evaluation->end_date->format('d M Y') }}</p>
+
+                                @if (!$evaluation->is_active)
+                                    <div class="d-flex justify-content-between">
+                                        <button class="btn btn-secondary" disabled>Évaluation Clôturée</button>
+                                        <button class="btn btn-primary"
+                                            wire:click="startEvaluation({{ $evaluation->id }})">Voir les
+                                            Détails</button>
+                                    </div>
                                 @else
                                     @if ($evaluation->participants()->where('user_id', Auth::id())->exists())
                                         @php
@@ -68,27 +74,26 @@
                                                 ->where('user_id', Auth::id())
                                                 ->first();
                                         @endphp
-                                        @if ($response)
-                                            <button wire:click="startEvaluation({{ $evaluation->id }})"
-                                                class="btn btn-primary w-100">Continuer l'évaluation</button>
-                                        @else
-                                            <button wire:click="startEvaluation({{ $evaluation->id }})"
-                                                class="btn btn-primary w-100">Commencer l'évaluation</button>
-                                        @endif
+                                        <button wire:click="startEvaluation({{ $evaluation->id }})"
+                                            class="btn btn-primary w-100">
+                                            {{ $response ? 'Continuer l\'évaluation' : 'Commencer l\'évaluation' }}
+                                        </button>
                                     @else
-                                        <button class="btn btn-secondary w-100" disabled>Vous etes hors de la cible</button>
+                                        <button class="btn btn-secondary w-100" disabled>Vous êtes hors de la
+                                            cible</button>
                                     @endif
-                            @endif
+                                @endif
+                            </div>
                         </div>
                     </div>
-                </div>
-            @empty
-                <div class="d-flex justify-content-center">
-                    <div class="shadow p-2">
-                        <h3 class="text-warning"> {{ __('Aucune évaluation') }} </h3>
+                @empty
+                    <div class="col-12">
+                        <div class="alert alert-warning text-center" role="alert">
+                            <h3>{{ __('Aucune évaluation') }}</h3>
+                        </div>
                     </div>
-                </div>
-            @endforelse
+                @endforelse
+            </div>
         </div>
     </div>
 

@@ -83,7 +83,7 @@
                             <button class="btn btn-secondary w-100" disabled>Veuillez atendre la date de lancement</button>
                         @endif
                     @else
-                        <button class="btn btn-secondary w-100" disabled>Pas autorisé</button>
+                        <button class="btn btn-secondary w-100" disabled>Pas autorisé à participer à la dernière évaluation : {{ $evaluation->title }}</button>
                     @endif
                 @endif
                 @endif
