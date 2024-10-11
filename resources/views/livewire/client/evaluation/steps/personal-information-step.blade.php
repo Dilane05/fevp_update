@@ -121,7 +121,7 @@
     </div>
 
     {{-- Stop trying to control. --}}
-    <div class="d-flex justify-content-start ms-2">
+    <div class="container d-flex justify-content-start ms-2">
         <button class="btn btn-primary" wire:click="submit">
             {{ __('Suivant') }}
         </button>

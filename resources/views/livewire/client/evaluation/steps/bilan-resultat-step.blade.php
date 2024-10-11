@@ -31,16 +31,11 @@
         </div>
     </div>
 
-
     <div class="mb-4">
         <h4 class="text-primary fw-bold mb-3">I - BILAN DES RÉSULTATS</h4>
         <p class="text-secondary">Suivi des réalisations de la période d’évaluation (rendement et efficacité)</p>
-        <div class="table-responsive">
-            {{-- <div class="d-flex justify-content-end mb-2">
-                <button class="btn btn-outline-primary btn-sm rounded-pill" wire:click="addRow" {{ $editable }}>Ajouter une ligne</button>
-            </div> --}}
-
-            <table class="table table-borderless rounded-3 shadow-sm align-middle" >
+        <div class="table-responsive" style="overflow-x: auto;">
+            <table class="table table-borderless rounded-3 shadow-sm align-middle" style="min-width: 2000px;">
                 <thead class="bg-primary text-white rounded-top">
                     <tr>
                         <th rowspan="2" class="py-3">N°</th>
@@ -71,7 +66,7 @@
                                     <option value="">Sélectionner un Indicateur</option>
                                     @foreach ($indicators as $indicator)
                                         <option value="{{ $indicator }}">{{ __('Indicateur') }} {{ $indicator }}</option>
-                                    @endforeach {{ $editable }}
+                                    @endforeach
                                 </select>
                             </td>
                             <td><input type="number" class="form-control rounded-pill"
@@ -103,12 +98,8 @@
                     </tr>
                 </tfoot>
             </table>
-
-            {{-- <div class="d-flex justify-content-end mt-2">
-                <button class="btn btn-outline-primary btn-sm rounded-pill" wire:click="addRow" {{ $editable }}>Ajouter une ligne</button>
-            </div> --}}
-
         </div>
+
         <div class="mt-4 p-3 bg-light border rounded" style="border-left: 4px solid #17a2b8;">
             <p class="mb-0 text-primary fw-bold">
                 <strong class="fw-bold">NB:</strong> - Si la cible d'un objectif est en pourcentage, mettez-la dans la
@@ -119,8 +110,6 @@
         </div>
 
     </div>
-
-    {{-- <button class="btn btn-danger rounded-pill px-4" wire:click="validateData">VALIDER</button> --}}
 
     @include('livewire.client.evaluation.control-navigation')
 

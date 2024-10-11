@@ -79,7 +79,7 @@
         .nav-link {
             color: #6d6d6d;
             font-size: 1.1rem;
-            margin-bottom: 15px;
+            margin-bottom: 05px;
             transition: all 0.2s ease-in-out;
         }
 

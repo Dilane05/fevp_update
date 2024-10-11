@@ -1,12 +1,8 @@
 <div class="mb-4">
     <h4 class="text-primary fw-bold mb-3">I - BILAN DES RÉSULTATS</h4>
     <p class="text-secondary">Suivi des réalisations de la période d’évaluation (rendement et efficacité)</p>
-    <div class="table-responsive">
-        {{-- <div class="d-flex justify-content-end mb-2">
-            <button class="btn btn-outline-primary btn-sm rounded-pill" wire:click="addRow" {{ $editable }}>Ajouter une ligne</button>
-        </div> --}}
-
-        <table class="table table-borderless rounded-3 shadow-sm align-middle">
+    <div class="table-responsive" style="overflow-x: auto;">
+        <table class="table table-borderless rounded-3 shadow-sm align-middle" style="min-width: 2000px;">
             <thead class="bg-primary text-white rounded-top">
                 <tr>
                     <th rowspan="2" class="py-3">N°</th>

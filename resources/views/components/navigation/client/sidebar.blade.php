@@ -4,7 +4,7 @@
         <img src="https://via.placeholder.com/70" alt="Avatar" class="avatar mb-3">
         <h5>{{ auth()->user()->name }}</h5>
     </div>
-    <ul class="nav flex-column mb-4">
+    <ul class="nav flex-column mb-2">
         <li class="nav-item">
             <a class="nav-link {{ $request->routeIs('client.dashboard') ? 'active' : '' }}"
                 href="{{ route('client.dashboard') }}" wire:navigate><i class="bi bi-house-door-fill me-2"></i><span

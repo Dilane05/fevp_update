@@ -69,7 +69,7 @@
                                         </span>
                                     </a>
                                 </li>
-                                <li class="nav-item {{ $request->routeIs('portal.test.index') ? 'active' : '' }}">
+                                {{-- <li class="nav-item {{ $request->routeIs('portal.test.index') ? 'active' : '' }}">
                                     <a href="{{route('portal.test.index')}}" wire:navigate class="nav-link d-flex align-items-center justify-content-between">
                                         <span>
                                             <span class="sidebar-icon text-gray-50">
@@ -80,7 +80,7 @@
                                             <span class="sidebar-text">{{__('Fiche d\'évaluation')}}</span>
                                         </span>
                                     </a>
-                                </li>
+                                </li> --}}
 
                                 <li class="nav-item {{ $request->routeIs('portal.evaluation.*') ? 'active' : '' }}">
                                     <a href="{{route('portal.evaluation.index')}}" wire:navigate class="nav-link d-flex align-items-center justify-content-between">
