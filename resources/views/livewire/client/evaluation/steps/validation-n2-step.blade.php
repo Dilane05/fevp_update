@@ -9,9 +9,16 @@
             rows="10"></textarea>
     </div>
 
-    <div class="d-flex justify-content-between mx-2 my-3">
-        <a class="btn btn-secondary rounded-pill" wire:click="previousStep">{{ __('Précédent') }}</a>
-        <button class="btn btn-primary" wire:click="save"> {{ __('Sauvegarder') }} </button>
+    <div class="d-flex justify-content-end mx-2 my-3">
+        <a class="btn btn-secondary rounded-pill mx-2" wire:click.prevent="submit">{{__('Précédent')}}</a>
+        <a class="btn btn-primary rounded-pill mx-2" wire:click="nextStep">
+            {{__('Suivant')}}
+        </a>
+        <button class="btn btn-primary"
+        @if (auth()->user()->id != $this->response->user->responsable_n2)
+            disabled
+        @endif
+        wire:click.prevent="save"> {{ __('Sauvegarder') }} </button>
     </div>
 
 </div>

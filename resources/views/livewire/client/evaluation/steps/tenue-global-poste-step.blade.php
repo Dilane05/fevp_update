@@ -34,7 +34,7 @@
     <h4 class="text-primary fw-bold mb-3">II - TENUE GLOBALE DU POSTE</h4>
 
     <p class="text-secondary mb-4">
-        Veuillez choisir au minimum 02 DCR dans la liste déroulante et leur attribuer une note comprise
+        Veuillez remplir au minimum 02 DCR dans la liste déroulante et leur attribuer une note comprise
         entre 0 et 1,25.
         (La rubrique permet d’apprécier les autres Domaines Clés de Résultat (DCR) non pris en compte dans
         les objectifs.

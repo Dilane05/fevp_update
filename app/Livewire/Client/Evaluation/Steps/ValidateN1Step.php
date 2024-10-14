@@ -20,14 +20,13 @@ class ValidateN1Step extends StepComponent
 
         $this->comment = $this->response->comment_n1 ? $this->response->comment_n1 : '';
 
-        if ($this->response->is_n2 == 1) {
+        if (auth()->user()->id != $this->response->user->responsable_n1) {
             $this->editable = 'disabled';
         }
     }
 
     public function submit()
     {
-
         $this->nextStep();
     }
 
