@@ -20,9 +20,9 @@ class ValidateN2Step extends StepComponent
 
         $this->comment = $this->response->comment_n2 ? $this->response->comment_n2 : '';
 
-        // if ($this->response->is_n2 == 1) {
-        //     $this->editable = 'disabled';
-        // }
+        if (auth()->user()->id != $this->response->user->responsable_n2) {
+            $this->editable = 'disabled';
+        }
 
     }
 

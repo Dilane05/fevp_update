@@ -116,7 +116,7 @@ class ManagerialQualityStep extends StepComponent
         }
 
         if ($cible > 10) {
-            $errors[] = "La cible ne doit pas etre supérieur à 10";
+            $errors[] = "La somme des cibles ne doit pas etre supérieur à 10";
         }
 
         // Vérifiez s'il y a au moins une observation remplie
