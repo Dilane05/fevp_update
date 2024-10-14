@@ -35,7 +35,8 @@
                     </div>
                 </div>
                 <div class="modal-footer border-0 justify-content-center">
-                    <a href="/url-de-votre-evaluation" class="btn btn-primary w-100" data-bs-dismiss="modal">Commencer
+                    <a href="#" wire:click="startEvaluation({{ $evaluation->id }})" class="btn btn-primary w-100"
+                        data-bs-dismiss="modal">Commencer
                         l'Évaluation</a>
                 </div>
             </div>
@@ -59,33 +60,35 @@
                 </p>
                 @if ($evaluation)
 
-                @if (!$evaluation->is_active)
-                    <div class="d-flex">
-                        <button class="btn btn-secondary mx-1" disabled>Évaluation Clôturée</button>
-                        <button class="btn btn-primary" wire:click="startEvaluation({{ $evaluation->id }})">Voir les
-                            Détails
-                        </button>
-                    </div>
-                @else
-                    @if ($evaluation->participants()->where('user_id', Auth::id())->exists())
-                        @php
-                            $response = App\Models\ResponseEvaluation::where('evaluation_id', $evaluation->id)
-                                ->where('user_id', Auth::id())
-                                ->first();
-                        @endphp
-                        @if ($response && !now()->lt($evaluation->start_date))
-                            <button wire:click="startEvaluation({{ $evaluation->id }})"
-                                class="btn btn-primary w-100">Continuer l'évaluation</button>
-                        @elseif (!now()->lt($evaluation->start_date))
-                            <button wire:click="startEvaluation({{ $evaluation->id }})"
-                                class="btn btn-primary w-100">Commencer l'évaluation</button>
-                        @else
-                            <button class="btn btn-secondary w-100" disabled>Veuillez atendre la date de lancement</button>
-                        @endif
+                    @if (!$evaluation->is_active)
+                        <div class="d-flex">
+                            <button class="btn btn-secondary mx-1" disabled>Évaluation Clôturée</button>
+                            <button class="btn btn-primary" wire:click="startEvaluation({{ $evaluation->id }})">Voir les
+                                Détails
+                            </button>
+                        </div>
                     @else
-                        <button class="btn btn-secondary w-100" disabled>Pas autorisé à participer à la dernière évaluation : {{ $evaluation->title }}</button>
+                        @if ($evaluation->participants()->where('user_id', Auth::id())->exists())
+                            @php
+                                $response = App\Models\ResponseEvaluation::where('evaluation_id', $evaluation->id)
+                                    ->where('user_id', Auth::id())
+                                    ->first();
+                            @endphp
+                            @if ($response && !now()->lt($evaluation->start_date))
+                                <button wire:click="startEvaluation({{ $evaluation->id }})"
+                                    class="btn btn-primary w-100">Continuer l'évaluation</button>
+                            @elseif (!now()->lt($evaluation->start_date))
+                                <button wire:click="startEvaluation({{ $evaluation->id }})"
+                                    class="btn btn-primary w-100">Commencer l'évaluation</button>
+                            @else
+                                <button class="btn btn-secondary w-100" disabled>Veuillez atendre la date de
+                                    lancement</button>
+                            @endif
+                        @else
+                            <button class="btn btn-secondary w-100" disabled>Pas autorisé à participer à la dernière
+                                évaluation : {{ $evaluation->title }}</button>
+                        @endif
                     @endif
-                @endif
                 @endif
             </div>
         </div>
@@ -128,7 +131,8 @@
                         <li class="mb-2 d-flex align-items-center">
                             <i class="bi bi-check2-circle text-secondary me-2"></i>
                             <span class="fw-bold">Temporaire/Permanent :</span>
-                            <span class="ms-2">{{ auth()->user()->pemp_temp ? auth()->user()->pemp_temp : '' }}</span>
+                            <span
+                                class="ms-2">{{ auth()->user()->pemp_temp ? auth()->user()->pemp_temp : '' }}</span>
                         </li>
                         <li class="mb-2 d-flex align-items-center">
                             <i class="bi bi-calendar-date text-muted me-2"></i>
@@ -361,47 +365,46 @@
         </style>
 
         @if ($evaluation)
-        <script>
-            // Set the start and end dates
-            var startDate = new Date("{{ \Carbon\Carbon::parse($evaluation->start_date)->format('Y-m-d H:i:s') }}").getTime();
-            var endDate = new Date("{{ \Carbon\Carbon::parse($evaluation->end_date)->format('Y-m-d H:i:s') }}").getTime();
+            <script>
+                // Set the start and end dates
+                var startDate = new Date("{{ \Carbon\Carbon::parse($evaluation->start_date)->format('Y-m-d H:i:s') }}").getTime();
+                var endDate = new Date("{{ \Carbon\Carbon::parse($evaluation->end_date)->format('Y-m-d H:i:s') }}").getTime();
 
-            function updateCountdown() {
-                // Get today's date and time
-                var now = new Date().getTime();
-                var distance;
+                function updateCountdown() {
+                    // Get today's date and time
+                    var now = new Date().getTime();
+                    var distance;
 
-                // Determine which countdown to show
-                if (now < startDate) {
-                    distance = startDate - now;
-                    document.getElementById("countdown-message-text").innerHTML =
-                        "Le lancement officiel de l'évaluation est prévu dans :";
-                } else if (now < endDate) {
-                    distance = endDate - now;
-                    document.getElementById("countdown-message-text").innerHTML =
-                        "Le temps restant avant la fin de l'évaluation est :";
-                } else {
-                    document.getElementById("countdown").innerHTML = "L'évaluation est terminée!";
-                    return; // Stop the countdown
+                    // Determine which countdown to show
+                    if (now < startDate) {
+                        distance = startDate - now;
+                        document.getElementById("countdown-message-text").innerHTML =
+                            "Le lancement officiel de l'évaluation est prévu dans :";
+                    } else if (now < endDate) {
+                        distance = endDate - now;
+                        document.getElementById("countdown-message-text").innerHTML =
+                            "Le temps restant avant la fin de l'évaluation est :";
+                    } else {
+                        document.getElementById("countdown").innerHTML = "L'évaluation est terminée!";
+                        return; // Stop the countdown
+                    }
+
+                    // Time calculations for days, hours, minutes and seconds
+                    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    // Display the result in the elements with corresponding IDs
+                    document.getElementById("days").innerHTML = days;
+                    document.getElementById("hours").innerHTML = hours;
+                    document.getElementById("minutes").innerHTML = minutes;
+                    document.getElementById("seconds").innerHTML = seconds;
                 }
 
-                // Time calculations for days, hours, minutes and seconds
-                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                // Display the result in the elements with corresponding IDs
-                document.getElementById("days").innerHTML = days;
-                document.getElementById("hours").innerHTML = hours;
-                document.getElementById("minutes").innerHTML = minutes;
-                document.getElementById("seconds").innerHTML = seconds;
-            }
-
-            // Update the count down every 1 second
-            var countdownFunction = setInterval(updateCountdown, 1000);
-        </script>
-
+                // Update the count down every 1 second
+                var countdownFunction = setInterval(updateCountdown, 1000);
+            </script>
         @endif
 
 
