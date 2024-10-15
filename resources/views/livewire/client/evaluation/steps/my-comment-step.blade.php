@@ -2,7 +2,7 @@
     @include('livewire.client.evaluation.navigation')
 
 
-    <h4 class="text-primary fw-bold mb-3">IX - Appréciations et Commentaires du N+2</h4>
+    <h4 class="text-primary fw-bold mb-3">VII - Commentaire de l'évaluer</h4>
 
     <div class="container">
         <textarea {{ $editable }} class="form-control" wire:model.live="comment" name="" id="" cols="30"
@@ -15,7 +15,7 @@
             {{__('Suivant')}}
         </a>
         <button class="btn btn-primary"
-        @if (auth()->user()->id != $this->response->user->responsable_n2)
+        @if (auth()->user()->id != $this->response->user_id)
             disabled
         @endif
         wire:click.prevent="save"> {{ __('Sauvegarder') }} </button>

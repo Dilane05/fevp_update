@@ -36,6 +36,7 @@ return new class extends Migration
             $table->boolean('is_n2')->default(0);
             $table->date('date_n1')->nullable();
             $table->date('date_n2')->nullable();
+            $table->longText('my_comment')->nullable();
             $table->longText('comment_n1')->nullable();
             $table->longText('comment_n2')->nullable();
             $table->boolean('is_editable')->default(1);

@@ -20,7 +20,7 @@ class ValidateN1Step extends StepComponent
 
         $this->comment = $this->response->comment_n1 ? $this->response->comment_n1 : '';
 
-        if (auth()->user()->id != $this->response->user->responsable_n1) {
+        if ( auth()->user()->id != $this->response->user->responsable_n1) {
             $this->editable = 'disabled';
         }
     }
@@ -51,7 +51,7 @@ class ValidateN1Step extends StepComponent
     public function stepInfo(): array
     {
         return [
-            'label' => __('Section N+1'),
+            'label' => __('Commentaire du N+1'),
             'icon' => 'fa-shopping-cart',
         ];
     }

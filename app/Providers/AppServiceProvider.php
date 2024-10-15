@@ -18,6 +18,7 @@ use App\Livewire\Client\Evaluation\Steps\CareerComiteeStep;
 use App\Livewire\Client\Evaluation\Steps\ManagerialQualityStep;
 use App\Livewire\Client\Evaluation\Steps\PersonalInformationStep;
 use App\Livewire\Client\Evaluation\Steps\ComplianceCorporateCultureStep;
+use App\Livewire\Client\Evaluation\Steps\MyCommentStep;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -115,6 +116,7 @@ class AppServiceProvider extends ServiceProvider
         Livewire::component('create-evaluation-compliance_corporate_culture', ComplianceCorporateCultureStep::class);
         Livewire::component('create-evaluation-bonus_malus', BonusMalusStep::class);
         Livewire::component('create-evaluation-sanctions', SanctionStep::class);
+        Livewire::component('create-evaluation-my-comment', MyCommentStep::class);
         Livewire::component('create-evaluation-others', OtherStep::class);
         Livewire::component('calculate-evaluation-notes', NoteStep::class);
         Livewire::component('calculate-validate-n1', ValidateN1Step::class);
