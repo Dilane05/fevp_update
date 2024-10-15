@@ -16,6 +16,7 @@ use App\Livewire\Client\Evaluation\Steps\TenueGlobalPosteStep;
 use App\Livewire\Client\Evaluation\Steps\ManagerialQualityStep;
 use App\Livewire\Client\Evaluation\Steps\PersonalInformationStep;
 use App\Livewire\Client\Evaluation\Steps\ComplianceCorporateCultureStep;
+use App\Livewire\Client\Evaluation\Steps\MyCommentStep;
 
 class CheckoutWizardComponent extends WizardComponent
 {
@@ -37,6 +38,7 @@ class CheckoutWizardComponent extends WizardComponent
             'create-evaluation-compliance_corporate_culture',
             'create-evaluation-bonus_malus',
             'create-evaluation-sanctions',
+            'create-evaluation-my-comment',
             'create-comitee-career',
             // 'create-evaluation-others',
             'calculate-validate-n1',
@@ -58,6 +60,7 @@ class CheckoutWizardComponent extends WizardComponent
             ComplianceCorporateCultureStep::class,
             BonusMalusStep::class,
             SanctionStep::class,
+            MyCommentStep::class,
             ValidateN1Step::class,
             ValidateN2Step::class,
             NoteStep::class,

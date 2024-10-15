@@ -53,7 +53,7 @@ class ValidateN2Step extends StepComponent
     public function stepInfo(): array
     {
         return [
-            'label' => __('Section N+2'),
+            'label' => __('Commentaire du N+2'),
             'icon' => 'fa-shopping-cart',
         ];
     }

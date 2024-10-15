@@ -1,6 +1,8 @@
 <div class="p-4 bg-light rounded-4 shadow-sm">
     @include('livewire.client.evaluation.navigation')
 
+    <h4 class="text-primary fw-bold mb-3">V - SANCTIONS</h4>
+
     <div class="table-responsive mt-4">
         <table class="table table-borderless rounded-3 shadow-sm align-middle">
             <thead class="bg-danger text-white rounded-top">
