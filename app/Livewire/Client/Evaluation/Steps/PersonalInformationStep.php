@@ -5,17 +5,19 @@ namespace App\Livewire\Client\Evaluation\Steps;
 use Livewire\Component;
 use App\Models\Evaluation;
 use App\Models\ResponseEvaluation;
+use App\Services\EvaluationAuthorizationService;
 use Spatie\LivewireWizard\Components\StepComponent;
 
 class PersonalInformationStep extends StepComponent
 {
-
     // public $name = "dilane";
     public $evaluation_id;
     public $response_out;
     public $response;
     public $editable_user;
     public $editable_all;
+
+    public $can_do_evaluate1 , $can_do_evaluate2 = "disabled" , $can_do_n1 , $can_do_n2;
 
     public function mount($evaluation_id)
     {
@@ -25,7 +27,20 @@ class PersonalInformationStep extends StepComponent
         // dd($this->response);
 
         if ($this->response) {
+
             $this->response_out = ResponseEvaluation::find($this->response);
+
+            if(auth()->user()->id === $this->response_out->user_id && $this->response_out->is_send)
+            {
+                $this->can_do_evaluate1 = 'disabled';
+            }else  if(auth()->user()->id === $this->response_out->responsable_n1 && $this->response_out->in_n1){
+                $this->can_do_n1 = 'disabled';
+            }else if(auth()->user()->id === $this->response_out->responsable_n2 && $this->response_out->is_n2){
+                $this->can_do_n2 = 'disabled';
+            }else if(auth()->user()->id === $this->response_out->user_id && $this->response_out->my_comment){
+                $this->can_do_evaluate2 = 'disabled';
+            }
+
             if (!$this->response_out) {
                 session()->flash('error', 'Réponse introuvable.');
                 return redirect()->route('client.evaluation.index', $evaluation_id);

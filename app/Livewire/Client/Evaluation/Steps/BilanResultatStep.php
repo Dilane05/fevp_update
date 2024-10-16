@@ -10,6 +10,7 @@ use App\Models\ResponseEvaluation;
 use App\Models\PerformanceContract;
 use Illuminate\Support\Facades\Validator;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use App\Services\EvaluationAuthorizationService;
 use Spatie\LivewireWizard\Components\StepComponent;
 
 class BilanResultatStep extends StepComponent
@@ -25,8 +26,12 @@ class BilanResultatStep extends StepComponent
     public $response;
     public $editable;
 
-    public function mount()
+    protected $authorizationService;
+
+    public function mount(EvaluationAuthorizationService $authorizationService)
     {
+
+        $this->authorizationService = $authorizationService;
         // dd($this->totalCoef);
         $this->response = ResponseEvaluation::findOrFail($this->state()->forStep('create-evaluation-personal_info')['response']);
 

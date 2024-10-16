@@ -55,34 +55,56 @@
                     </tr>
                 </thead>
                 <tbody>
+
+                    @php
+                        $action = '';
+                        if (auth()->user()->id === $response->user_id && $response->is_send) {
+                            $action = 'disabled';
+                        } elseif (auth()->user()->id === $response->responsable_n1 && $response->in_n1) {
+                            $action = 'disabled';
+                        } elseif ($response->is_n2) {
+                            $action = 'disabled';
+                        } elseif (auth()->user()->id === $response->user_id && $response->my_comment) {
+                            $action = 'disabled';
+                        }
+                    @endphp
+
                     @foreach ($rows as $index => $row)
                         <tr>
                             <td class="fw-bold">{{ $index + 1 }}</td>
                             <td><input type="text" class="form-control rounded-pill"
-                                    wire:model.live="rows.{{ $index }}.objectif" {{ $editable }} disabled ></td>
+                                    wire:model.live="rows.{{ $index }}.objectif" {{ $editable }} disabled>
+                            </td>
                             <td {{ $editable }}>
                                 <select class="form-select rounded-pill"
                                     wire:model.live="rows.{{ $index }}.indicateur" disabled>
                                     <option value="">Sélectionner un Indicateur</option>
                                     @foreach ($indicators as $indicator)
-                                        <option value="{{ $indicator }}">{{ __('Indicateur') }} {{ $indicator }}</option>
+                                        <option value="{{ $indicator }}">{{ __('Indicateur') }} {{ $indicator }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </td>
                             <td><input type="number" class="form-control rounded-pill"
                                     wire:model.live="rows.{{ $index }}.coef" {{ $editable }} disabled></td>
                             <td><input type="number" class="form-control rounded-pill"
-                                    wire:model.live="rows.{{ $index }}.cible_pct" {{ $editable }} disabled ></td>
+                                    wire:model.live="rows.{{ $index }}.cible_pct" {{ $editable }} disabled>
+                            </td>
                             <td><input type="number" class="form-control rounded-pill"
-                                    wire:model.live="rows.{{ $index }}.cible_nb" {{ $editable }} disabled></td>
+                                    wire:model.live="rows.{{ $index }}.cible_nb" {{ $editable }} disabled>
+                            </td>
                             <td><input type="number" class="form-control rounded-pill"
-                                    wire:model.live="rows.{{ $index }}.resultat_pct" {{ $editable }} ></td>
+                                    wire:model.live="rows.{{ $index }}.resultat_pct" {{ $editable }}
+                                    {{ $action }}></td>
                             <td><input type="number" class="form-control rounded-pill"
-                                    wire:model.live="rows.{{ $index }}.resultat_nb" {{ $editable }}></td>
+                                    wire:model.live="rows.{{ $index }}.resultat_nb" {{ $editable }}
+                                    {{ $action }}></td>
                             <td><input type="number" class="form-control rounded-pill" disabled
-                                    wire:model.live="rows.{{ $index }}.note" {{ $editable }}></td>
+                                    wire:model.live="rows.{{ $index }}.note" {{ $editable }}
+                                    {{ $action }}></td>
                             <td><input type="text" class="form-control rounded-pill"
-                                    wire:model.live="rows.{{ $index }}.observations" {{ $editable }}></td>
+                                    wire:model.live="rows.{{ $index }}.observations" {{ $editable }}
+                                    {{ $action }}> </td>
                         </tr>
                     @endforeach
                 </tbody>
