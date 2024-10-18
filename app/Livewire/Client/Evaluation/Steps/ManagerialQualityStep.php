@@ -63,7 +63,7 @@ class ManagerialQualityStep extends StepComponent
 
     public function submit()
     {
-        if(auth()->user()->type_fiche->value_manageriale <= 0){
+        if($this->response->user->type_fiche->value_manageriale <= 0){
             // Passer à l'étape suivante
             $this->nextStep();
         }else{
