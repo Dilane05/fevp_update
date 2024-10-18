@@ -76,7 +76,7 @@
                                                             placeholder="Valeur de l'objectif">
                                                         <br>
                                                         <button class="btn btn-sm btn-primary mt-2"
-                                                            wire:click="addIndicateur({{ $index }})">
+                                                            wire:click.prevent="addIndicateur({{ $index }})">
                                                             Ajouter indicateur
                                                         </button>
                                                     </td>
@@ -128,7 +128,7 @@
                         </div>
 
                         <!-- Bouton pour ajouter un objectif -->
-                        <button wire:click="addObjectif" class="btn btn-success mt-3 rounded-pill">Ajouter un
+                        <button wire:click.prevent="addObjectif" class="btn btn-success mt-3 rounded-pill">Ajouter un
                             objectif</button>
 
                         <div class="text-end mt-4">
