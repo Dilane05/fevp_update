@@ -243,7 +243,7 @@
                                     <strong>Date : </strong> Le ………/ …… / ………
                                 </div>
                             @else
-                                @if ($this->response->user->responsable_n1 == auth()->user()->id)
+                                @if ($this->response->user->responsable_n1 === auth()->user()->id)
                                     <div class="my-1">
                                         <button class="btn btn-primary" wire:click="sign_n1"> Cliquez pour signer </button>
                                     </div>
@@ -258,7 +258,7 @@
                                     <strong>Date : </strong> Le ………/ …… / ………
                                 </div>
                             @else
-                                @if ($this->response->user == auth()->user()->id)
+                                @if ($this->response->user_id == auth()->user()->id)
                                     <div class="my-1">
                                         <button class="btn btn-primary" wire:click="sign_n2"> Cliquez pour signer </button>
                                     </div>
