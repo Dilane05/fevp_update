@@ -236,7 +236,7 @@
                 <tbody>
                     <tr>
                         <td>
-                            @if ($this->response->careerComitee->signature_n1_date ? $this->response->careerComitee->signature_n1_date : '' )
+                            @if ($this->response->careerComitee ? $this->response->careerComitee->signature_n1_date : '' )
                                 <div class="my-1">
                                     Signature du supérieur hiérarchique (n + 1)
                                     <br>
@@ -251,14 +251,14 @@
                             @endif
                         </td>
                         <td>
-                            @if ($this->response->careerComitee->signature_n2_date ? $this->response->careerComitee->signature_n2_date : '')
+                            @if ($this->response->careerComitee ? $this->response->careerComitee->signature_n2_date : '')
                                 <div class="my-1">
                                     Signature du supérieur hiérarchique (n + 2)
                                     <br>
                                     <strong>Date : </strong> Le ………/ …… / ………
                                 </div>
                             @else
-                                @if ($this->response->user->responsable_n2 == auth()->user()->id)
+                                @if ($this->response->user == auth()->user()->id)
                                     <div class="my-1">
                                         <button class="btn btn-primary" wire:click="sign_n2"> Cliquez pour signer </button>
                                     </div>
@@ -266,7 +266,7 @@
                             @endif
                         </td>
                         <td>
-                            @if ($this->response->careerComitee->signature_rrdch_date ? $this->response->careerComitee->signature_rrdch_date : '')
+                            @if ($this->response->careerComitee ? $this->response->careerComitee->signature_rrdch_date : '')
                                 <div class="my-1">
                                     Signature RRDCH
                                     <br>
