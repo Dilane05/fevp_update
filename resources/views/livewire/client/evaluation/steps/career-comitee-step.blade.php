@@ -236,7 +236,7 @@
                 <tbody>
                     <tr>
                         <td>
-                            @if ($this->response->careerComitee->signature_n1_date)
+                            @if ($this->response->careerComitee->signature_n1_date ? $this->response->careerComitee->signature_n1_date : '' )
                                 <div class="my-1">
                                     Signature du supérieur hiérarchique (n + 1)
                                     <br>
@@ -251,7 +251,7 @@
                             @endif
                         </td>
                         <td>
-                            @if ($this->response->careerComitee->signature_n2_date)
+                            @if ($this->response->careerComitee->signature_n2_date ? $this->response->careerComitee->signature_n2_date : '')
                                 <div class="my-1">
                                     Signature du supérieur hiérarchique (n + 2)
                                     <br>
@@ -266,7 +266,7 @@
                             @endif
                         </td>
                         <td>
-                            @if ($this->response->careerComitee->signature_rrdch_date)
+                            @if ($this->response->careerComitee->signature_rrdch_date ? $this->response->careerComitee->signature_rrdch_date : '')
                                 <div class="my-1">
                                     Signature RRDCH
                                     <br>
