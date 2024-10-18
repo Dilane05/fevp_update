@@ -4,21 +4,31 @@
 
     <h4 class="text-primary fw-bold mb-3">IX - Appréciations et Commentaires du N+2</h4>
 
+    @php
+        $action = '';
+        if (auth()->user()->id === $response->user_id && $response->is_send) {
+            $action = 'disabled';
+        } elseif (auth()->user()->id === $response->responsable_n1 && $response->in_n1) {
+            $action = 'disabled';
+        } elseif ($response->is_n2) {
+            $action = 'disabled';
+        } elseif (auth()->user()->id === $response->user_id && $response->my_comment) {
+            $action = 'disabled';
+        }
+    @endphp
+
     <div class="container">
-        <textarea {{ $editable }} class="form-control" wire:model.live="comment" name="" id="" cols="30"
+        <textarea {{ $editable }} {{ $action }} class="form-control" wire:model.live="comment" name="" id="" cols="30"
             rows="10"></textarea>
     </div>
 
     <div class="d-flex justify-content-end mx-2 my-3">
-        <a class="btn btn-secondary rounded-pill mx-2" wire:click.prevent="previousStep">{{__('Précédent')}}</a>
+        <a class="btn btn-secondary rounded-pill mx-2" wire:click.prevent="previousStep">{{ __('Précédent') }}</a>
         <a class="btn btn-primary rounded-pill mx-2" wire:click="nextStep">
-            {{__('Suivant')}}
+            {{ __('Suivant') }}
         </a>
-        <button class="btn btn-primary"
-        @if (auth()->user()->id != $this->response->user->responsable_n2)
-            disabled
-        @endif
-        wire:click.prevent="save"> {{ __('Sauvegarder') }} </button>
+        <button class="btn btn-primary" @if (auth()->user()->id != $this->response->user->responsable_n2) disabled @endif wire:click.prevent="save">
+            {{ __('Sauvegarder') }} </button>
     </div>
 
 </div>

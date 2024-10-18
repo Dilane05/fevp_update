@@ -52,19 +52,33 @@
                 </tr>
             </thead>
             <tbody>
+
+                @php
+                    $action = '';
+                    if (auth()->user()->id === $response->user_id && $response->is_send) {
+                        $action = 'disabled';
+                    } elseif (auth()->user()->id === $response->responsable_n1 && $response->in_n1) {
+                        $action = 'disabled';
+                    } elseif ($response->is_n2) {
+                        $action = 'disabled';
+                    } elseif (auth()->user()->id === $response->user_id && $response->my_comment) {
+                        $action = 'disabled';
+                    }
+                @endphp
+
                 @foreach ($keyResults as $index => $result)
                     <tr>
                         <td>
                             <input type="text" wire:model.live="keyResults.{{ $index }}.domain"
-                                class="form-control rounded-pill" {{ $editable }} >
+                                class="form-control rounded-pill" {{ $editable }} {{ $action }} >
                         </td>
                         <td>
                             <input type="text" wire:model.live="keyResults.{{ $index }}.note"
-                                class="form-control rounded-pill" {{ $editable }} >
+                                class="form-control rounded-pill" {{ $editable }} {{ $action }} >
                         </td>
                         <td>
                             <input type="text" wire:model.live="keyResults.{{ $index }}.observations"
-                                class="form-control rounded-pill" {{ $editable }} >
+                                class="form-control rounded-pill" {{ $editable }} {{ $action }} >
                         </td>
                     </tr>
                 @endforeach

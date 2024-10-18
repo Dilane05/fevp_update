@@ -4,8 +4,21 @@
 
     <h4 class="text-primary fw-bold mb-3">VIII - Appréciations et Commentaires du N+1</h4>
 
+    @php
+        $action = '';
+        if (auth()->user()->id === $response->user_id && $response->is_send) {
+            $action = 'disabled';
+        } elseif (auth()->user()->id === $response->responsable_n1 && $response->in_n1) {
+            $action = 'disabled';
+        } elseif ($response->is_n2) {
+            $action = 'disabled';
+        } elseif (auth()->user()->id === $response->user_id && $response->my_comment) {
+            $action = 'disabled';
+        }
+    @endphp
+
     <div class="container">
-        <textarea {{ $editable }} class="form-control" wire:model.live="comment" name="" id="" cols="30"
+        <textarea {{ $editable }} {{ $action }}  class="form-control" wire:model.live="comment" name="" id="" cols="30"
             rows="10"></textarea>
     </div>
 

@@ -64,12 +64,14 @@
         </div>
     </div>
     <p class="text-secondary">
-        Veuillez renseigner la cible et le taux de réalisation à chaque rubrique. Uniquement pour les "Chefs Service" et les "Fonctions spécifiques".
+        Veuillez renseigner la cible et le taux de réalisation à chaque rubrique. Uniquement pour les "Chefs Service" et
+        les "Fonctions spécifiques".
     </p>
 
     <div class="table-responsive mt-4">
         <div class="d-flex justify-content-end mb-2">
-            <button class="btn btn-outline-primary btn-sm rounded-pill" wire:click="addRow" {{ $editable }}>Ajouter une ligne</button>
+            <button class="btn btn-outline-primary btn-sm rounded-pill" wire:click="addRow" {{ $editable }}>Ajouter
+                une ligne</button>
         </div>
         <table class="table table-borderless rounded-3 shadow-sm align-middle">
             <thead class="bg-primary text-white rounded-top">
@@ -84,23 +86,38 @@
                 </tr>
             </thead>
             <tbody>
+
+                @php
+                    $action = '';
+                    if (auth()->user()->id === $response->user_id && $response->is_send) {
+                        $action = 'disabled';
+                    } elseif (auth()->user()->id === $response->responsable_n1 && $response->in_n1) {
+                        $action = 'disabled';
+                    } elseif ($response->is_n2) {
+                        $action = 'disabled';
+                    } elseif (auth()->user()->id === $response->user_id && $response->my_comment) {
+                        $action = 'disabled';
+                    }
+                @endphp
+
                 @foreach ($qualities as $index => $quality)
                     <tr>
                         <td>
                             <input type="text" wire:model.live="qualities.{{ $index }}.quality"
-                                class="form-control rounded-pill" {{ $is_manager }} {{ $editable }}>
+                                class="form-control rounded-pill" {{ $is_manager }} {{ $editable }} {{ $action }}>
                         </td>
                         <td>
                             <input type="number" step="0.01" wire:model.live="qualities.{{ $index }}.target"
-                                class="form-control rounded-pill" {{ $is_manager }} {{ $editable }}>
+                                class="form-control rounded-pill" {{ $is_manager }} {{ $editable }} {{ $action }}>
                         </td>
                         <td>
-                            <input type="number" step="0.01" wire:model.live="qualities.{{ $index }}.realization"
-                                class="form-control rounded-pill" {{ $is_manager }} {{ $editable }}>
+                            <input type="number" step="0.01"
+                                wire:model.live="qualities.{{ $index }}.realization"
+                                class="form-control rounded-pill" {{ $is_manager }} {{ $editable }} {{ $action }}>
                         </td>
                         <td>
                             <input type="text" wire:model.live="qualities.{{ $index }}.observations"
-                                class="form-control rounded-pill " {{ $editable }} >
+                                class="form-control rounded-pill " {{ $editable }} {{ $action }} >
                         </td>
                     </tr>
                 @endforeach
@@ -108,13 +125,14 @@
             <tfoot>
                 <tr>
                     <td colspan="4" class="text-center text-muted fw-bold fs-5">
-                        Note Globale: <span class="text-primary">{{ number_format($globalScore, 2) }} / {{ $totalNote }} </span>
+                        Note Globale: <span class="text-primary">{{ number_format($globalScore, 2) }} /
+                            {{ $totalNote }} </span>
                     </td>
                 </tr>
                 {{-- <tr>
                     <td colspan="4" class="text-center text-danger fw-bold fs-6">
-                        @if($errorsModalVisible)
-                            @foreach($errorMessages as $message)
+                        @if ($errorsModalVisible)
+                            @foreach ($errorMessages as $message)
                                 <p>{{ $message }}</p>
                             @endforeach
                         @endif
@@ -124,7 +142,8 @@
         </table>
 
         <div class="d-flex justify-content-end mb-2">
-            <button class="btn btn-outline-primary btn-sm rounded-pill" wire:click="addRow" {{ $editable }}>Ajouter une ligne</button>
+            <button class="btn btn-outline-primary btn-sm rounded-pill" wire:click="addRow" {{ $editable }}>Ajouter
+                une ligne</button>
         </div>
     </div>
 

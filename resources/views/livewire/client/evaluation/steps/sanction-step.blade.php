@@ -1,7 +1,7 @@
 <div class="p-4 bg-light rounded-4 shadow-sm">
     @include('livewire.client.evaluation.navigation')
 
-    <h4 class="text-primary fw-bold mb-3">V - SANCTIONS</h4>
+    <h4 class="text-primary fw-bold mb-3">VI - SANCTIONS</h4>
 
     <div class="table-responsive mt-4">
         <table class="table table-borderless rounded-3 shadow-sm align-middle">
@@ -17,6 +17,20 @@
                 </tr>
             </thead>
             <tbody>
+
+                @php
+                    $action = '';
+                    if (auth()->user()->id === $response->user_id && $response->is_send) {
+                        $action = 'disabled';
+                    } elseif (auth()->user()->id === $response->responsable_n1 && $response->in_n1) {
+                        $action = 'disabled';
+                    } elseif ($response->is_n2) {
+                        $action = 'disabled';
+                    } elseif (auth()->user()->id === $response->user_id && $response->my_comment) {
+                        $action = 'disabled';
+                    }
+                @endphp
+
                 @foreach ($sanctions as $index => $sanction)
                     <tr>
                         <td class="align-middle">
@@ -24,7 +38,7 @@
                         </td>
                         <td class="align-middle">
                             <input type="number" wire:model.live="sanctions.{{ $index }}.number"
-                                class="form-control rounded-pill" min="0" {{ $editable }}>
+                                class="form-control rounded-pill" min="0" {{ $editable }} {{ $action }} >
                         </td>
                         {{-- <td class="align-middle">
                             <input type="text" wire:model.live="sanctions.{{ $index }}.sanction"
@@ -48,16 +62,15 @@
         <h5 class="text-primary">Règles de Calcul des Sanctions</h5>
         <p class="text-muted mb-0">
             Les sanctions sont calculées selon les critères suivants :
-            <ul class="list-unstyled">
-                <li><strong>Nombre d'avertissements (s)</strong> : -2.5 points par avertissement.</li>
-                <li><strong>Nombre de blâmes (s)</strong> : -5 points par blâme.</li>
-                <li><strong>Nombre de mises à pied de 1 à 3 jours</strong> : -7.5 points par mise à pied.</li>
-                <li><strong>Nombre de mises à pied de 4 à 5 jours</strong> : -10 points par mise à pied.</li>
-                <li><strong>Nombre de mises à pied de 6 à 8 jours</strong> : -12.5 points par mise à pied.</li>
-            </ul>
+        <ul class="list-unstyled">
+            <li><strong>Nombre d'avertissements (s)</strong> : -2.5 points par avertissement.</li>
+            <li><strong>Nombre de blâmes (s)</strong> : -5 points par blâme.</li>
+            <li><strong>Nombre de mises à pied de 1 à 3 jours</strong> : -7.5 points par mise à pied.</li>
+            <li><strong>Nombre de mises à pied de 4 à 5 jours</strong> : -10 points par mise à pied.</li>
+            <li><strong>Nombre de mises à pied de 6 à 8 jours</strong> : -12.5 points par mise à pied.</li>
+        </ul>
         </p>
     </div>
 
     @include('livewire.client.evaluation.control-navigation')
 </div>
-

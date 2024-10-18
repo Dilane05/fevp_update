@@ -11,14 +11,14 @@
 
     <div class="d-flex justify-content-end mx-2 my-3">
         <a class="btn btn-secondary rounded-pill mx-2" wire:click.prevent="previousStep">{{__('Précédent')}}</a>
-        <a class="btn btn-primary rounded-pill mx-2" wire:click="nextStep">
+        <a class="btn btn-primary rounded-pill mx-2" wire:click.prevent="submit">
             {{__('Suivant')}}
         </a>
-        <button class="btn btn-primary"
+        {{-- <button class="btn btn-primary"
         @if (auth()->user()->id != $this->response->user_id)
             disabled
         @endif
-        wire:click.prevent="save"> {{ __('Sauvegarder') }} </button>
+        wire:click.prevent="save"> {{ __('Sauvegarder') }} </button> --}}
     </div>
 
 </div>
