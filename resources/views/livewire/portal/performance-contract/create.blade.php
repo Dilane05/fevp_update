@@ -76,7 +76,7 @@
                                                         <br>
                                                         <button class="btn btn-sm btn-primary mt-2"
                                                             wire:click.prevent="addIndicateur({{ $index }})">
-                                                            Ajouter indicateur
+                                                            Ajoutez indicateur
                                                         </button>
                                                     </td>
                                                 @endif
@@ -130,7 +130,7 @@
                         </div>
 
                         <!-- Bouton pour ajouter un objectif -->
-                        <button wire:click.prevent="addObjectif" class="btn btn-success mt-3 ">Ajouter un
+                        <button wire:click.prevent="addObjectif" class="btn btn-success mt-3 ">Ajoutez un
                             objectif</button>
 
                         <div class="text-end mt-4">
