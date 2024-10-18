@@ -291,9 +291,9 @@
     <div class="d-flex justify-content-end mx-2 my-3">
         <a class="btn btn-secondary rounded-pill" wire:click="previousStep">{{ __('Précédent') }}</a>
         <button class="btn btn-primary mx-2" wire:click="save"> {{ __('Sauvegarder') }} </button>
-        <button class="btn btn-primary mx-2" wire:click="submit">
+        {{-- <button class="btn btn-primary mx-2" wire:click="submit">
             {{ __('Suivant') }}
-        </button>
+        </button> --}}
     </div>
 
 </div>
