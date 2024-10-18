@@ -68,7 +68,7 @@
                                 class="form-control rounded-pill" placeholder="Description" {{ $editable }} {{ $action }} >
                         </td>
                         <td class="align-middle">
-                            <input type="number" wire:model.live="projects.{{ $index }}.note"
+                            <input type="number" wire:model="projects.{{ $index }}.note"
                                 class="form-control rounded-pill" min="-2.5" max="2.5" step="0.1"
                                 placeholder="" {{ $editable }} {{ $action }} >
                         </td>
